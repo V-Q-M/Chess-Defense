@@ -68,7 +68,6 @@ public class Player extends livingBeing {
     public int swapCounter = 0;
 
     public String facingDirection = "right";
-    public String facingDirectionX = "right";
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
@@ -158,6 +157,30 @@ public class Player extends livingBeing {
             swapCounter++;
         } else {
             swapCounter++;
+        }
+    }
+
+    public void revivePieces(){
+        soundManager.playClip(soundManager.healClip);
+        rookAlive = true;
+        queenAlive = true;
+        bishopAlive = true;
+        knightAlive = true;
+        rookHealth = ROOK_BASE_HEALTH;
+        bishopHealth = BISHOP_BASE_HEALTH;
+        knightHealth = KNIGHT_BASE_HEALTH;
+        queenHealth = QUEEN_BASE_HEALTH;
+        if (!availablePieces.contains(PieceType.ROOK)){
+            availablePieces.add(PieceType.ROOK);
+        }
+        if (!availablePieces.contains(PieceType.QUEEN)){
+            availablePieces.add(PieceType.QUEEN);
+        }
+        if (!availablePieces.contains(PieceType.KNIGHT)){
+            availablePieces.add(PieceType.KNIGHT);
+        }
+        if (!availablePieces.contains(PieceType.BISHOP)){
+            availablePieces.add(PieceType.BISHOP);
         }
     }
 

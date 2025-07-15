@@ -28,7 +28,8 @@ public class GamePanel extends JPanel implements Runnable{
 
   boolean gameStart = true;
   public boolean swapSoon = false;
-  public int castleHealth = 100;
+  private final int CASTLE_MAX_HEALTH = 100;
+  public int castleHealth = CASTLE_MAX_HEALTH;
   public boolean gameOver = false;
 
   private Font gameFont;
@@ -56,6 +57,14 @@ public class GamePanel extends JPanel implements Runnable{
   public BufferedImage enemyPawnHurtImage;
 
   // Projectile textures
+  public BufferedImage arrowLeftImage;
+  public BufferedImage arrowRightImage;
+  public BufferedImage arrowUpImage;
+  public BufferedImage arrowDownImage;
+  public BufferedImage arrowDownLeftImage;
+  public BufferedImage arrowDownRightImage;
+  public BufferedImage arrowUpLeftImage;
+  public BufferedImage arrowUpRightImage;
   public BufferedImage cannonBallImage;
   public BufferedImage cannonBallEnemyImage;
   public BufferedImage explosionImage;
@@ -250,6 +259,14 @@ public class GamePanel extends JPanel implements Runnable{
       enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
       enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
 
+      arrowLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowLeft.png"));
+      arrowRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowRight.png"));
+      arrowUpImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowUp.png"));
+      arrowDownImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowDown.png"));
+      arrowUpLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowUpLeft.png"));
+      arrowUpRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowUpRight.png"));
+      arrowDownLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowDownLeft.png"));
+      arrowDownRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowDownRight.png"));
       cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball.png"));
       cannonBallEnemyImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonballEnemy.png"));
       explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
@@ -311,9 +328,21 @@ public class GamePanel extends JPanel implements Runnable{
   int levelCounter = 1;
   public boolean enemyKingSlain = false;
 
+  int threshHoldEnemyKingSpawns = 5500;
+
+  private void healthCastle(int amount) {
+    if (amount > 0){
+      if (castleHealth + amount < CASTLE_MAX_HEALTH) {
+        castleHealth += amount;
+      } else {
+        castleHealth = CASTLE_MAX_HEALTH;
+      }
+    }
+  }
+
   private void castleLogic(){
-    if (lastHealedCounter > 180 && castleHealth < 100){
-      castleHealth++;
+    if (lastHealedCounter > 180){
+      healthCastle(1);
       lastHealedCounter = 0;
     } else {
       lastHealedCounter++;
@@ -336,7 +365,7 @@ public class GamePanel extends JPanel implements Runnable{
    }
 
 
-    if (score > 4500 * levelCounter){
+    if (score > threshHoldEnemyKingSpawns * levelCounter){
       levelCounter++;
       enemyManager.spawnKing();
       soundManager.playClip(soundManager.kingSpawnClip);
@@ -346,16 +375,9 @@ public class GamePanel extends JPanel implements Runnable{
     if (enemyKingSlain){
       if (!piecesGotRevived){
         piecesGotRevived = true;
-        soundManager.playClip(soundManager.healClip);
         blueFlashScreen = true;
-        player.rookAlive = true;
-        player.queenAlive = true;
-        player.bishopAlive = true;
-        player.knightAlive = true;
-        player.rookHealth = player.ROOK_BASE_HEALTH;
-        player.bishopHealth = player.BISHOP_BASE_HEALTH;
-        player.knightHealth = player.KNIGHT_BASE_HEALTH;
-        player.queenHealth = player.QUEEN_BASE_HEALTH;
+        healthCastle(20);
+        player.revivePieces();
       }
 
       if (pieceRevivedElapsedTime > 60){
@@ -417,7 +439,7 @@ public class GamePanel extends JPanel implements Runnable{
       enemyManager.updateSpawner();
       gameUpdate();
     }
-    if (keyHandler.escapePressed){
+    if (keyHandler.escapePressed && !gameOver){
       keyHandler.escapePressed = false;
       gamePaused = !gamePaused;
     }
@@ -516,6 +538,18 @@ public class GamePanel extends JPanel implements Runnable{
       } else {
         g2d.drawImage(player.skin, player.x, player.y, pieceWidth, pieceHeight, this);
       }
+
+      switch (player.facingDirection){
+        case "up-left" -> g2d.drawImage(arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case "up-right" -> g2d.drawImage(arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case "down-left" -> g2d.drawImage(arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
+        case "down-right" -> g2d.drawImage(arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
+        case "up" -> g2d.drawImage(arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
+        case "down" -> g2d.drawImage(arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
+        case "left" -> g2d.drawImage(arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
+        default -> g2d.drawImage(arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
+      }
+
       // Draw hitbox
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
@@ -598,8 +632,8 @@ public class GamePanel extends JPanel implements Runnable{
       }
     }
 
-    int playerHealth = 100;
     int playerMaxHealth = 100;
+    int playerHealth = playerMaxHealth;
     switch(selectedPieceType){
       case ROOK -> {
         playerHealth = player.rookHealth;
