@@ -7,6 +7,7 @@ import main.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Player extends livingBeing {
@@ -112,23 +113,25 @@ public class Player extends livingBeing {
     }
 
     private void forceSwap() {
-        if (lastPiece != null && availablePieces.size() > 1) {
-            availablePieces.add(lastPiece); // Add last piece back only if >1 options
-        } else if (lastPiece != null && availablePieces.size() == 1) {
-            // If only 1 available, allow repeat since no other choice
+
+        System.out.println("SIZE" + availablePieces.size());
+        if (lastPiece != null && !availablePieces.contains(lastPiece)){
             availablePieces.add(lastPiece);
         }
-
         PieceType randomValue;
         do {
-            int index = random.nextInt(availablePieces.size());
+            int index=0;
+            if (availablePieces.size() > 1){
+                index = random.nextInt(availablePieces.size());
+            }
             randomValue = availablePieces.get(index);
+            //randomValue = availablePieces.get(0);
         } while (availablePieces.size() > 1 && randomValue == lastPiece);
 
         lastPiece = randomValue;
         System.out.println("Random Enum: " + randomValue);
 
-        if (availablePieces.size() >= 2) {
+        if (availablePieces.size() > 2) {
             availablePieces.remove(randomValue); // Temporarily remove it
         }
 
@@ -233,33 +236,45 @@ public class Player extends livingBeing {
         int deltaX = 0;
         int deltaY = 0;
         // Prioritize diagonal movement
-        if (keyHandler.goingUp) deltaY -= gamePanel.PIECE_HEIGHT;
-        if (keyHandler.goingDown) deltaY += gamePanel.PIECE_HEIGHT;
-        if (keyHandler.goingLeft) deltaX -= gamePanel.PIECE_HEIGHT;
-        if (keyHandler.goingRight) deltaX += gamePanel.PIECE_HEIGHT;
+        boolean up = keyHandler.goingUp;
+        boolean down = keyHandler.goingDown;
+        boolean left = keyHandler.goingLeft;
+        boolean right = keyHandler.goingRight;
+
+        if (up && left) {
+            deltaY -= gamePanel.PIECE_HEIGHT;
+            deltaX -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "up-left";
+        } else if (up && right) {
+            deltaY -= gamePanel.PIECE_HEIGHT;
+            deltaX += gamePanel.PIECE_HEIGHT;
+            facingDirection = "up-right";
+        } else if (down && left) {
+            deltaY += gamePanel.PIECE_HEIGHT;
+            deltaX -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "down-left";
+        } else if (down && right) {
+            deltaY += gamePanel.PIECE_HEIGHT;
+            deltaX += gamePanel.PIECE_HEIGHT;
+            facingDirection = "down-right";
+        } else if (up) {
+            deltaY -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "up";
+        } else if (down) {
+            deltaY += gamePanel.PIECE_HEIGHT;
+            facingDirection = "down";
+        } else if (left){
+            deltaX -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "left";
+        } else if (right) {
+            deltaX += gamePanel.PIECE_HEIGHT;
+            facingDirection = "right";
+        }
 
         if ((deltaX != 0 || deltaY != 0) && !reachedBorder()) {
             targetX += deltaX;
             targetY += deltaY;
             isMoving = true;
-        } else {
-            //facingDirection = "right";
-        }
-
-        // Set facing direction based on input (last key pressed takes priority)
-        if (deltaY < 0) {
-            facingDirection = "up";
-        }
-        else if (deltaY > 0) {
-            facingDirection = "down";
-        }
-        if (deltaX < 0) {
-            facingDirection = "left";
-            facingDirectionX = "left";
-        }
-        else if (deltaX > 0) {
-            facingDirection = "right";
-            facingDirectionX = "right";
         }
 
         // Handle attack input

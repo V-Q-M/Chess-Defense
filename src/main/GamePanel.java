@@ -144,6 +144,14 @@ public class GamePanel extends JPanel implements Runnable{
     buildWall();
 
     player.selectPiece(PieceType.ROOK);
+    /*
+    player.rookHealth = 0;
+    player.knightHealth = 0;
+    player.bishopHealth = 0;
+
+     */
+
+
 
     // Refreshrate. Might have to improve that. Edit: I did in fact improve it
     //new Timer(16, e -> update()).start(); // ~60 FPS
