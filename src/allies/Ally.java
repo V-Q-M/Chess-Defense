@@ -1,4 +1,4 @@
-package Allies;
+package allies;
 
 import entities.Projectile;
 import main.*;

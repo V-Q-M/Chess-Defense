@@ -1,4 +1,4 @@
-package Allies;
+package allies;
 
 import enemies.Enemy;
 import entities.Projectile;
@@ -7,7 +7,6 @@ import main.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class Player extends livingBeing {
@@ -520,7 +519,7 @@ public class Player extends livingBeing {
                 }
                 skin = gamePanel.queenParticleImageDown;
             }
-            case "left" -> {
+            case "left", "up-left", "down-left" -> {
                 if (targetX - 3 * gamePanel.pieceHeight >= 0) {
                     targetX -= gamePanel.PIECE_HEIGHT * 3;
                 } else {

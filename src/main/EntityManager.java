@@ -1,8 +1,8 @@
 package main;
 
-import Allies.AllyPawn;
+import allies.AllyPawn;
 import entities.*;
-import Allies.Player;
+import allies.Player;
 
 import java.awt.image.BufferedImage;
 

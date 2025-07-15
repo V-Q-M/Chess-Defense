@@ -1,4 +1,4 @@
-package Menu;
+package menu;
 
 import main.FileManager;
 import main.Main;

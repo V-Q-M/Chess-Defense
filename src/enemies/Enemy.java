@@ -1,6 +1,6 @@
 package enemies;
 
-import Allies.Ally;
+import allies.Ally;
 import entities.Projectile;
 import main.*;
 

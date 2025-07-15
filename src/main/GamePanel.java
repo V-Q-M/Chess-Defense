@@ -8,7 +8,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import Allies.*;
+import allies.*;
 import enemies.Enemy;
 import entities.Projectile;
 

@@ -1,6 +1,6 @@
 package main;
 
-import Menu.MenuPanel;
+import menu.MenuPanel;
 
 import javax.swing.JFrame;
 

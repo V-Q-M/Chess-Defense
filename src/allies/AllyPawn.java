@@ -1,4 +1,4 @@
-package Allies;
+package allies;
 
 import main.CollisionHandler;
 import main.GamePanel;
