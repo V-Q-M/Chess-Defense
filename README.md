@@ -1,15 +1,13 @@
-# Group Project 2025 PI2
+# Chess-Defense
 
-## This is our submission for the 2025 Projects in PI2.
+Chess-Defense! A 2D-Singleplayer Base-Defender game, where YOU have to defend the castle from the invading black pieces.
 
-Chess Defense! A 2D-Singleplayer Base-Defender game, where YOU have to defend the castle from the invading black pieces.
-
-Out of the three mottos we picked:
+*This project is the continuation of a groupproject I did in 2025 for my University. It featured three mottos, of which I picked the following two.*
 
 * **Two things that shouldn't go together**. A Base-Defender with a Chess theme, where instead of playing as a hero you play as a Chess piece with an ability inspired by its Chess counterpart.
 
 
-* **One Rule changes everything**. Instead of a classic hero selection, *Chess Defense* randomly swaps your piece every few seconds turning your strategy upside down and forcing you to adapt quickly. If one piece dies, it cannot be swapped to any longer. Should all pieces die (or just the King) the game is immediately over.
+* **One Rule changes everything**. Instead of a classic hero selection, *Chess-Defense* randomly swaps your piece every few seconds turning your strategy upside down and forcing you to adapt quickly. If one piece dies, it cannot be swapped to any longer. Should all pieces die (or just the King) the game is immediately over.
 
 ## Pieces and Abilities
 
@@ -62,7 +60,7 @@ java -jar GroupProject.jar
 
 I suggest using the Intelij `clone repository` option. Paste the following URL:
 ```
-https://github.com/V-Q-M/GroupProject.git
+https://github.com/V-Q-M/Chess-Defense.git
 ```
 
 
