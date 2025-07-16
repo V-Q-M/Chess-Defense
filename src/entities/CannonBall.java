@@ -1,11 +1,12 @@
 package entities;
+import main.Direction;
 import main.GamePanel;
 
 
 public class CannonBall extends Projectile {
 
   // Specialized constructor
-  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage, String direction) {
+  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage, Direction direction) {
     this.gamePanel = gamePanel;
     this.x = x;
     this.y = y;

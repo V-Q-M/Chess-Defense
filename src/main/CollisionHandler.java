@@ -2,7 +2,7 @@ package main;
 import allies.Ally;
 import enemies.Enemy;
 import entities.Projectile;
-import allies.Player;
+import allies.player.Player;
 
 public class CollisionHandler {
     GamePanel gamePanel;
@@ -10,36 +10,35 @@ public class CollisionHandler {
         this.gamePanel = gamePanel;
     }
 
-    public boolean borderCollision(int playerX, int playerY, int playerWidth, int playerHeight, int speed, String direction){
+    public boolean borderCollision(int playerX, int playerY, int playerWidth, int playerHeight, int speed, Direction direction){
         switch (direction){
-            case "up" -> {
-                return (playerY - speed <= 0);
-            }
-            case "down" -> {
-                return (playerY + playerHeight + speed >= Main.HEIGHT - 56);
-            }
-            case "left" -> {
-                return (playerX - speed <= 0);
-            }
-            case "right" -> {
-                return (playerX + playerWidth + speed >= Main.WIDTH);
-            }
-            case "up-right" -> {
+            case UP_RIGHT -> {
                 return (playerY - speed <= 0) || (playerX + playerWidth + speed >= Main.WIDTH);
             }
-            case "up-left" -> {
+            case UP_LEFT -> {
                 return (playerY - speed <= 0) || (playerX - speed <= 0);
             }
-            case "down-right" -> {
+            case DOWN_RIGHT -> {
                 return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
                         (playerX + playerWidth + speed >= Main.WIDTH);
             }
-            case "down-left" -> {
+            case DOWN_LEFT -> {
                 return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
                         (playerX - speed <= 0);
             }
+            case UP -> {
+                return (playerY - speed <= 0);
+            }
+            case DOWN -> {
+                return (playerY + playerHeight + speed >= Main.HEIGHT - 56);
+            }
+            case LEFT -> {
+                return (playerX - speed <= 0);
+            }
+            default -> {
+                return (playerX + playerWidth + speed >= Main.WIDTH);
+            }
         }
-        return false;
     }
 
     public boolean projectileCollision(livingBeing enemy, Projectile projectile) {

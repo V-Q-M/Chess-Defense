@@ -1,11 +1,12 @@
 package entities;
 
+import main.Direction;
 import main.GamePanel;
 import main.Main;
 
 public class KnightSmash extends Projectile {
     // Specialized constructor
-    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, String direction) {
+    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, Direction direction) {
         this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;

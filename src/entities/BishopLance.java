@@ -1,5 +1,6 @@
 package entities;
 
+import main.Direction;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
@@ -7,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class BishopLance extends Projectile{
 
     // Specialized constructor
-    public BishopLance(GamePanel gamePanel, int x, int y, int size, int speed, int damage, BufferedImage skin, String direction) {
+    public BishopLance(GamePanel gamePanel, int x, int y, int size, int speed, int damage, BufferedImage skin, Direction direction) {
         this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;
@@ -23,21 +24,17 @@ public class BishopLance extends Projectile{
     @Override
     public void moveProjectile(int speed) {
         switch (direction) {
-            case "up-left" -> {
+            case UP_LEFT -> {
                 y -= speed;
                 x -= speed;
             }
-            case "up-right" -> {
+            case UP_RIGHT -> {
                 y -= speed;
                 x += speed;
             }
-            case "down-left" -> {
+            case DOWN_LEFT -> {
                 y += speed;
                 x -= speed;
-            }
-            case "down-right" -> {
-                y += speed;
-                x += speed;
             }
             default -> {
                 y += speed;

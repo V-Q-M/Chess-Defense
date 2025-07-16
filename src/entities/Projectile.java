@@ -1,5 +1,6 @@
 package entities;
 
+import main.Direction;
 import main.GamePanel;
 
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ public abstract class Projectile {
     public int height;
     public int speed;
     public int health = 100;
-    public String direction;
+    public Direction direction;
     public boolean isDead = false;
     public int damage;
     public boolean diesOnHit = false;
@@ -20,9 +21,9 @@ public abstract class Projectile {
 
     public void moveProjectile(int speed) {
         switch (direction) {
-            case "up" -> y -= speed;
-            case "down" -> y += speed;
-            case "left" -> x -= speed;
+            case UP -> y -= speed;
+            case DOWN -> y += speed;
+            case LEFT -> x -= speed;
             default -> x += speed;
         }
     }

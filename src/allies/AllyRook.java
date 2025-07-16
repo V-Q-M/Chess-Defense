@@ -1,6 +1,7 @@
 package allies;
 
 import main.CollisionHandler;
+import main.Direction;
 import main.GamePanel;
 import main.SoundManager;
 
@@ -41,6 +42,6 @@ public class AllyRook extends Ally {
     }
 
     private void performAttack(){
-        gamePanel.entityManager.spawnCannonBall(x, y, "right");
+        gamePanel.entityManager.spawnCannonBall(x, y, Direction.RIGHT);
     }
 }

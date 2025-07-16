@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import allies.*;
+import allies.player.Player;
 import enemies.Enemy;
 import entities.Projectile;
 
@@ -116,6 +117,7 @@ public class GamePanel extends JPanel implements Runnable{
   public final List<Enemy>  enemies = new ArrayList<>();
   // carries wall and allies
   public final List<Ally> allies = new ArrayList<>();
+  public final List<Ally> wall = new ArrayList<>();
 
   // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
@@ -151,6 +153,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     // Builds the pawnwall on the left
     buildWall();
+    if (turretUpgradeUnlocked){
+      spawnTurrets();
+    }
 
     player.selectPiece(PieceType.ROOK);
     /*
@@ -223,13 +228,22 @@ public class GamePanel extends JPanel implements Runnable{
   // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
     for (int i = 0; i < 8; i++){
-      allies.add(new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+      AllyPawn pawnGuard = new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false);
+      allies.add(pawnGuard);
+      wall.add(pawnGuard);
     }
-    if (turretUpgradeUnlocked){
-      //int randomNum = (int) (Math.random()*7);
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+  }
+  private void spawnTurrets(){
+    allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
+    allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+  }
+
+  private void rebuildPawnWall(){
+    for (Ally pawn : wall){
+      pawn.isDead = true;
     }
+    wall.removeIf(pawn -> pawn.isDead);
+    buildWall();
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
@@ -389,7 +403,14 @@ public class GamePanel extends JPanel implements Runnable{
         pieceRevivedElapsedTime++;
       }
     }
+
+    if (score > 10000 * reinforcementCount){
+      reinforcementCount ++;
+      rebuildPawnWall();
+    }
   }
+
+  private int reinforcementCount = 1;
 
   public int scoreIncreaseElapsedTime = 0;
   public void update() {
@@ -540,13 +561,13 @@ public class GamePanel extends JPanel implements Runnable{
       }
 
       switch (player.facingDirection){
-        case "up-left" -> g2d.drawImage(arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case "up-right" -> g2d.drawImage(arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case "down-left" -> g2d.drawImage(arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
-        case "down-right" -> g2d.drawImage(arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
-        case "up" -> g2d.drawImage(arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
-        case "down" -> g2d.drawImage(arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
-        case "left" -> g2d.drawImage(arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
+        case UP_LEFT -> g2d.drawImage(arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case UP_RIGHT -> g2d.drawImage(arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case DOWN_LEFT -> g2d.drawImage(arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
+        case DOWN_RIGHT -> g2d.drawImage(arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
+        case UP -> g2d.drawImage(arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
+        case DOWN -> g2d.drawImage(arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
+        case LEFT -> g2d.drawImage(arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
         default -> g2d.drawImage(arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
       }
 

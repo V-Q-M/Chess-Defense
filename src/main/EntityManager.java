@@ -2,7 +2,7 @@ package main;
 
 import allies.AllyPawn;
 import entities.*;
-import allies.Player;
+import allies.player.Player;
 
 import java.awt.image.BufferedImage;
 
@@ -33,7 +33,7 @@ public class EntityManager {
     }
 
     int CANNON_BALL_SIZE = 64;
-    public void spawnCannonBall(int x, int y, String direction) {
+    public void spawnCannonBall(int x, int y, Direction direction) {
         if (gamePanel.rookImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             // spawn at top‐center of the rook

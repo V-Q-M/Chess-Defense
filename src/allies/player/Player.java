@@ -1,4 +1,4 @@
-package allies;
+package allies.player;
 
 import enemies.Enemy;
 import entities.Projectile;
@@ -14,6 +14,9 @@ public class Player extends livingBeing {
     KeyHandler keyHandler;
     SoundManager soundManager;
     CollisionHandler collisionHandler;
+
+    AttackHandler attackHandler;
+    MovementHandler movementHandler;
 
     public boolean isDead = false;
     // Is used to avoid being attacked a billion times at once
@@ -66,7 +69,8 @@ public class Player extends livingBeing {
     // Used in the swap feature
     public int swapCounter = 0;
 
-    public String facingDirection = "right";
+    //public String facingDirection = "right";
+    public Direction facingDirection = Direction.RIGHT;
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
@@ -92,6 +96,8 @@ public class Player extends livingBeing {
         this.keyHandler = keyHandler;
         this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;
+        this.attackHandler = new AttackHandler(gamePanel, this);
+        this.movementHandler = new MovementHandler(gamePanel, this);
         this.x = startPositionX;
         this.y = startPositionY;
         this.targetX = startPositionX;
@@ -266,31 +272,31 @@ public class Player extends livingBeing {
         if (up && left) {
             deltaY -= gamePanel.PIECE_HEIGHT;
             deltaX -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "up-left";
+            facingDirection = Direction.UP_LEFT;
         } else if (up && right) {
             deltaY -= gamePanel.PIECE_HEIGHT;
             deltaX += gamePanel.PIECE_HEIGHT;
-            facingDirection = "up-right";
+            facingDirection = Direction.UP_RIGHT;
         } else if (down && left) {
             deltaY += gamePanel.PIECE_HEIGHT;
             deltaX -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "down-left";
+            facingDirection = Direction.DOWN_LEFT;
         } else if (down && right) {
             deltaY += gamePanel.PIECE_HEIGHT;
             deltaX += gamePanel.PIECE_HEIGHT;
-            facingDirection = "down-right";
+            facingDirection = Direction.DOWN_RIGHT;
         } else if (up) {
             deltaY -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "up";
+            facingDirection = Direction.UP;
         } else if (down) {
             deltaY += gamePanel.PIECE_HEIGHT;
-            facingDirection = "down";
+            facingDirection = Direction.DOWN;
         } else if (left){
             deltaX -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "left";
+            facingDirection = Direction.LEFT;
         } else if (right) {
             deltaX += gamePanel.PIECE_HEIGHT;
-            facingDirection = "right";
+            facingDirection = Direction.RIGHT;
         }
 
         if ((deltaX != 0 || deltaY != 0) && !reachedBorder()) {
@@ -323,19 +329,19 @@ public class Player extends livingBeing {
         if (up && left) {
             deltaY -= gamePanel.PIECE_HEIGHT;
             deltaX -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "up-left";
+            facingDirection = Direction.UP_LEFT;
         } else if (up && right) {
             deltaY -= gamePanel.PIECE_HEIGHT;
             deltaX += gamePanel.PIECE_HEIGHT;
-            facingDirection = "up-right";
+            facingDirection = Direction.UP_RIGHT;
         } else if (down && left) {
             deltaY += gamePanel.PIECE_HEIGHT;
             deltaX -= gamePanel.PIECE_HEIGHT;
-            facingDirection = "down-left";
+            facingDirection = Direction.DOWN_LEFT;
         } else if (down && right) {
             deltaY += gamePanel.PIECE_HEIGHT;
             deltaX += gamePanel.PIECE_HEIGHT;
-            facingDirection = "down-right";
+            facingDirection = Direction.DOWN_RIGHT;
         }
 
         // Only move if diagonal keys were pressed
@@ -467,123 +473,12 @@ public class Player extends livingBeing {
     void performAttack() {
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
-            case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);
-            case BISHOP -> performBishopAttack();
-            case QUEEN  -> performQueenAttack();
-            case KNIGHT -> performKnightAttack();
-            case KING   -> performKingAttack();
+            case ROOK   -> attackHandler.rookAttack(facingDirection);
+            case BISHOP -> attackHandler.bishopAttack(facingDirection);
+            case QUEEN  -> attackHandler.queenAttack(facingDirection);
+            case KNIGHT -> attackHandler.knightAttack(facingDirection);
+            case KING   -> attackHandler.kingAttack();
         }
     }
 
-    private void performBishopAttack(){
-        BufferedImage skin;
-        switch(facingDirection){
-            case "up-left" -> {
-                skin = gamePanel.bishopParticleImageUpLeft;
-            }
-            case "up-right" -> {
-                skin = gamePanel.bishopParticleImageUpRight;
-            }
-            case "down-left" -> {
-                skin = gamePanel.bishopParticleImageDownLeft;
-            }
-            default -> {
-                skin = gamePanel.bishopParticleImageDownRight;
-            }
-        }
-
-
-        gamePanel.entityManager.spawnLance(skin);
-    }
-
-    private void performQueenAttack(){
-        BufferedImage skin = gamePanel.queenParticleImageRight;
-
-        speed = DASH_SPEED;
-        queenDashing = true;
-        isInvulnerable = true;
-        switch(facingDirection){
-            case "up" -> {
-                if (targetY - 3 * gamePanel.PIECE_HEIGHT >= 0) {
-                    targetY -= gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                   targetY = 0;
-                }
-                skin = gamePanel.queenParticleImageUp;
-            }
-            case "down" -> {
-                if (targetY + 3 * gamePanel.PIECE_HEIGHT < Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56) {
-                    targetY += gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    targetY = Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56;
-                }
-                skin = gamePanel.queenParticleImageDown;
-            }
-            case "left", "up-left", "down-left" -> {
-                if (targetX - 3 * gamePanel.pieceHeight >= 0) {
-                    targetX -= gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    targetX = 0;
-                }
-                skin = gamePanel.queenParticleImageLeft;
-            }
-            default -> {
-                if (targetX + 3 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight) {
-                    targetX += gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    targetX = Main.WIDTH - gamePanel.PIECE_HEIGHT;
-
-                }
-                skin = gamePanel.queenParticleImageRight;
-            }
-        }
-
-        gamePanel.entityManager.spawnQueenParticles(skin);
-    }
-
-    private void performKnightAttack(){
-
-        switch (facingDirection){
-            case "up" -> {
-                if (targetY - 2 * gamePanel.pieceHeight >= 0){
-                    targetY -= 2 * gamePanel.pieceHeight;
-                } else {
-                    targetY = 0;
-                }
-                y = targetY;
-            }
-            case "down" -> {
-                if (targetY + 2 * gamePanel.pieceHeight < Main.HEIGHT - gamePanel.pieceHeight - 56){
-                    targetY += 2 * gamePanel.pieceHeight;
-                } else {
-                    targetY = Main.HEIGHT - gamePanel.pieceHeight - 56;
-                }
-                y = targetY;
-            }
-            case "left" -> {
-                if (targetX - 2 * gamePanel.pieceHeight >= 0){
-                    targetX -= 2 * gamePanel.pieceHeight;
-                } else {
-                    targetX = 0;
-                }
-                x = targetX;
-            }
-            default -> {
-                if (targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight){
-                    targetX += 2 * gamePanel.pieceHeight;
-                } else {
-                    targetX = Main.WIDTH - gamePanel.pieceHeight;
-                }
-                x = targetX;
-            }
-        }
-        gamePanel.entityManager.spawnKnightParticles();
-    }
-
-    private void performKingAttack(){
-        soundManager.playClip(soundManager.summonClip);
-        gamePanel.entityManager.spawnPawns(x , y - gamePanel.pieceHeight);
-        gamePanel.entityManager.spawnPawns(x + gamePanel.pieceWidth, y);
-        gamePanel.entityManager.spawnPawns(x , y + gamePanel.pieceHeight);
-    }
 }
