@@ -40,7 +40,7 @@ public class AttackHandler {
         }
 
 
-        gamePanel.entityManager.spawnLance(skin);
+        gamePanel.entityManager.spawnLance(player.x, player.y,facingDirection, skin);
     }
 
     protected void queenAttack(Direction facingDirection){

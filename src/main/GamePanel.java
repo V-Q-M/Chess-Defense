@@ -135,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable{
 
   // Upgrades. Available in the shop
   private final boolean turretUpgradeUnlocked = true;
+  private final boolean priestUpgradeUnlocked = true;
   private final boolean kingUpgradeUnlocked = true;
   private final boolean queenUpgradeUnlocked = false;
 
@@ -155,6 +156,9 @@ public class GamePanel extends JPanel implements Runnable{
     buildWall();
     if (turretUpgradeUnlocked){
       spawnTurrets();
+    }
+    if (priestUpgradeUnlocked){
+      spawnPriests();
     }
 
     player.selectPiece(PieceType.ROOK);
@@ -236,6 +240,11 @@ public class GamePanel extends JPanel implements Runnable{
   private void spawnTurrets(){
     allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
     allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+  }
+
+  private void spawnPriests(){
+    allies.add(new AllyBishop(this, soundManager, collisionHandler, 0, 2 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, true));
+    allies.add(new AllyBishop(this, soundManager, collisionHandler, 0, 5 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
   }
 
   private void rebuildPawnWall(){

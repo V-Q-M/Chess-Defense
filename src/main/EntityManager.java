@@ -63,14 +63,14 @@ public class EntityManager {
 
     }
 
-    public void spawnLance(BufferedImage skin){
+    public void spawnLance(int x, int y, Direction facingDirection, BufferedImage skin){
         if (gamePanel.bishopImage != null) {
             int size = 96; // size of the cannonball
             // spawn at top‐center of the rook
-            int bx = player.x + (gamePanel.pieceWidth - size) / 2;
-            int by = player.y + (gamePanel.pieceHeight - size) / 2;
+            int bx = x + (gamePanel.pieceWidth - size) / 2;
+            int by = y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_LANCE_SPEED ,DEFAULT_LANCE_DMG, skin, player.facingDirection));
+            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_LANCE_SPEED ,DEFAULT_LANCE_DMG, skin, facingDirection));
             soundManager.playClip(soundManager.holyClip);
         }
     }
