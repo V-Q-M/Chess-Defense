@@ -10,10 +10,12 @@ public class AttackHandler {
 
     GamePanel gamePanel;
     Player player;
+    int size;
 
     public AttackHandler(GamePanel gamePanel, Player player){
         this.gamePanel = gamePanel;
         this.player = player;
+        this.size = gamePanel.PIECE_HEIGHT;
     }
 
     protected void rookAttack(Direction facingDirection){
@@ -47,78 +49,90 @@ public class AttackHandler {
         player.speed = player.DASH_SPEED;
         player.queenDashing = true;
         player.isInvulnerable = true;
+
         switch(facingDirection){
+            case UP_LEFT -> {
+                player.targetY = Math.max(player.targetY - 3 * size, 0);
+                player.targetX = Math.max(player.targetX - 3 * size, 0);
+                skin = gamePanel.queenParticleImageUp;
+            }
+            case UP_RIGHT -> {
+                player.targetY = Math.max(player.targetY - 3 * size, 0);
+                player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
+                skin = gamePanel.queenParticleImageUp;
+            }
+            case DOWN_LEFT -> {
+                player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
+                player.targetX = Math.max(player.targetX - 3 * size, 0);
+                skin = gamePanel.queenParticleImageDown;
+            }
+            case DOWN_RIGHT -> {
+                player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
+                player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
+                skin = gamePanel.queenParticleImageDown;
+            }
             case UP -> {
-                if (player.targetY - 3 * gamePanel.PIECE_HEIGHT >= 0) {
-                    player.targetY -= gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    player.targetY = 0;
-                }
+                player.targetY = Math.max(player.targetY - 3 * size, 0);
                 skin = gamePanel.queenParticleImageUp;
             }
             case DOWN -> {
-                if (player.targetY + 3 * gamePanel.PIECE_HEIGHT < Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56) {
-                    player.targetY += gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    player.targetY = Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56;
-                }
+                player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 skin = gamePanel.queenParticleImageDown;
             }
-            case LEFT, UP_LEFT, DOWN_LEFT -> {
-                if (player.targetX - 3 * gamePanel.pieceHeight >= 0) {
-                    player.targetX -= gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    player.targetX = 0;
-                }
+            case LEFT -> {
+                player.targetX = Math.max(player.targetX - 3 * size, 0);
                 skin = gamePanel.queenParticleImageLeft;
             }
-            default -> {
-                if (player.targetX + 3 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight) {
-                    player.targetX += gamePanel.PIECE_HEIGHT * 3;
-                } else {
-                    player.targetX = Main.WIDTH - gamePanel.PIECE_HEIGHT;
-
-                }
+            case RIGHT -> {
+                player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
                 skin = gamePanel.queenParticleImageRight;
             }
         }
-
         gamePanel.entityManager.spawnQueenParticles(skin);
     }
+
 
     protected void knightAttack(Direction facingDirection){
 
         switch (facingDirection){
+            case UP_LEFT -> {
+                player.targetY = Math.max(player.targetY - 2 * size, 0);
+                player.targetX = Math.max(player.targetX - 2 * size, 0);
+                player.y = player.targetY;
+                player.x = player.targetX;
+            }
+            case UP_RIGHT -> {
+                player.targetY = Math.max(player.targetY - 2 * size, 0);
+                player.targetX = Math.min(player.targetX + 2 * size, Main.WIDTH - size);
+                player.y = player.targetY;
+                player.x = player.targetX;
+            }
+            case DOWN_LEFT -> {
+                player.targetY = Math.min(player.targetY + 2 * size, Main.HEIGHT - size - 56);
+                player.targetX = Math.max(player.targetX - 2 * size, 0);
+                player.y = player.targetY;
+                player.x = player.targetX;
+            }
+            case DOWN_RIGHT -> {
+                player.targetY = Math.min(player.targetY + 2 * size, Main.HEIGHT - size - 56);
+                player.targetX = Math.min(player.targetX + 2 * size, Main.WIDTH - size);
+                player.y = player.targetY;
+                player.x = player.targetX;
+            }
             case UP -> {
-                if (player.targetY - 2 * gamePanel.pieceHeight >= 0){
-                    player.targetY -= 2 * gamePanel.pieceHeight;
-                } else {
-                    player.targetY = 0;
-                }
+                player.targetY = Math.max(player.targetY - 2 * size, 0);
                 player.y = player.targetY;
             }
             case DOWN -> {
-                if (player.targetY + 2 * gamePanel.pieceHeight < Main.HEIGHT - gamePanel.pieceHeight - 56){
-                    player.targetY += 2 * gamePanel.pieceHeight;
-                } else {
-                    player.targetY = Main.HEIGHT - gamePanel.pieceHeight - 56;
-                }
+                player.targetY = Math.min(player.targetY + 2 * size, Main.HEIGHT - size - 56);
                 player.y = player.targetY;
             }
             case LEFT -> {
-                if (player.targetX - 2 * gamePanel.pieceHeight >= 0){
-                    player.targetX -= 2 * gamePanel.pieceHeight;
-                } else {
-                    player.targetX = 0;
-                }
+                player.targetX = Math.max(player.targetX - 2 * size, 0);
                 player.x = player.targetX;
             }
             default -> {
-                if (player.targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight){
-                    player.targetX += 2 * gamePanel.pieceHeight;
-                } else {
-                    player.targetX = Main.WIDTH - gamePanel.pieceHeight;
-                }
+                player.targetX = Math.min(player.targetX + 2 * size, Main.WIDTH - size);
                 player.x = player.targetX;
             }
         }
@@ -127,8 +141,8 @@ public class AttackHandler {
 
     protected void kingAttack(){
         player.soundManager.playClip(player.soundManager.summonClip);
-        gamePanel.entityManager.spawnPawns(player.x , player.y - gamePanel.pieceHeight);
+        gamePanel.entityManager.spawnPawns(player.x , player.y - size);
         gamePanel.entityManager.spawnPawns(player.x + gamePanel.pieceWidth, player.y);
-        gamePanel.entityManager.spawnPawns(player.x , player.y + gamePanel.pieceHeight);
+        gamePanel.entityManager.spawnPawns(player.x , player.y + size);
     }
 }

@@ -5,10 +5,10 @@ import main.GamePanel;
 
 import java.awt.image.BufferedImage;
 
-public class QueenSlice extends Projectile{
+public class QueenSlice extends Projectile {
 
   // Specialized constructor
-  public QueenSlice(GamePanel gamePanel, int x, int y, int size, int speed, int decay , int damage, BufferedImage skin, Direction direction) {
+  public QueenSlice(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, BufferedImage skin, Direction direction) {
     this.gamePanel = gamePanel;
     this.x = x;
     this.y = y;
@@ -19,5 +19,39 @@ public class QueenSlice extends Projectile{
     this.health = decay;
     this.damage = damage;
     this.skin = skin;
+  }
+
+  @Override
+  public void moveProjectile(int speed) {
+    switch (direction) {
+      case UP_LEFT -> {
+        y -= speed;
+        x -= speed;
+      }
+      case UP_RIGHT -> {
+        y -= speed;
+        x += speed;
+      }
+      case DOWN_LEFT -> {
+        y += speed;
+        x -= speed;
+      }
+      case DOWN_RIGHT -> {
+        y += speed;
+        x += speed;
+      }
+      case UP -> {
+        y -= speed;
+      }
+      case DOWN -> {
+        y += speed;
+      }
+      case LEFT -> {
+        x -= speed;
+      }
+      default -> {
+        x += speed;
+      }
+    }
   }
 }
