@@ -411,7 +411,7 @@ public class Player extends livingBeing {
     private void checkProjectileCollision(){
         for (Projectile projectile : gamePanel.enemyBalls){
             if (collisionHandler.projectileEnemyCollision(projectile, this)){
-                takeDamage(15);
+                takeDamage(projectile.damage/3);
                 projectile.isDead = true;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                 soundManager.playClip(soundManager.hitClip);

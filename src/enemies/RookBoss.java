@@ -5,18 +5,20 @@ import main.GamePanel;
 import main.Main;
 import main.SoundManager;
 
-public class EnemyRook extends Enemy{
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+public class RookBoss extends Enemy{
+    public RookBoss(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
-        this.damage = 15;
-        this.speed = 2;
-        this.health = 150;
-        this.maxHealth = 150;
+        this.damage = 20;
+        this.speed = 1;
+        this.health = 400;
+        this.maxHealth = 400;
         this.baseSkin = gamePanel.enemyRookImage;
         this.hurtSkin = gamePanel.enemyRookHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 300;
+        this.attackCoolDown = 600;
         this.attackCoolDownCounter = 0;
+        this.width = width * 2;
+        this.height = height * 2;
     }
 
     boolean allowAttack = false;
@@ -67,6 +69,17 @@ public class EnemyRook extends Enemy{
     }
 
     private void performAttack() {
-        gamePanel.entityManager.spawnEnemyCannonBall(x, y);
+        gamePanel.entityManager.spawnBossCannonBall(x, y);
+    }
+
+    @Override
+    void checkAlive(){
+        if (health <= 0){
+            this.isDead = true;
+            gamePanel.score+=maxHealth;
+            gamePanel.rebuildTurrets();
+            soundManager.playClip(soundManager.deathClip);
+
+        }
     }
 }

@@ -7,12 +7,14 @@ public class EnemyKing extends Enemy{
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
         this.damage = 10;
         this.speed = 2;
-        this.maxHealth = 300;
-        this.health = 300;
+        this.maxHealth = 400;
+        this.health = 400;
         this.baseSkin = gamePanel.enemyKingImage;
         this.hurtSkin = gamePanel.enemyKingHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 600;
+        this.width = width * 2;
+        this.height = height * 2;
         this.attackCoolDownCounter = 0;
         this.isKing = true;
     }

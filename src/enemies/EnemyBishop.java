@@ -5,10 +5,10 @@ import main.GamePanel;
 import main.Main;
 import main.SoundManager;
 
-public class EnemyRook extends Enemy{
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+public class EnemyBishop extends Enemy{
+    public EnemyBishop(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
-        this.damage = 15;
+        this.damage = 10;
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;

@@ -26,6 +26,7 @@ public class EnemyManager {
         switch (type){
             case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
+            case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
         }
 
@@ -36,11 +37,20 @@ public class EnemyManager {
         }
     }
     public void spawnKingsGuard(int x, int y, int size){
-
         kingsX = x;
         kingsY = y;
         kingsSize = size;
         shouldSpawnGuard = true;
+    }
+    public void spawnPawnBoss(){
+        int X = Main.WIDTH;
+        int randomY = (int)(Math.random() * ((Main.HEIGHT-size) / size) ) * size;
+        gamePanel.enemies.add(new PawnBoss(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
+    }
+    public void spawnRookBoss(){
+        int X = Main.WIDTH;
+        int randomY = (int)(Math.random() * ((Main.HEIGHT-size) / size) ) * size;
+        gamePanel.enemies.add(new RookBoss(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
     }
 
     void updateSpawner(){
@@ -54,7 +64,7 @@ public class EnemyManager {
             int randomY = (int)(Math.random() * (Main.HEIGHT / size)) * size;
 
             spawnEnemy(X,randomY, size, size, PieceType.PAWN);
-            if (difficultyScalar % 8 == 0){
+            if (difficultyScalar % 10 == 0){
                 spawnEnemy(X, randomY, size, size, PieceType.ROOK);
             }
         }
@@ -63,7 +73,7 @@ public class EnemyManager {
 
     public void spawnKing(){
         int X = Main.WIDTH;
-        int randomY = (int)(Math.random() * (Main.HEIGHT / size)) * size;
+        int randomY = (int)(Math.random() * ((Main.HEIGHT-size) / size)) * size;
         spawnEnemy(X, randomY, size, size, PieceType.KING);
     }
 
@@ -76,8 +86,8 @@ public class EnemyManager {
             // Reduce cooldown by 5%, with a minimum floor
             spawnCoolDown *= 0.95;
 
-            if (spawnCoolDown < 100) {
-                spawnCoolDown = 100; // Set a lower bound
+            if (spawnCoolDown < 120) {
+                spawnCoolDown = 120; // Set a lower bound
             }
         }
     }

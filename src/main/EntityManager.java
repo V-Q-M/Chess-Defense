@@ -13,7 +13,7 @@ public class EntityManager {
     Player player;
 
     final int DEFAULT_CANNONBALL_SPEED = 10;
-    final int DEFAULT_LANCE_SPEED = 10;
+    final int DEFAULT_LANCE_SPEED = 8;
     final int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
 
     final int DEFAULT_TIME_TO_DECAY_QUEEN = 30;
@@ -51,6 +51,14 @@ public class EntityManager {
            gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG));
            soundManager.playClip(soundManager.shootClip);
        }
+    }
+    public void spawnBossCannonBall(int x, int y){
+        if (gamePanel.enemyRookImage != null) {
+            int size = CANNON_BALL_SIZE * 2;
+            int bx = x + (gamePanel.pieceWidth - size) / 2;
+            gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG * 2));
+            soundManager.playClip(soundManager.shootClip);
+        }
     }
 
     public void spawnExplosion(int x, int y){

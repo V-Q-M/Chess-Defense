@@ -35,7 +35,7 @@ public abstract class Ally extends livingBeing {
     void checkProjectileCollision(){
         for (Projectile projectile : gamePanel.enemyBalls){
             if (collisionHandler.projectileCollision(this, projectile)){
-                health -= 50;
+                health -= projectile.damage;
                 projectile.isDead = true;
                 this.isInvulnerable = true;
                 this.skin = hurtSkin;

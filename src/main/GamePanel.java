@@ -52,6 +52,8 @@ public class GamePanel extends JPanel implements Runnable{
   // Enemy textures
   public BufferedImage enemyRookImage;
   public BufferedImage enemyRookHurtImage;
+  public BufferedImage enemyBishopImage;
+  public BufferedImage enemyBishopHurtImage;
   public BufferedImage enemyKingImage;
   public BufferedImage enemyKingHurtImage;
   public BufferedImage enemyPawnImage;
@@ -118,6 +120,7 @@ public class GamePanel extends JPanel implements Runnable{
   // carries wall and allies
   public final List<Ally> allies = new ArrayList<>();
   public final List<Ally> wall = new ArrayList<>();
+  public final List<Ally> turrets = new ArrayList<>();
 
   // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
@@ -162,6 +165,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     player.selectPiece(PieceType.ROOK);
+
+    //enemyManager.spawnRookBoss();
+
     /*
     player.rookHealth = 0;
     player.knightHealth = 0;
@@ -247,12 +253,31 @@ public class GamePanel extends JPanel implements Runnable{
     allies.add(new AllyBishop(this, soundManager, collisionHandler, 0, 5 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
   }
 
-  private void rebuildPawnWall(){
+  public void rebuildTurrets(){
+    for (Ally turret : turrets){
+      turret.isDead = true;
+    }
+    spawnTurrets();
+  }
+
+  public void rebuildPawnWall(){
     for (Ally pawn : wall){
       pawn.isDead = true;
     }
     wall.removeIf(pawn -> pawn.isDead);
+    soundManager.playClip(soundManager.healClip);
     buildWall();
+  }
+  public void rebuildOnePawn(){
+    for (Ally pawn : wall){
+      if (pawn.isDead){
+        pawn.health = pawn.maxHealth;
+        pawn.isDead = false;
+        soundManager.playClip(soundManager.healClip);
+        allies.add(pawn);
+        break;
+      }
+    }
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
@@ -277,6 +302,8 @@ public class GamePanel extends JPanel implements Runnable{
 
       enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
       enemyRookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook_hurt.png"));
+      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
+      enemyBishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop_hurt.png"));
       enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
       enemyKingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king_hurt.png"));
       enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
@@ -351,7 +378,7 @@ public class GamePanel extends JPanel implements Runnable{
   int levelCounter = 1;
   public boolean enemyKingSlain = false;
 
-  int threshHoldEnemyKingSpawns = 5500;
+  int threshHoldBossSpawns = 5000;
 
   private void healthCastle(int amount) {
     if (amount > 0){
@@ -362,6 +389,8 @@ public class GamePanel extends JPanel implements Runnable{
       }
     }
   }
+
+  private int bossRotationIndex = 0;
 
   private void castleLogic(){
     if (lastHealedCounter > 180){
@@ -388,9 +417,14 @@ public class GamePanel extends JPanel implements Runnable{
    }
 
 
-    if (score > threshHoldEnemyKingSpawns * levelCounter){
+    if (score > threshHoldBossSpawns * levelCounter){
       levelCounter++;
-      enemyManager.spawnKing();
+      switch(bossRotationIndex){
+        case 0 -> enemyManager.spawnPawnBoss();
+        case 1 -> enemyManager.spawnKing();
+        case 2 -> enemyManager.spawnRookBoss();
+      }
+      bossRotationIndex++;
       soundManager.playClip(soundManager.kingSpawnClip);
     }
 
@@ -415,7 +449,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     if (score > 10000 * reinforcementCount){
       reinforcementCount ++;
-      rebuildPawnWall();
+      System.out.println("BIGBOSS would spawn");
     }
   }
 
