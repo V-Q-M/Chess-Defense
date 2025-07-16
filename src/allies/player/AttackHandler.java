@@ -46,7 +46,6 @@ public class AttackHandler {
     protected void queenAttack(Direction facingDirection){
         BufferedImage skin = gamePanel.queenParticleImageRight;
 
-        player.speed = player.DASH_SPEED;
         player.queenDashing = true;
         player.isInvulnerable = true;
 
@@ -55,37 +54,45 @@ public class AttackHandler {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
                 skin = gamePanel.queenParticleImageUp;
+                player.speed = 12;
             }
             case UP_RIGHT -> {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
                 skin = gamePanel.queenParticleImageUp;
+                player.speed = 12;
             }
             case DOWN_LEFT -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
                 skin = gamePanel.queenParticleImageDown;
+                player.speed = 12;
             }
             case DOWN_RIGHT -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
                 skin = gamePanel.queenParticleImageDown;
+                player.speed = 12;
             }
             case UP -> {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
                 skin = gamePanel.queenParticleImageUp;
+                player.speed = player.DASH_SPEED;
             }
             case DOWN -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 skin = gamePanel.queenParticleImageDown;
+                player.speed = player.DASH_SPEED;
             }
             case LEFT -> {
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
                 skin = gamePanel.queenParticleImageLeft;
+                player.speed = player.DASH_SPEED;
             }
-            case RIGHT -> {
+            default -> {
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
                 skin = gamePanel.queenParticleImageRight;
+                player.speed = player.DASH_SPEED;
             }
         }
         gamePanel.entityManager.spawnQueenParticles(skin);

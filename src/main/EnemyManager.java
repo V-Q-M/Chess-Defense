@@ -33,6 +33,7 @@ public class EnemyManager {
         if (shouldSpawnGuard){
             shouldSpawnGuard = false;
             gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
+            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY + 128, kingsSize, kingsSize));
             gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
         }
     }
@@ -83,11 +84,11 @@ public class EnemyManager {
         if (difficultyScalar > difficultyThreshold) {
             difficultyThreshold += 2;
 
-            // Reduce cooldown by 5%, with a minimum floor
-            spawnCoolDown *= 0.95;
+            // Reduce cooldown by 4%, with a minimum floor
+            spawnCoolDown *= 0.96;
 
-            if (spawnCoolDown < 120) {
-                spawnCoolDown = 120; // Set a lower bound
+            if (spawnCoolDown < 110) {
+                spawnCoolDown = 110; // Set a lower bound
             }
         }
     }

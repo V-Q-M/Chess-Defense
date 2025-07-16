@@ -25,20 +25,20 @@ public class QueenSlice extends Projectile {
   public void moveProjectile(int speed) {
     switch (direction) {
       case UP_LEFT -> {
-        y -= speed;
-        x -= speed;
+        y -= 15;
+        x -= 15;
       }
       case UP_RIGHT -> {
-        y -= speed;
-        x += speed;
+        y -= 15;
+        x += 15;
       }
       case DOWN_LEFT -> {
-        y += speed;
-        x -= speed;
+        y += 15;
+        x -= 15;
       }
       case DOWN_RIGHT -> {
-        y += speed;
-        x += speed;
+        y += 15;
+        x += 15;
       }
       case UP -> {
         y -= speed;

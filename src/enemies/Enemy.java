@@ -6,7 +6,7 @@ import main.*;
 
 public abstract class Enemy extends livingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
-    public boolean isKing = false;
+    public boolean isBoss = false;
 
 
     public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {

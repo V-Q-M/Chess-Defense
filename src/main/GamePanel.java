@@ -166,8 +166,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     player.selectPiece(PieceType.ROOK);
 
-    //enemyManager.spawnRookBoss();
-
     /*
     player.rookHealth = 0;
     player.knightHealth = 0;
@@ -262,22 +260,28 @@ public class GamePanel extends JPanel implements Runnable{
 
   public void rebuildPawnWall(){
     for (Ally pawn : wall){
-      pawn.isDead = true;
-    }
-    wall.removeIf(pawn -> pawn.isDead);
-    soundManager.playClip(soundManager.healClip);
-    buildWall();
-  }
-  public void rebuildOnePawn(){
-    for (Ally pawn : wall){
       if (pawn.isDead){
         pawn.health = pawn.maxHealth;
         pawn.isDead = false;
-        soundManager.playClip(soundManager.healClip);
         allies.add(pawn);
-        break;
       }
     }
+    soundManager.playClip(soundManager.healClip);
+  }
+  public void rebuildSomePawns(){
+    int pawnsRebuild = 0;
+    for (Ally pawn : wall){
+      if (pawnsRebuild >= 3){
+        break;
+      }
+      else if (pawn.isDead){
+        pawnsRebuild ++;
+        pawn.health = pawn.maxHealth;
+        pawn.isDead = false;
+        allies.add(pawn);
+      }
+    }
+    soundManager.playClip(soundManager.healClip);
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
@@ -420,11 +424,19 @@ public class GamePanel extends JPanel implements Runnable{
     if (score > threshHoldBossSpawns * levelCounter){
       levelCounter++;
       switch(bossRotationIndex){
-        case 0 -> enemyManager.spawnPawnBoss();
-        case 1 -> enemyManager.spawnKing();
-        case 2 -> enemyManager.spawnRookBoss();
+        case 0 -> {
+          enemyManager.spawnKing();
+          bossRotationIndex ++;
+        }
+        case 1 -> {
+          enemyManager.spawnPawnBoss();
+          bossRotationIndex++;
+        }
+        case 2 -> {
+          enemyManager.spawnRookBoss();
+          bossRotationIndex = 0;
+        }
       }
-      bossRotationIndex++;
       soundManager.playClip(soundManager.kingSpawnClip);
     }
 
@@ -681,7 +693,7 @@ public class GamePanel extends JPanel implements Runnable{
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
-      if (enemy.isKing){
+      if (enemy.isBoss){
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 20, enemy.health, enemy.maxHealth, Color.YELLOW);
       }
       else if (enemy.health != enemy.maxHealth) {

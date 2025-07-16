@@ -19,6 +19,7 @@ public class RookBoss extends Enemy{
         this.attackCoolDownCounter = 0;
         this.width = width * 2;
         this.height = height * 2;
+        this.isBoss = true;
     }
 
     boolean allowAttack = false;

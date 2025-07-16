@@ -12,11 +12,11 @@ public class EnemyKing extends Enemy{
         this.baseSkin = gamePanel.enemyKingImage;
         this.hurtSkin = gamePanel.enemyKingHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 600;
+        this.attackCoolDown = 500;
         this.width = width * 2;
         this.height = height * 2;
         this.attackCoolDownCounter = 0;
-        this.isKing = true;
+        this.isBoss = true;
     }
 
 
@@ -79,7 +79,8 @@ public class EnemyKing extends Enemy{
     }
 
     private void performAttack() {
-        gamePanel.enemyManager.spawnKingsGuard(x-128,y,width);
+
+        gamePanel.enemyManager.spawnKingsGuard(x-128,y,width/2);
     }
 
 }

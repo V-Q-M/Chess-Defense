@@ -18,13 +18,14 @@ public class PawnBoss extends Enemy{
         this.width = width * 2;
         this.height = height * 2;
         this.attackCoolDown = 80;
+        this.isBoss = true;
     }
     @Override
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            gamePanel.rebuildOnePawn();
+            gamePanel.rebuildPawnWall();
             soundManager.playClip(soundManager.deathClip);
 
         }
