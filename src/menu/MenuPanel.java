@@ -1,9 +1,6 @@
 package menu;
 
-import main.FileManager;
-import main.Main;
-import main.SettingsManager;
-import main.SoundManager;
+import main.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,6 +36,11 @@ public class MenuPanel extends JPanel {
     private boolean hoveringSettings = false;
     private boolean hoveringHelp = false;
 
+    private boolean hoveringEasyMode = false;
+    private boolean hoveringMediumMode = false;
+    private boolean hoveringHardMode = false;
+    private boolean hoveringGoBack = false;
+
     private boolean hoveringMusicSettingButton = false;
     private boolean hoveringLanguageSettingButton = false;
     private boolean hoveringDebugSettingButton = false;
@@ -51,6 +53,7 @@ public class MenuPanel extends JPanel {
     private boolean showingShop = false;
     private boolean showingHelp = false;
     private boolean showingSettings = false;
+    private boolean showingDifficultySelection;
 
     // Carries the text values of the main menu
 
@@ -62,7 +65,11 @@ public class MenuPanel extends JPanel {
         addKeyListener(keyHandler);
 
         this.loadImages();
-        this.loadFonts();
+        FontManager.loadFonts();
+        gameFont = FontManager.gameFont70;
+        gameFontMedium = FontManager.gameFont55;
+        gameFontSmall = FontManager.gameFont40;
+        gameFontTiny = FontManager.gameFont20;
         soundManager.loadSounds();
         //soundManager.startMenuMusic();
         initializeSettings();
@@ -159,17 +166,17 @@ public class MenuPanel extends JPanel {
             keyHandler.spacePressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
 
-            if (buttonIndexY % 5 == 0) {
+            if (buttonIndexY % 4 == 0) {
                 System.out.println(SettingsManager.easyText);
                 soundManager.stopMusic();
                 Main.startMainGame(this, null, "easy");
-            } else if (buttonIndexY % 5 == 1) {
+            } else if (buttonIndexY % 4 == 1) {
                 System.out.println(SettingsManager.mediumText);
                 Main.startMainGame(this, null, "medium");
-            } else if (buttonIndexY % 5 == 2) {
+            } else if (buttonIndexY % 4 == 2) {
                 System.out.println(SettingsManager.hardText);
                 Main.startMainGame(this, null, "hard");
-            } else if (buttonIndexY % 5 == 3) {
+            } else if (buttonIndexY % 4 == 3) {
                 System.out.println(SettingsManager.goBackText);
                 showingDifficultySelection = false;
             }
@@ -178,14 +185,14 @@ public class MenuPanel extends JPanel {
         // Hover effect
         resetButtons(); // Resets hover effect
         // Color buttons correctly
-        if (buttonIndexY % 5 == 0) {
-            hoveringShop = true;
-        } else if (buttonIndexY % 5 == 1) {
-            hoveringSettings = true;
-        } else if (buttonIndexY % 5 == 2) {
-            hoveringHelp = true;
-        } else if (buttonIndexY % 5 == 3) {
-            hoveringQuit = true;
+        if (buttonIndexY % 4 == 0) {
+            hoveringEasyMode = true;
+        } else if (buttonIndexY % 4 == 1) {
+            hoveringMediumMode = true;
+        } else if (buttonIndexY % 4 == 2) {
+            hoveringHardMode = true;
+        } else if (buttonIndexY % 4 == 3) {
+            hoveringGoBack = true;
         }
     }
 
@@ -366,6 +373,12 @@ public class MenuPanel extends JPanel {
         hoveringSettings = false;
         hoveringHelp = false;
 
+
+        hoveringEasyMode = false;
+        hoveringMediumMode = false;
+        hoveringHardMode = false;
+        hoveringGoBack = false;
+
         hoveringMusicSettingButton = false;
         hoveringLanguageSettingButton = false;
         hoveringDebugSettingButton = false;
@@ -387,27 +400,6 @@ public class MenuPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Could not load images");
         }
     }
-
-    private void loadFonts() {
-        try {
-            InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
-            if (fontStream == null) {
-                throw new IOException("Font file not found in resources.");
-            }
-
-            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-            gameFont = baseFont.deriveFont(70f);
-            gameFontSmall = baseFont.deriveFont(40f);
-            gameFontTiny = baseFont.deriveFont(20f);
-            gameFontMedium = baseFont.deriveFont(55f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-            gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
-            gameFontSmall = new Font("Monospaced", Font.PLAIN, 40); // fallback
-        }
-    }
-
-    private boolean showingDifficultySelection = false;
 
     @Override
     protected void paintComponent(Graphics g){
@@ -444,7 +436,7 @@ public class MenuPanel extends JPanel {
         g2d.setFont(gameFontSmall);
 
         // Shop button
-        if(hoveringShop){
+        if(hoveringEasyMode){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
@@ -452,7 +444,7 @@ public class MenuPanel extends JPanel {
         g2d.drawImage(pawnImage, leftSpace, 520, 70, 70, this);
         drawText(g2d,leftSpace + 102,580, SettingsManager.easyText);
 
-        if(hoveringSettings){
+        if(hoveringMediumMode){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
@@ -460,7 +452,7 @@ public class MenuPanel extends JPanel {
         g2d.drawImage(rookImage, leftSpace, 600, 70, 70, this);
         drawText(g2d, leftSpace + 102, 660, SettingsManager.mediumText);
 
-        if(hoveringHelp){
+        if(hoveringHardMode){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
@@ -468,8 +460,8 @@ public class MenuPanel extends JPanel {
         g2d.drawImage(kingImage, leftSpace, 678, 70, 70, this);
         drawText(g2d,leftSpace + 102,740, SettingsManager.hardText);
 
-        // Quit button
-        if(hoveringQuit){
+        // GoBack button
+        if(hoveringGoBack){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);

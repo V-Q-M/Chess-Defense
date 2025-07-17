@@ -161,7 +161,9 @@ public class GamePanel extends JPanel implements Runnable{
     System.out.println("DIFFICULTY: " + difficulty);
     enemyManager = new EnemyManager(this, difficulty);
     this.loadImages();
-    this.loadFonts();
+    //this.loadFonts();
+    gameFont = FontManager.gameFont80;
+    gameFontTiny = FontManager.gameFont25;
     soundManager.loadSounds();
     getSettings();
 
@@ -351,22 +353,6 @@ public class GamePanel extends JPanel implements Runnable{
       JOptionPane.showMessageDialog(this, "Could not load images");
     }
   }
-  private void loadFonts() {
-    try {
-      InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
-      if (fontStream == null) {
-        throw new IOException("Font file not found in resources.");
-      }
-
-      Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-      gameFont = baseFont.deriveFont(80f);
-      gameFontTiny = baseFont.deriveFont(25f);
-    } catch (FontFormatException | IOException e) {
-      e.printStackTrace();
-      gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
-      gameFontTiny = new Font("Monospaced", Font.PLAIN, 20); // fallback
-    }
-  }
 
 
   // A simple bobbing animation
@@ -539,6 +525,13 @@ public class GamePanel extends JPanel implements Runnable{
 
   public int scoreIncreaseElapsedTime = 0;
   public void update() {
+    if(gamePaused){
+      updatePauseMenu();
+    }
+    if (gameOver){
+      updateGameOverScreen();
+    }
+
     if (!gameOver && !gamePaused) {
       castleLogic();
 
@@ -589,9 +582,59 @@ public class GamePanel extends JPanel implements Runnable{
       keyHandler.escapePressed = false;
       gamePaused = !gamePaused;
     }
-    //repaint();
+    if (keyHandler.enterPressed){
+      keyHandler.enterPressed = false;
+    }
+
   }
 
+  private void updatePauseMenu(){
+    if(keyHandler.goingDown){
+      keyHandler.goingDown = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex++;
+    } else if (keyHandler.goingUp){
+      keyHandler.goingUp = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex--;
+    }
+    if(keyHandler.enterPressed){
+      keyHandler.enterPressed = false;
+      if (pauseMenuIndex % 2 == 0){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.returnToMenu(this);
+      } else if (pauseMenuIndex % 2 == 1){
+        soundManager.playClip(soundManager.buttonClickClip);
+        gamePaused = false;
+      }
+    }
+  }
+
+
+  private void updateGameOverScreen(){
+    if(keyHandler.goingDown){
+      keyHandler.goingDown = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex++;
+    } else if (keyHandler.goingUp){
+      keyHandler.goingUp = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex--;
+    }
+    if(keyHandler.enterPressed){
+      keyHandler.enterPressed = false;
+      if (pauseMenuIndex % 2 == 0){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.returnToMenu(this);
+      } else if (pauseMenuIndex % 2 == 1){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.startMainGame(null, this, difficulty);
+      }
+    }
+  }
   int gameStartCounter = 0;
   String startMessage = startingText + 3;
   private void startMessagePopUP(){
@@ -901,27 +944,6 @@ public class GamePanel extends JPanel implements Runnable{
       g2d.setColor(Color.WHITE);
     }
     drawText(g2d, 0, 680, gameFont, restartText);
-    if(keyHandler.goingDown){
-      keyHandler.goingDown = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
-      pauseMenuIndex++;
-    } else if (keyHandler.goingUp){
-      keyHandler.goingUp = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
-      pauseMenuIndex--;
-    }
-    if(keyHandler.enterPressed){
-      keyHandler.enterPressed = false;
-      if (pauseMenuIndex % 2 == 0){
-        soundManager.playClip(soundManager.buttonClickClip);
-        soundManager.stopMusic();
-        Main.returnToMenu(this);
-      } else if (pauseMenuIndex % 2 == 1){
-        soundManager.playClip(soundManager.buttonClickClip);
-        soundManager.stopMusic();
-        Main.startMainGame(null, this, difficulty);
-      }
-    }
   }
 
   private void drawPauseMenu(Graphics2D g2d){
@@ -940,26 +962,6 @@ public class GamePanel extends JPanel implements Runnable{
       g2d.setColor(Color.WHITE);
     }
     drawText(g2d, 0, 700, gameFont, resumeText);
-    if(keyHandler.goingDown){
-      keyHandler.goingDown = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
-      pauseMenuIndex++;
-    } else if (keyHandler.goingUp){
-      keyHandler.goingUp = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
-      pauseMenuIndex--;
-    }
-    if(keyHandler.enterPressed){
-      keyHandler.enterPressed = false;
-      if (pauseMenuIndex % 2 == 0){
-        soundManager.playClip(soundManager.buttonClickClip);
-        soundManager.stopMusic();
-        Main.returnToMenu(this);
-      } else if (pauseMenuIndex % 2 == 1){
-        soundManager.playClip(soundManager.buttonClickClip);
-        gamePaused = false;
-      }
-    }
   }
 
   private void drawAbilityBar(Graphics2D g2d){
