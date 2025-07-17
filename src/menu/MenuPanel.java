@@ -392,9 +392,9 @@ public class MenuPanel extends JPanel {
     private void loadImages() {
         try {
             backgroundImg = ImageIO.read(getClass().getResourceAsStream("/background/BackgroundMenu.png"));
-            pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
-            rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
-            kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
+            pawnImage = ImageIO.read(getClass().getResourceAsStream("/background/pawn.png"));
+            rookImage = ImageIO.read(getClass().getResourceAsStream("/background/rook.png"));
+            kingImage = ImageIO.read(getClass().getResourceAsStream("/background/king.png"));
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Could not load images");
