@@ -80,7 +80,7 @@ public class Player extends livingBeing {
     public int targetX;
     public int targetY;
     private boolean isMoving = false;
-
+    
     // Used in the swap feature
     Random random = new Random();
     ArrayList<PieceType> availablePieces = new ArrayList<>(List.of(
@@ -104,8 +104,8 @@ public class Player extends livingBeing {
         this.y = startPositionY;
         this.targetX = startPositionX;
         this.targetY = startPositionY;
-        this.height = gamePanel.pieceHeight;
-        this.width  = gamePanel.pieceWidth;
+        this.height = gamePanel.PIECE_HEIGHT;
+        this.width  = gamePanel.PIECE_HEIGHT;
         this.speed = BASE_MOVE_SPEED;
     }
 
@@ -272,32 +272,32 @@ public class Player extends livingBeing {
         boolean right = keyHandler.goingRight;
 
         if (up && left) {
-            deltaY -= gamePanel.PIECE_HEIGHT;
-            deltaX -= gamePanel.PIECE_HEIGHT;
+            deltaY -= height;
+            deltaX -= width;
             facingDirection = Direction.UP_LEFT;
         } else if (up && right) {
-            deltaY -= gamePanel.PIECE_HEIGHT;
-            deltaX += gamePanel.PIECE_HEIGHT;
+            deltaY -= height;
+            deltaX += width;
             facingDirection = Direction.UP_RIGHT;
         } else if (down && left) {
-            deltaY += gamePanel.PIECE_HEIGHT;
-            deltaX -= gamePanel.PIECE_HEIGHT;
+            deltaY += height;
+            deltaX -= width;
             facingDirection = Direction.DOWN_LEFT;
         } else if (down && right) {
-            deltaY += gamePanel.PIECE_HEIGHT;
-            deltaX += gamePanel.PIECE_HEIGHT;
+            deltaY += height;
+            deltaX += width;
             facingDirection = Direction.DOWN_RIGHT;
         } else if (up) {
-            deltaY -= gamePanel.PIECE_HEIGHT;
+            deltaY -= height;
             facingDirection = Direction.UP;
         } else if (down) {
-            deltaY += gamePanel.PIECE_HEIGHT;
+            deltaY += height;
             facingDirection = Direction.DOWN;
         } else if (left){
-            deltaX -= gamePanel.PIECE_HEIGHT;
+            deltaX -= width;
             facingDirection = Direction.LEFT;
         } else if (right) {
-            deltaX += gamePanel.PIECE_HEIGHT;
+            deltaX += width;
             facingDirection = Direction.RIGHT;
         }
 
@@ -329,20 +329,20 @@ public class Player extends livingBeing {
 
         // Only allow diagonal movement (both one vertical and one horizontal key must be pressed)
         if (up && left) {
-            deltaY -= gamePanel.PIECE_HEIGHT;
-            deltaX -= gamePanel.PIECE_HEIGHT;
+            deltaY -= height;
+            deltaX -= width;
             facingDirection = Direction.UP_LEFT;
         } else if (up && right) {
-            deltaY -= gamePanel.PIECE_HEIGHT;
-            deltaX += gamePanel.PIECE_HEIGHT;
+            deltaY -= height;
+            deltaX += width;
             facingDirection = Direction.UP_RIGHT;
         } else if (down && left) {
-            deltaY += gamePanel.PIECE_HEIGHT;
-            deltaX -= gamePanel.PIECE_HEIGHT;
+            deltaY += height;
+            deltaX -= width;
             facingDirection = Direction.DOWN_LEFT;
         } else if (down && right) {
-            deltaY += gamePanel.PIECE_HEIGHT;
-            deltaX += gamePanel.PIECE_HEIGHT;
+            deltaY += height;
+            deltaX += width;
             facingDirection = Direction.DOWN_RIGHT;
         }
 
