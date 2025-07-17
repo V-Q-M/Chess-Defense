@@ -29,8 +29,12 @@ public class TextureManager {
     // Enemy textures
     public BufferedImage enemyRookImage;
     public BufferedImage enemyRookHurtImage;
+    public BufferedImage enemyKnightImage;
+    public BufferedImage enemyKnightHurtImage;
     public BufferedImage enemyBishopImage;
     public BufferedImage enemyBishopHurtImage;
+    public BufferedImage enemyQueenImage;
+    public BufferedImage enemyQueenHurtImage;
     public BufferedImage enemyKingImage;
     public BufferedImage enemyKingHurtImage;
     public BufferedImage enemyPawnImage;
@@ -60,64 +64,98 @@ public class TextureManager {
     public BufferedImage enemyBishopParticleImageUpLeft;
     public BufferedImage knightParticleImage;
 
+    BufferedImage imageAtlas;
+
     public TextureManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
     }
 
+    final int TILE_SIZE = 16;
     void loadImages() {
-        try {
-            tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
+        try
+        {
+            // No atlas
             bottomBarImage = ImageIO.read(getClass().getResourceAsStream("/background/BottomBar.png"));
-            unavailablePieceImage = ImageIO.read(getClass().getResourceAsStream("/background/unavailable.png"));
 
-            rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
-            rookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook_hurt.png"));
-            knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight.png"));
-            knightHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight_hurt.png"));
-            bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop.png"));
-            bishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop_hurt.png"));
-            kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
-            kingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king_hurt.png"));
-            queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen.png"));
-            queenHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen_hurt.png"));
-            pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
-            pawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn_hurt.png"));
+            // Use an imageAtlas
+            imageAtlas = ImageIO.read(getClass().getResourceAsStream("/imageAtlas.png"));
 
-            enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
-            enemyRookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook_hurt.png"));
-            enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
-            enemyBishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop_hurt.png"));
-            enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
-            enemyKingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king_hurt.png"));
-            enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
-            enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
+            rookImage = getTexture(0,0);
+            rookHurtImage = getTexture(0,1);
 
-            arrowLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowLeft.png"));
-            arrowRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowRight.png"));
-            arrowUpImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUp.png"));
-            arrowDownImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDown.png"));
-            arrowUpLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUpLeft.png"));
-            arrowUpRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUpRight.png"));
-            arrowDownLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDownLeft.png"));
-            arrowDownRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDownRight.png"));
-            cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonBalls/cannonball.png"));
-            cannonBallEnemyImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonBalls/cannonballEnemy.png"));
-            explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosions/explosion.png"));
-            queenParticleImageUp = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesUp.png"));
-            queenParticleImageDown = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesDown.png"));
-            queenParticleImageLeft = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesLeft.png"));
-            queenParticleImageRight = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesRight.png"));
-            bishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceUpLeft.png"));
-            bishopParticleImageUpRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceUpRight.png"));
-            bishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceDownLeft.png"));
-            bishopParticleImageDownRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceDownRight.png"));
-            enemyBishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLance/enemyBishopLanceDownLeft.png"));
-            enemyBishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLance/enemyBishopLanceUpRight.png"));
-            knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles/knightParticles.png"));
+            knightImage = getTexture(1, 0);
+            knightHurtImage = getTexture(1, 1);
+
+            bishopImage = getTexture(2, 0);
+            bishopHurtImage = getTexture(2,1);
+
+            queenImage = getTexture(3, 0);
+            queenHurtImage = getTexture(3,1);
+
+            kingImage = getTexture(4,0);
+            kingHurtImage = getTexture(4,1);
+
+            pawnImage = getTexture(5,0);
+            pawnHurtImage = getTexture(5,1);
+
+            enemyRookImage = getTexture(0,2);
+            enemyRookHurtImage = getTexture(0,3);
+
+            enemyKnightImage = getTexture(1,2);
+            enemyKnightHurtImage = getTexture(1,3);
+
+            enemyBishopImage = getTexture(2,2);
+            enemyBishopHurtImage = getTexture(2,3);
+
+            enemyQueenImage = getTexture(3,2);
+            enemyQueenHurtImage = getTexture(3,3);
+
+            enemyKingImage = getTexture(4,2);
+            enemyKingHurtImage = getTexture(4,3);
+
+            enemyPawnImage = getTexture(5,2);
+            enemyPawnHurtImage = getTexture(5,3);
+
+            arrowUpImage = getTexture(6, 0);
+            arrowDownImage = getTexture(6, 1);
+            arrowRightImage = getTexture(6,2);
+            arrowLeftImage = getTexture(6,3);
+
+            arrowDownRightImage = getTexture(7,0);
+            arrowDownLeftImage = getTexture(7,1);
+            arrowUpRightImage = getTexture(7,2);
+            arrowUpLeftImage = getTexture(7, 3);
+
+            cannonBallImage = getTexture(0, 4);
+            cannonBallEnemyImage = getTexture(0,5);
+
+            knightParticleImage = getTexture(0,6);
+
+            explosionImage = getTexture(0,7);
+
+            queenParticleImageUp = getTexture(3,4);
+            queenParticleImageDown = getTexture(3,5);
+            queenParticleImageRight = getTexture(3, 6);
+            queenParticleImageLeft = getTexture(3, 7);
+
+            bishopParticleImageUpRight = getTexture(1,4);
+            bishopParticleImageUpLeft = getTexture(1,5);
+            bishopParticleImageDownRight = getTexture(1,6);
+            bishopParticleImageDownLeft = getTexture(1,7);
+
+            enemyBishopParticleImageUpLeft = getTexture(2,5);
+            enemyBishopParticleImageDownLeft = getTexture(2,7);
+
+            unavailablePieceImage = getTexture(7,4);
+            tileImage = imageAtlas.getSubimage(5 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
 
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(gamePanel, "Could not load images");
         }
+
+    }
+    private BufferedImage getTexture(int col, int row){
+        return imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE ,TILE_SIZE);
     }
 }
