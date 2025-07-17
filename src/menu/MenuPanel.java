@@ -149,6 +149,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    private boolean startingGame = false;
     private void updateDifficultySelectionMenu(){
         // Pressing a key increments or decrements index
         if (keyHandler.goingUp){
@@ -168,14 +169,31 @@ public class MenuPanel extends JPanel {
 
             if (buttonIndexY % 4 == 0) {
                 System.out.println(SettingsManager.easyText);
+                startingGame = true;
+                repaint();
                 soundManager.stopMusic();
-                Main.startMainGame(this, null, "easy");
+                SwingUtilities.invokeLater(() -> {
+                    soundManager.stopMusic();
+                    Main.startMainGame(this, null, "easy");
+                });
             } else if (buttonIndexY % 4 == 1) {
                 System.out.println(SettingsManager.mediumText);
-                Main.startMainGame(this, null, "medium");
+                startingGame = true;
+                soundManager.stopMusic();
+                repaint();
+                SwingUtilities.invokeLater(() -> {
+                    soundManager.stopMusic();
+                    Main.startMainGame(this, null, "medium");
+                });
             } else if (buttonIndexY % 4 == 2) {
                 System.out.println(SettingsManager.hardText);
-                Main.startMainGame(this, null, "hard");
+                startingGame = true;
+                repaint();
+                soundManager.stopMusic();
+                SwingUtilities.invokeLater(() -> {
+                    soundManager.stopMusic();
+                    Main.startMainGame(this, null, "hard");
+                });
             } else if (buttonIndexY % 4 == 3) {
                 System.out.println(SettingsManager.goBackText);
                 showingDifficultySelection = false;
@@ -467,6 +485,15 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         drawText(g2d,leftSpace,820, SettingsManager.goBackText);
+
+        if (startingGame){
+
+            g2d.setColor(translucentBlack);
+            g2d.fillRect(400, 400, Main.WIDTH-800, Main.HEIGHT-800);
+            g2d.setFont(gameFont);
+            g2d.setColor(Color.WHITE);
+            drawText(g2d, 0,0, "Loading...");
+        }
     }
 
     private void drawBackground(Graphics2D g2d){
