@@ -96,7 +96,7 @@ public class EntityManager {
     }
     public void spawnQueenParticles(BufferedImage skin) {
         if (textureManager.queenImage != null) {
-            int size = 132; // size of the cannonball
+            int size = 128; // size of the cannonball
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
             gamePanel.projectiles.add(new QueenSlice(gamePanel, textureManager, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG, skin, player.facingDirection));
@@ -106,7 +106,7 @@ public class EntityManager {
 
     public void spawnKnightParticles() {
        if (textureManager.knightImage != null) {
-           int size = 132; // size of the cannonball
+           int size = 128; // size of the cannonball
            // spawn at top‐center of the rook
            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
            int by = player.y + (gamePanel.pieceHeight - size) / 2;

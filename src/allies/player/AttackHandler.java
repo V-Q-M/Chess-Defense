@@ -18,7 +18,7 @@ public class AttackHandler {
         this.gamePanel = gamePanel;
         this.textureManager = textureManager;
         this.player = player;
-        this.size = gamePanel.PIECE_HEIGHT;
+        this.size = gamePanel.squareSize;
     }
 
     protected void rookAttack(Direction facingDirection){

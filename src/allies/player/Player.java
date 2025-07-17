@@ -29,7 +29,7 @@ public class Player extends livingBeing {
 
     // Ability Cooldowns
     private final int ROOK_ABILITY_COOLDOWN = 40;
-    private final int BISHOP_ABILITY_COOLDOWN = 60;
+    private final int BISHOP_ABILITY_COOLDOWN = 55;
     private final int KNIGHT_ABILITY_COOLDOWN = 150;
     private final int QUEEN_ABILITY_COOLDOWN = 35;
     private final int KING_ABILITY_COOLDOWN = 250;
@@ -104,8 +104,8 @@ public class Player extends livingBeing {
         this.y = startPositionY;
         this.targetX = startPositionX;
         this.targetY = startPositionY;
-        this.height = gamePanel.PIECE_HEIGHT;
-        this.width  = gamePanel.PIECE_HEIGHT;
+        this.height = gamePanel.squareSize;
+        this.width  = gamePanel.squareSize;
         this.speed = BASE_MOVE_SPEED;
     }
 
@@ -231,9 +231,6 @@ public class Player extends livingBeing {
             }
         }
         this.skin = baseSkin;
-        //gamePanel.pieceHeight = gamePanel.selectedPiece.getHeight() * gamePanel.SCALE;
-        gamePanel.pieceWidth = skin.getWidth() * gamePanel.SCALE;
-        gamePanel.pieceHeight = skin.getHeight() * gamePanel.SCALE;
     }
 
 

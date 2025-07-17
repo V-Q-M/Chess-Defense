@@ -2,6 +2,7 @@ package main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ public class TextureManager {
     GamePanel gamePanel;
 
     public BufferedImage tileImage;
+    public BufferedImage mapImage;
     public BufferedImage bottomBarImage;
     public BufferedImage unavailablePieceImage;
 
@@ -80,74 +82,75 @@ public class TextureManager {
             // Use an imageAtlas
             imageAtlas = ImageIO.read(getClass().getResourceAsStream("/imageAtlas.png"));
 
-            rookImage = getTexture(0,0);
-            rookHurtImage = getTexture(0,1);
+            rookImage = getTextureUpscaled(0,0, UPSCALED_SIZE);
+            rookHurtImage = getTextureUpscaled(0,1, UPSCALED_SIZE);
 
-            knightImage = getTexture(1, 0);
-            knightHurtImage = getTexture(1, 1);
+            knightImage = getTextureUpscaled(1, 0, UPSCALED_SIZE);
+            knightHurtImage = getTextureUpscaled(1, 1, UPSCALED_SIZE);
 
-            bishopImage = getTexture(2, 0);
-            bishopHurtImage = getTexture(2,1);
+            bishopImage = getTextureUpscaled(2, 0, UPSCALED_SIZE);
+            bishopHurtImage = getTextureUpscaled(2,1, UPSCALED_SIZE);
 
-            queenImage = getTexture(3, 0);
-            queenHurtImage = getTexture(3,1);
+            queenImage = getTextureUpscaled(3, 0, UPSCALED_SIZE);
+            queenHurtImage = getTextureUpscaled(3,1, UPSCALED_SIZE);
 
-            kingImage = getTexture(4,0);
-            kingHurtImage = getTexture(4,1);
+            kingImage = getTextureUpscaled(4,0, UPSCALED_SIZE);
+            kingHurtImage = getTextureUpscaled(4,1, UPSCALED_SIZE);
 
-            pawnImage = getTexture(5,0);
-            pawnHurtImage = getTexture(5,1);
+            pawnImage = getTextureUpscaled(5,0, UPSCALED_SIZE);
+            pawnHurtImage = getTextureUpscaled(5,1, UPSCALED_SIZE);
 
-            enemyRookImage = getTexture(0,2);
-            enemyRookHurtImage = getTexture(0,3);
+            enemyRookImage = getTextureUpscaled(0,2, UPSCALED_SIZE);
+            enemyRookHurtImage = getTextureUpscaled(0,3, UPSCALED_SIZE);
 
-            enemyKnightImage = getTexture(1,2);
-            enemyKnightHurtImage = getTexture(1,3);
+            enemyKnightImage = getTextureUpscaled(1,2, UPSCALED_SIZE);
+            enemyKnightHurtImage = getTextureUpscaled(1,3, UPSCALED_SIZE);
 
-            enemyBishopImage = getTexture(2,2);
-            enemyBishopHurtImage = getTexture(2,3);
+            enemyBishopImage = getTextureUpscaled(2,2, UPSCALED_SIZE);
+            enemyBishopHurtImage = getTextureUpscaled(2,3, UPSCALED_SIZE);
 
-            enemyQueenImage = getTexture(3,2);
-            enemyQueenHurtImage = getTexture(3,3);
+            enemyQueenImage = getTextureUpscaled(3,2, UPSCALED_SIZE);
+            enemyQueenHurtImage = getTextureUpscaled(3,3, UPSCALED_SIZE);
 
-            enemyKingImage = getTexture(4,2);
-            enemyKingHurtImage = getTexture(4,3);
+            enemyKingImage = getTextureUpscaled(4,2, UPSCALED_SIZE);
+            enemyKingHurtImage = getTextureUpscaled(4,3, UPSCALED_SIZE);
 
-            enemyPawnImage = getTexture(5,2);
-            enemyPawnHurtImage = getTexture(5,3);
+            enemyPawnImage = getTextureUpscaled(5,2, UPSCALED_SIZE);
+            enemyPawnHurtImage = getTextureUpscaled(5,3, UPSCALED_SIZE);
 
-            arrowUpImage = getTexture(6, 0);
-            arrowDownImage = getTexture(6, 1);
-            arrowRightImage = getTexture(6,2);
-            arrowLeftImage = getTexture(6,3);
+            arrowUpImage = getTextureUpscaled(6, 0, UPSCALED_SIZE);
+            arrowDownImage = getTextureUpscaled(6, 1, UPSCALED_SIZE);
+            arrowRightImage = getTextureUpscaled(6,2, UPSCALED_SIZE);
+            arrowLeftImage = getTextureUpscaled(6,3, UPSCALED_SIZE);
 
-            arrowDownRightImage = getTexture(7,0);
-            arrowDownLeftImage = getTexture(7,1);
-            arrowUpRightImage = getTexture(7,2);
-            arrowUpLeftImage = getTexture(7, 3);
+            arrowDownRightImage = getTextureUpscaled(7,0, UPSCALED_SIZE);
+            arrowDownLeftImage = getTextureUpscaled(7,1, UPSCALED_SIZE);
+            arrowUpRightImage = getTextureUpscaled(7,2, UPSCALED_SIZE);
+            arrowUpLeftImage = getTextureUpscaled(7, 3, UPSCALED_SIZE);
 
-            cannonBallImage = getTexture(0, 4);
-            cannonBallEnemyImage = getTexture(0,5);
+            cannonBallImage = getTextureUpscaled(0, 4, 64);
+            cannonBallEnemyImage = getTextureUpscaled(0,5, 64);
 
-            knightParticleImage = getTexture(0,6);
+            knightParticleImage = getTextureUpscaled(0,6, 128);
 
-            explosionImage = getTexture(0,7);
+            explosionImage = getTextureUpscaled(0,7, 64);
 
-            queenParticleImageUp = getTexture(3,4);
-            queenParticleImageDown = getTexture(3,5);
-            queenParticleImageRight = getTexture(3, 6);
-            queenParticleImageLeft = getTexture(3, 7);
+            queenParticleImageUp = getTextureUpscaled(3,4, UPSCALED_SIZE);
+            queenParticleImageDown = getTextureUpscaled(3,5, UPSCALED_SIZE);
+            queenParticleImageRight = getTextureUpscaled(3, 6, UPSCALED_SIZE);
+            queenParticleImageLeft = getTextureUpscaled(3, 7, UPSCALED_SIZE);
 
-            bishopParticleImageUpRight = getTexture(1,4);
-            bishopParticleImageUpLeft = getTexture(1,5);
-            bishopParticleImageDownRight = getTexture(1,6);
-            bishopParticleImageDownLeft = getTexture(1,7);
+            bishopParticleImageUpRight = getTextureUpscaled(1,4, 96);
+            bishopParticleImageUpLeft = getTextureUpscaled(1,5, 96);
+            bishopParticleImageDownRight = getTextureUpscaled(1,6, 96);
+            bishopParticleImageDownLeft = getTextureUpscaled(1,7, 96);
 
-            enemyBishopParticleImageUpLeft = getTexture(2,5);
-            enemyBishopParticleImageDownLeft = getTexture(2,7);
+            enemyBishopParticleImageUpLeft = getTextureUpscaled(2,5, 96);
+            enemyBishopParticleImageDownLeft = getTextureUpscaled(2,7, 96);
 
             unavailablePieceImage = getTexture(7,4);
             tileImage = imageAtlas.getSubimage(5 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+            mapImage = generateBackgroundImage();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,7 +158,46 @@ public class TextureManager {
         }
 
     }
+
+    private final int UPSCALED_SIZE = 128;
+
+    private BufferedImage getTextureUpscaled(int col, int row, int desiredSize){
+        BufferedImage texture = imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE ,TILE_SIZE);
+
+        BufferedImage upscaledTexture = new BufferedImage(desiredSize, desiredSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = upscaledTexture.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        g2d.drawImage(texture, 0, 0, desiredSize, desiredSize, null);
+        g2d.dispose();
+
+        return upscaledTexture;
+    }
+
     private BufferedImage getTexture(int col, int row){
-        return imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE ,TILE_SIZE);
+        return imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+
+
+    private BufferedImage generateBackgroundImage() {
+        if (tileImage == null) {
+            return null;
+        }
+
+        int sw = tileImage.getWidth() * 8;  // 32
+        int sh = tileImage.getHeight() * 8; // 32
+
+        BufferedImage background = new BufferedImage(Main.WIDTH, Main.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = background.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        for (int y = 0; y < Main.HEIGHT; y += sh) {
+            for (int x = 0; x < Main.WIDTH; x += sw) {
+                g2d.drawImage(tileImage, x, y, sw, sh, null);
+            }
+        }
+
+        g2d.dispose();
+        return background;
     }
 }

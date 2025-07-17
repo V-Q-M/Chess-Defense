@@ -53,13 +53,12 @@ public class GamePanel extends JPanel implements Runnable{
 
   // uses the enum
   public PieceType selectedPieceType;
-  public int pieceWidth;
-  public int pieceHeight;
+  public int pieceWidth = 128;
+  public int pieceHeight = 128;
 
+  public int squareSize = 128;
 
   // Builds the background
-
-  public int PIECE_HEIGHT = 4 * 32;
 
   // Im scaling 32x32 Textures so that they look nicer
   public final int SCALE = 8;
@@ -83,8 +82,8 @@ public class GamePanel extends JPanel implements Runnable{
   TextureManager textureManager = new TextureManager(this);
 
   // Start position at ca. center
-  int startX = PIECE_HEIGHT*4;
-  int startY = PIECE_HEIGHT*4;
+  int startX = pieceWidth*4;
+  int startY = pieceHeight*4;
 
   // Rest of managers and player
   Player player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
@@ -198,19 +197,19 @@ public class GamePanel extends JPanel implements Runnable{
   // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
     for (int i = 0; i < 8; i++){
-      AllyPawn pawnGuard = new AllyPawn(this, soundManager, textureManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false);
+      AllyPawn pawnGuard = new AllyPawn(this, soundManager, textureManager, collisionHandler, squareSize, i * squareSize, squareSize, squareSize, false);
       allies.add(pawnGuard);
       wall.add(pawnGuard);
     }
   }
   private void spawnTurrets(){
-    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
-    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 0, squareSize, squareSize));
+    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 7 * squareSize, squareSize, squareSize));
   }
 
   private void spawnPriests(){
-    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 2 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, true));
-    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 5 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 2 * squareSize, squareSize, squareSize, true));
+    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 5 * squareSize, squareSize, squareSize, false));
   }
 
   public void rebuildTurrets(){
@@ -577,6 +576,7 @@ public class GamePanel extends JPanel implements Runnable{
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D)g;
+    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
     drawBackground(g2d);
     drawPlayer(g2d);
@@ -587,18 +587,12 @@ public class GamePanel extends JPanel implements Runnable{
     drawUI(g2d);
   }
 
+  private BufferedImage mapImage;
+
   private void drawBackground(Graphics2D g2d){
-    //  Draw tiled background, scaled 10x
-    if (textureManager.tileImage != null) {
-      int sw = textureManager.tileImage.getWidth() * SCALE;
-      int sh = textureManager.tileImage.getHeight() * SCALE;
-      for (int y = 0; y < getHeight(); y += sh) {
-        for (int x = 0; x < getWidth(); x += sw) {
-          g2d.drawImage(textureManager.tileImage, x, y, sw, sh, this);
-        }
-      }
-    }
+    g2d.drawImage(textureManager.mapImage,0,0,this);
   }
+
 
   private final Color LIME = new Color(0,200,50);
   // Helper method for building health-bars

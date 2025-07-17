@@ -49,8 +49,8 @@ public abstract class Enemy extends livingBeing {
 
         if (y < 0){
             y += speed;
-        } else if (y > 8 * gamePanel.PIECE_HEIGHT){
-            y = 8 * gamePanel.PIECE_HEIGHT;
+        } else if (y > 8 * gamePanel.squareSize){
+            y = 8 * gamePanel.squareSize;
         }
     }
 
