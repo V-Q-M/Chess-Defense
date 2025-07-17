@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ChessDefense:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ChessDefense_jar</output-path>
+    <root id="archive" name="GroupProject.jar">
+      <element id="module-output" name="ChessDefense" />
+    </root>
+  </artifact>
+</component>
