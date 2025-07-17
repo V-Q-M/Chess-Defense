@@ -28,7 +28,8 @@ public class Player extends livingBeing {
     public final int LEAP_SPEED = 8;
 
     // Ability Cooldowns
-    private final int ROOK_ABILITY_COOLDOWN = 50;
+    private final int ROOK_ABILITY_COOLDOWN = 40;
+    private final int BISHOP_ABILITY_COOLDOWN = 65;
     private final int KNIGHT_ABILITY_COOLDOWN = 150;
     private final int QUEEN_ABILITY_COOLDOWN = 35;
     private final int KING_ABILITY_COOLDOWN = 250;
@@ -223,7 +224,7 @@ public class Player extends livingBeing {
             }
             case PieceType.BISHOP -> {
                 //gamePanel.selectedPiece = gamePanel.bishopImage;
-                abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+                abilityCoolDown = BISHOP_ABILITY_COOLDOWN;
                 this.baseSkin = gamePanel.bishopImage;
                 this.hurtSkin = gamePanel.bishopHurtImage;
             }

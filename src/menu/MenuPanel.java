@@ -20,10 +20,14 @@ public class MenuPanel extends JPanel {
     MenuKeyHandler keyHandler = new MenuKeyHandler(this);
     SoundManager soundManager = new SoundManager(this);
     BufferedImage backgroundImg;
+    BufferedImage pawnImage;
+    BufferedImage rookImage;
+    BufferedImage kingImage;
 
     Font gameFont;
     Font gameFontSmall;
     Font gameFontTiny;
+    Font gameFontMedium;
 
     private int buttonIndexY = 100000;
 
@@ -131,8 +135,57 @@ public class MenuPanel extends JPanel {
             updateSettingsMenu();
         } else if (showingHelp){
             updateHelpMenu();
+        } else if (showingDifficultySelection){
+            updateDifficultySelectionMenu();
         } else {
             updateMainMenu();
+        }
+    }
+
+    private void updateDifficultySelectionMenu(){
+        // Pressing a key increments or decrements index
+        if (keyHandler.goingUp){
+            keyHandler.goingUp = false;
+            buttonIndexY--;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        } else if (keyHandler.goingDown){
+            keyHandler.goingDown = false;
+            buttonIndexY++;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        }
+        // Enter performs action on the button
+        if (keyHandler.enterPressed || keyHandler.spacePressed){
+            keyHandler.enterPressed = false;
+            keyHandler.spacePressed = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+
+            if (buttonIndexY % 5 == 0) {
+                System.out.println(SettingsManager.easyText);
+                soundManager.stopMusic();
+                Main.startMainGame(this, null, "easy");
+            } else if (buttonIndexY % 5 == 1) {
+                System.out.println(SettingsManager.mediumText);
+                Main.startMainGame(this, null, "medium");
+            } else if (buttonIndexY % 5 == 2) {
+                System.out.println(SettingsManager.hardText);
+                Main.startMainGame(this, null, "hard");
+            } else if (buttonIndexY % 5 == 3) {
+                System.out.println(SettingsManager.goBackText);
+                showingDifficultySelection = false;
+            }
+        }
+
+        // Hover effect
+        resetButtons(); // Resets hover effect
+        // Color buttons correctly
+        if (buttonIndexY % 5 == 0) {
+            hoveringShop = true;
+        } else if (buttonIndexY % 5 == 1) {
+            hoveringSettings = true;
+        } else if (buttonIndexY % 5 == 2) {
+            hoveringHelp = true;
+        } else if (buttonIndexY % 5 == 3) {
+            hoveringQuit = true;
         }
     }
 
@@ -255,7 +308,6 @@ public class MenuPanel extends JPanel {
 
     private void updateMainMenu(){
         // Pressing a key increments or decrements index
-
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
@@ -274,8 +326,7 @@ public class MenuPanel extends JPanel {
 
             if (buttonIndexY % 5 == 0) {
                 System.out.println(SettingsManager.playText);
-                soundManager.stopMusic();
-                Main.startMainGame(this, null);
+                showingDifficultySelection = true;
             } else if (buttonIndexY % 5 == 1) {
                 System.out.println(SettingsManager.shopText);
                 showingShop = true;
@@ -326,11 +377,11 @@ public class MenuPanel extends JPanel {
     }
 
     private void loadImages() {
-        try (InputStream is = getClass().getResourceAsStream("/background/BackgroundMenu.png")) {
-            if (is == null) {
-                throw new IOException("Image resource not found: /background/BackGroundMenu.png");
-            }
-            backgroundImg = ImageIO.read(is);
+        try {
+            backgroundImg = ImageIO.read(getClass().getResourceAsStream("/background/BackgroundMenu.png"));
+            pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
+            rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
+            kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Could not load images");
@@ -348,6 +399,7 @@ public class MenuPanel extends JPanel {
             gameFont = baseFont.deriveFont(70f);
             gameFontSmall = baseFont.deriveFont(40f);
             gameFontTiny = baseFont.deriveFont(20f);
+            gameFontMedium = baseFont.deriveFont(55f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
@@ -355,6 +407,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    private boolean showingDifficultySelection = false;
 
     @Override
     protected void paintComponent(Graphics g){
@@ -367,11 +420,61 @@ public class MenuPanel extends JPanel {
             drawShop(g2d);
         } else if (showingSettings){
             drawSettings(g2d);
-        } else if (showingHelp){
+        } else if (showingHelp) {
             drawHelp(g2d);
+        } else if (showingDifficultySelection){
+            drawDifficultySelection(g2d);
         } else {
             drawMainMenu(g2d);
         }
+    }
+
+    private Color translucentBlack = new Color(0, 0 ,0 , 220);
+
+    private void drawDifficultySelection(Graphics2D g2d){
+        g2d.setFont(gameFontMedium);
+
+        // Title
+        g2d.setColor(Color.WHITE);
+        drawText(g2d,0,180, "Chess");
+        drawText(g2d,0,260, "Defense");
+
+        // Play button
+        drawText(g2d,leftSpace + 8,500, SettingsManager.chooseDifficultyText);
+        g2d.setFont(gameFontSmall);
+
+        // Shop button
+        if(hoveringShop){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        g2d.drawImage(pawnImage, leftSpace, 520, 70, 70, this);
+        drawText(g2d,leftSpace + 102,580, SettingsManager.easyText);
+
+        if(hoveringSettings){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        g2d.drawImage(rookImage, leftSpace, 600, 70, 70, this);
+        drawText(g2d, leftSpace + 102, 660, SettingsManager.mediumText);
+
+        if(hoveringHelp){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        g2d.drawImage(kingImage, leftSpace, 678, 70, 70, this);
+        drawText(g2d,leftSpace + 102,740, SettingsManager.hardText);
+
+        // Quit button
+        if(hoveringQuit){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,leftSpace,820, SettingsManager.goBackText);
     }
 
     private void drawBackground(Graphics2D g2d){
@@ -380,7 +483,7 @@ public class MenuPanel extends JPanel {
 
     private void drawShop(Graphics2D g2d) {
         // Background
-        g2d.setColor(new Color(0,0,0,220));
+        g2d.setColor(translucentBlack);
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
 
 
@@ -427,7 +530,7 @@ public class MenuPanel extends JPanel {
 
     private void drawSettings(Graphics2D g2d){
         // Background
-        g2d.setColor(new Color(0,0,0,220));
+        g2d.setColor(translucentBlack);
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
 
 
@@ -478,7 +581,7 @@ public class MenuPanel extends JPanel {
     private int currentHelpPage = 0;
     private void drawHelp(Graphics2D g2d){
         // Background
-        g2d.setColor(new Color(0,0,0,220));
+        g2d.setColor(translucentBlack);
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
 
         g2d.setFont(gameFont);

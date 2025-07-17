@@ -25,6 +25,9 @@ public class GamePanel extends JPanel implements Runnable{
   public boolean gamePaused = false;
   public boolean castleGotHit = false;
   private boolean piecesGotRevived = false;
+  private boolean wallRepaired = false;
+  private boolean turretsRepaired = false;
+  private boolean bishopsRevived = false;
   public int score = 0;
 
   boolean gameStart = true;
@@ -79,6 +82,8 @@ public class GamePanel extends JPanel implements Runnable{
   public BufferedImage bishopParticleImageUpRight;
   public BufferedImage bishopParticleImageDownLeft;
   public BufferedImage bishopParticleImageDownRight;
+  public BufferedImage enemyBishopParticleImageDownLeft;
+  public BufferedImage enemyBishopParticleImageUpLeft;
   public BufferedImage knightParticleImage;
 
   // text for localization
@@ -133,7 +138,7 @@ public class GamePanel extends JPanel implements Runnable{
 
   // Rest of managers and player
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
-  public EnemyManager enemyManager = new EnemyManager(this);
+  public EnemyManager enemyManager;
   public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
 
   // Upgrades. Available in the shop
@@ -142,7 +147,9 @@ public class GamePanel extends JPanel implements Runnable{
   private final boolean kingUpgradeUnlocked = true;
   private final boolean queenUpgradeUnlocked = false;
 
-  public GamePanel() {
+  private String difficulty;
+
+  public GamePanel(String difficulty) {
     // Window size
     setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
     setFocusable(true);
@@ -150,6 +157,9 @@ public class GamePanel extends JPanel implements Runnable{
     addKeyListener(keyHandler);
 
     // setup
+    this.difficulty = difficulty;
+    System.out.println("DIFFICULTY: " + difficulty);
+    enemyManager = new EnemyManager(this, difficulty);
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
@@ -332,6 +342,8 @@ public class GamePanel extends JPanel implements Runnable{
       bishopParticleImageUpRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceUpRight.png"));
       bishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceDownLeft.png"));
       bishopParticleImageDownRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceDownRight.png"));
+      enemyBishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLanceDownLeft.png"));
+      enemyBishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLanceUpRight.png"));
       knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles.png"));
 
     } catch (IOException e) {
@@ -379,8 +391,14 @@ public class GamePanel extends JPanel implements Runnable{
   int lastHealedCounter = 0;
   int castleHitElapsedTime = 0;
   int pieceRevivedElapsedTime = 0;
+  int wallRepairedElapsedTime = 0;
+  int turretRepairedElapsedTime = 0;
+  int bishopRevivedElapsedTime = 0;
   int levelCounter = 1;
   public boolean enemyKingSlain = false;
+  public boolean pawnBossSlain = false;
+  public boolean rookBossSlain = false;
+  public boolean bishopBossSlain = false;
 
   int threshHoldBossSpawns = 5000;
 
@@ -433,6 +451,10 @@ public class GamePanel extends JPanel implements Runnable{
           bossRotationIndex++;
         }
         case 2 -> {
+          enemyManager.spawnKing();
+          bossRotationIndex ++;
+        }
+        case 3 -> {
           enemyManager.spawnRookBoss();
           bossRotationIndex = 0;
         }
@@ -456,6 +478,54 @@ public class GamePanel extends JPanel implements Runnable{
         blueFlashScreen = false;
       } else {
         pieceRevivedElapsedTime++;
+      }
+    }
+
+    if (pawnBossSlain){
+      if (!wallRepaired){
+        wallRepaired = true;
+        blueFlashScreen = true;
+        rebuildPawnWall();
+      }
+
+      if (wallRepairedElapsedTime > 60){
+        pawnBossSlain = false;
+        wallRepaired = false;
+        blueFlashScreen = false;
+      } else {
+        wallRepairedElapsedTime++;
+      }
+    }
+
+    if (rookBossSlain){
+      if (!turretsRepaired){
+        turretsRepaired = true;
+        blueFlashScreen = true;
+        rebuildTurrets();
+      }
+
+      if (turretRepairedElapsedTime > 60){
+        rookBossSlain = false;
+        turretsRepaired = false;
+        blueFlashScreen = false;
+      } else {
+        turretRepairedElapsedTime++;
+      }
+
+      if (bishopBossSlain){
+        if(!bishopsRevived){
+          bishopsRevived = true;
+          blueFlashScreen = true;
+
+        }
+
+        if (bishopRevivedElapsedTime > 60){
+          bishopBossSlain = false;
+          bishopsRevived = false;
+          blueFlashScreen = false;
+        } else {
+          bishopRevivedElapsedTime++;
+        }
       }
     }
 
@@ -849,7 +919,7 @@ public class GamePanel extends JPanel implements Runnable{
       } else if (pauseMenuIndex % 2 == 1){
         soundManager.playClip(soundManager.buttonClickClip);
         soundManager.stopMusic();
-        Main.startMainGame(null, this);
+        Main.startMainGame(null, this, difficulty);
       }
     }
   }

@@ -4,6 +4,11 @@ public class SettingsManager {
 
     // For the main menu
     public static String playText = "Play";
+    public static String chooseDifficultyText = "Difficulty:";
+    public static String easyText = "Easy";
+    public static String mediumText = "Medium";
+    public static String hardText = "Hard";
+    public static String goBackText = "Go back";
     public static String shopText = "Shop";
     public static String quitText = "Quit";
     public static String settingsText = "Settings";
@@ -87,12 +92,19 @@ public class SettingsManager {
 
     public static void switchToGerman(){
         languageGerman = true;
+        // Main Menu
         playText = "Start";
+        chooseDifficultyText = "Schwierigkeit:";
+        easyText = "Leicht";
+        mediumText = "Mittel";
+        hardText = "Schwer";
+        goBackText = "Gehe zurück";
         shopText = "Shop";
         quitText = "Verlassen";
         settingsText = "Einstellungen";
         helpText = "Hilfe";
 
+        // Settings Menu
         musicOnText = "Musik an";
         musicOffText = "Musik aus";
         languageEnglishText = "Sprache Englisch";
@@ -147,6 +159,12 @@ public class SettingsManager {
         quitText = "Quit";
         settingsText = "Settings";
         helpText = "Help";
+
+        chooseDifficultyText = "Difficulty:";
+        easyText = "Easy";
+        mediumText = "Medium";
+        hardText = "Hard";
+        goBackText = "Go back";
 
         musicOnText = "Music on";
         musicOffText = "Music off";

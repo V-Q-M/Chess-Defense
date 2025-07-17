@@ -17,7 +17,7 @@ public abstract class Enemy extends livingBeing {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.recoveryTime = 45;
+        this.recoveryTime = 41;
     }
 
     public void update(){

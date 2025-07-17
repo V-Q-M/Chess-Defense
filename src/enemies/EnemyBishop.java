@@ -6,9 +6,13 @@ import main.Main;
 import main.SoundManager;
 
 public class EnemyBishop extends Enemy{
-    public EnemyBishop(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+
+    private int lanceDamage;
+
+    public EnemyBishop(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int lanceDamage) {
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
         this.damage = 10;
+        this.lanceDamage = lanceDamage;
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;
@@ -67,6 +71,6 @@ public class EnemyBishop extends Enemy{
     }
 
     private void performAttack() {
-        gamePanel.entityManager.spawnEnemyCannonBall(x, y);
+        gamePanel.entityManager.spawnEnemyCannonBall(x, y, lanceDamage);
     }
 }

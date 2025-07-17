@@ -25,7 +25,7 @@ public class PawnBoss extends Enemy{
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            gamePanel.rebuildPawnWall();
+            gamePanel.pawnBossSlain = true;
             soundManager.playClip(soundManager.deathClip);
 
         }

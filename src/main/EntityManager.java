@@ -12,12 +12,13 @@ public class EntityManager {
     KeyHandler keyHandler;
     Player player;
 
-    final int DEFAULT_CANNONBALL_SPEED = 10;
+    final int DEFAULT_CANNONBALL_SPEED = 12;
+    final int DEFAULT_ENEMY_CANNONBALL_SPEED = 10;
     final int DEFAULT_LANCE_SPEED = 8;
     final int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
 
     final int DEFAULT_TIME_TO_DECAY_QUEEN = 30;
-    final int DEFAULT_TIME_TO_DECAY_KNIGHT = 44;
+    final int DEFAULT_TIME_TO_DECAY_KNIGHT = 40;
 
     final int DEFAULT_CANNON_BALL_DMG = 50;
     final int DEFAULT_SLICE_DMG= 50;
@@ -44,11 +45,11 @@ public class EntityManager {
         }
     }
 
-    public void spawnEnemyCannonBall(int x, int y){
+    public void spawnEnemyCannonBall(int x, int y, int damage){
        if (gamePanel.enemyRookImage != null) {
            int size = CANNON_BALL_SIZE;
            int bx = x + (gamePanel.pieceWidth - size) / 2;
-           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG));
+           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_ENEMY_CANNONBALL_SPEED, damage));
            soundManager.playClip(soundManager.shootClip);
        }
     }
@@ -57,6 +58,15 @@ public class EntityManager {
             int size = CANNON_BALL_SIZE * 2;
             int bx = x + (gamePanel.pieceWidth - size) / 2;
             gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG * 2));
+            soundManager.playClip(soundManager.shootClip);
+        }
+    }
+
+    public void spawnBossLance(int x, int y){
+        if (gamePanel.enemyBishopImage != null){
+            int size = 96;
+            int bx = x + (gamePanel.pieceWidth - size) / 2;
+            gamePanel.enemyBalls.add(new EnemyLance(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG * 2, gamePanel.bishopParticleImageDownLeft , Direction.DOWN_LEFT));
             soundManager.playClip(soundManager.shootClip);
         }
     }

@@ -6,9 +6,12 @@ import main.Main;
 import main.SoundManager;
 
 public class EnemyRook extends Enemy{
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+    private int cannonDamage;
+
+    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
         this.damage = 15;
+        this.cannonDamage = cannonDamage;
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;
@@ -67,6 +70,6 @@ public class EnemyRook extends Enemy{
     }
 
     private void performAttack() {
-        gamePanel.entityManager.spawnEnemyCannonBall(x, y);
+        gamePanel.entityManager.spawnEnemyCannonBall(x, y, cannonDamage);
     }
 }

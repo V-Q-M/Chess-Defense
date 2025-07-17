@@ -36,8 +36,8 @@ public class Main{
         frame.setVisible(true);
 
     }
-    public static void startMainGame(MenuPanel oldMenuPanel, GamePanel oldGamePanel){
-        frame.add(new GamePanel());
+    public static void startMainGame(MenuPanel oldMenuPanel, GamePanel oldGamePanel, String difficulty){
+        frame.add(new GamePanel(difficulty));
         if (oldMenuPanel != null){
             frame.remove(oldMenuPanel);
         }
