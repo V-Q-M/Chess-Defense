@@ -66,6 +66,8 @@ public class TextureManager {
     public BufferedImage enemyBishopParticleImageUpLeft;
     public BufferedImage knightParticleImage;
 
+    public BufferedImage stopwatchImage;
+
     BufferedImage imageAtlas;
 
     public TextureManager(GamePanel gamePanel){
@@ -147,6 +149,8 @@ public class TextureManager {
 
             enemyBishopParticleImageUpLeft = getTextureUpscaled(2,5, 96);
             enemyBishopParticleImageDownLeft = getTextureUpscaled(2,7, 96);
+
+            stopwatchImage = getTextureUpscaled(5, 6,48);
 
             unavailablePieceImage = getTexture(7,4);
             tileImage = imageAtlas.getSubimage(5 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);

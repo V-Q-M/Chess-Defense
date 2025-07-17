@@ -21,14 +21,35 @@ public class PawnBoss extends Enemy{
         this.attackCoolDown = 80;
         this.isBoss = true;
     }
+    private boolean diedToWall = false;
     @Override
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            gamePanel.pawnBossSlain = true;
+            if (!diedToWall){
+                gamePanel.pawnBossSlain = true;
+            }
             soundManager.playClip(soundManager.deathClip);
 
+        }
+    }
+
+    @Override
+    public void move(){
+        if (x < 0){
+            health = 0;
+            this.diedToWall = true;
+            gamePanel.castleHealth -= damage / 3;
+            gamePanel.castleGotHit = true;
+        } else {
+            x -= speed;
+        }
+
+        if (y < 0){
+            y += speed;
+        } else if (y > 8 * gamePanel.squareSize){
+            y = 8 * gamePanel.squareSize;
         }
     }
 }

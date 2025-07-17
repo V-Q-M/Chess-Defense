@@ -74,7 +74,7 @@ public class Player extends livingBeing {
     public Direction facingDirection = Direction.RIGHT;
 
     private boolean hasAttacked = false;
-    private int attackCoolDownCounter = 0;
+    public int attackCoolDownCounter = 0;
 
     // Very important. Manages the grid based walking
     public int targetX;
@@ -382,6 +382,8 @@ public class Player extends livingBeing {
            }
         }
 
+        System.out.println("ATTACKCD" + attackCoolDownCounter);
+        System.out.println("ABCD" + abilityCoolDown);
         if (hasAttacked && attackCoolDownCounter < abilityCoolDown){
             attackCoolDownCounter++;
         } else {

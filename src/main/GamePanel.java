@@ -811,6 +811,22 @@ public class GamePanel extends JPanel implements Runnable{
     if (!player.bishopAlive){
       g2d.drawImage(textureManager.unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
     }
+    // CoolDown UI
+    g2d.setColor(Color.WHITE);
+    int cooldownBarSize = 32;
+    float factor = 0f;
+    if (player.abilityCoolDown != 0){
+      factor = player.attackCoolDownCounter / (float) player.abilityCoolDown;
+    }
+
+// Circle position and size
+    int x = player.x + 90;
+    int y = player.y - 3;
+
+    if (factor > 0){
+     g2d.drawImage(textureManager.stopwatchImage, x, y, 48, 48, this);
+
+    }
   }
 
   private void drawGameOverScreen(Graphics2D g2d){
