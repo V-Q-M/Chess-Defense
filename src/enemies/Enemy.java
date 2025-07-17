@@ -9,9 +9,10 @@ public abstract class Enemy extends livingBeing {
     public boolean isBoss = false;
 
 
-    public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+    public Enemy(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         this.gamePanel = gamePanel;
         this.soundManager = soundManager;
+        this.textureManager = textureManager;
         this.collisionHandler = collisionHandler;
         this.x = x;
         this.y = y;

@@ -8,9 +8,10 @@ public abstract class Ally extends livingBeing {
     public boolean canMove = false;
 
 
-    public Ally(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+    public Ally(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         this.gamePanel = gamePanel;
         this.soundManager = soundManager;
+        this.textureManager = textureManager;
         this.collisionHandler = collisionHandler;
         this.x = x;
         this.y = y;

@@ -1,22 +1,19 @@
 package enemies;
 
-import main.CollisionHandler;
-import main.GamePanel;
-import main.Main;
-import main.SoundManager;
+import main.*;
 
 public class EnemyRook extends Enemy{
     private int cannonDamage;
 
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
-        super(gamePanel, soundManager, collisionHandler, x, y, width, height);
+    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
+        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;
-        this.baseSkin = gamePanel.enemyRookImage;
-        this.hurtSkin = gamePanel.enemyRookHurtImage;
+        this.baseSkin = textureManager.enemyRookImage;
+        this.hurtSkin = textureManager.enemyRookHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 300;
         this.attackCoolDownCounter = 0;

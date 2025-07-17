@@ -1,20 +1,16 @@
 package entities;
 
 import main.GamePanel;
+import main.TextureManager;
 
 public class EnemyCannonBall extends Projectile {
 
-    public EnemyCannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage) {
-        this.gamePanel = gamePanel;
-        this.x = x;
-        this.y = y;
-        this.width = size;
-        this.height = size;
-        this.gamePanel = gamePanel;
+    public EnemyCannonBall(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int damage) {
+        super(gamePanel, textureManager, x, y, size, size);
         this.health = 200;
         this.speed = speed;
         this.damage = damage;
-        this.skin = gamePanel.cannonBallEnemyImage;
+        this.skin = textureManager.cannonBallEnemyImage;
     }
 
     @Override

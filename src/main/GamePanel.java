@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import allies.*;
@@ -39,53 +38,6 @@ public class GamePanel extends JPanel implements Runnable{
   private Font gameFont;
   private Font gameFontTiny;
 
-  // Textures of the player pieces
-  public BufferedImage rookImage;
-  public BufferedImage rookHurtImage;
-  public BufferedImage knightImage;
-  public BufferedImage knightHurtImage;
-  public BufferedImage bishopImage;
-  public BufferedImage bishopHurtImage;
-  public BufferedImage kingImage;
-  public BufferedImage kingHurtImage;
-  public BufferedImage queenImage;
-  public BufferedImage queenHurtImage;
-  public BufferedImage pawnImage;
-  public BufferedImage pawnHurtImage;
-  // Enemy textures
-  public BufferedImage enemyRookImage;
-  public BufferedImage enemyRookHurtImage;
-  public BufferedImage enemyBishopImage;
-  public BufferedImage enemyBishopHurtImage;
-  public BufferedImage enemyKingImage;
-  public BufferedImage enemyKingHurtImage;
-  public BufferedImage enemyPawnImage;
-  public BufferedImage enemyPawnHurtImage;
-
-  // Projectile textures
-  public BufferedImage arrowLeftImage;
-  public BufferedImage arrowRightImage;
-  public BufferedImage arrowUpImage;
-  public BufferedImage arrowDownImage;
-  public BufferedImage arrowDownLeftImage;
-  public BufferedImage arrowDownRightImage;
-  public BufferedImage arrowUpLeftImage;
-  public BufferedImage arrowUpRightImage;
-  public BufferedImage cannonBallImage;
-  public BufferedImage cannonBallEnemyImage;
-  public BufferedImage explosionImage;
-  public BufferedImage queenParticleImageUp;
-  public BufferedImage queenParticleImageDown;
-  public BufferedImage queenParticleImageLeft;
-  public BufferedImage queenParticleImageRight;
-  public BufferedImage bishopParticleImageUpLeft;
-  public BufferedImage bishopParticleImageUpRight;
-  public BufferedImage bishopParticleImageDownLeft;
-  public BufferedImage bishopParticleImageDownRight;
-  public BufferedImage enemyBishopParticleImageDownLeft;
-  public BufferedImage enemyBishopParticleImageUpLeft;
-  public BufferedImage knightParticleImage;
-
   // text for localization
   private String startingText = "Starting in: ";
   private String swappingSoonText = "Swapping soon!";
@@ -106,9 +58,6 @@ public class GamePanel extends JPanel implements Runnable{
 
 
   // Builds the background
-  private BufferedImage tileImage;
-  private BufferedImage bottomBarImage;
-  private BufferedImage unavailablePieceImage;
 
   public int PIECE_HEIGHT = 4 * 32;
 
@@ -131,15 +80,16 @@ public class GamePanel extends JPanel implements Runnable{
   KeyHandler keyHandler = new KeyHandler(this);
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
+  TextureManager textureManager = new TextureManager(this);
 
   // Start position at ca. center
   int startX = PIECE_HEIGHT*4;
   int startY = PIECE_HEIGHT*4;
 
   // Rest of managers and player
-  Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
+  Player player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
   public EnemyManager enemyManager;
-  public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
+  public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, textureManager, player);
 
   // Upgrades. Available in the shop
   private final boolean turretUpgradeUnlocked = true;
@@ -160,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable{
     this.difficulty = difficulty;
     System.out.println("DIFFICULTY: " + difficulty);
     enemyManager = new EnemyManager(this, difficulty);
-    this.loadImages();
+    textureManager.loadImages();
     //this.loadFonts();
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
@@ -248,19 +198,19 @@ public class GamePanel extends JPanel implements Runnable{
   // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
     for (int i = 0; i < 8; i++){
-      AllyPawn pawnGuard = new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false);
+      AllyPawn pawnGuard = new AllyPawn(this, soundManager, textureManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false);
       allies.add(pawnGuard);
       wall.add(pawnGuard);
     }
   }
   private void spawnTurrets(){
-    allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
-    allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
+    allies.add(new AllyRook(this, soundManager, textureManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
   }
 
   private void spawnPriests(){
-    allies.add(new AllyBishop(this, soundManager, collisionHandler, 0, 2 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, true));
-    allies.add(new AllyBishop(this, soundManager, collisionHandler, 0, 5 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 2 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, true));
+    allies.add(new AllyBishop(this, soundManager, textureManager, collisionHandler, 0, 5 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
   }
 
   public void rebuildTurrets(){
@@ -297,62 +247,6 @@ public class GamePanel extends JPanel implements Runnable{
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
-  private void loadImages() {
-    try {
-      tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
-      bottomBarImage = ImageIO.read(getClass().getResourceAsStream("/background/BottomBar.png"));
-      unavailablePieceImage = ImageIO.read(getClass().getResourceAsStream("/background/unavailable.png"));
-
-      rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
-      rookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook_hurt.png"));
-      knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight.png"));
-      knightHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight_hurt.png"));
-      bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop.png"));
-      bishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop_hurt.png"));
-      kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
-      kingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king_hurt.png"));
-      queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen.png"));
-      queenHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen_hurt.png"));
-      pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
-      pawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn_hurt.png"));
-
-      enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
-      enemyRookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook_hurt.png"));
-      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
-      enemyBishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop_hurt.png"));
-      enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
-      enemyKingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king_hurt.png"));
-      enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
-      enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
-
-      arrowLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowLeft.png"));
-      arrowRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowRight.png"));
-      arrowUpImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUp.png"));
-      arrowDownImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDown.png"));
-      arrowUpLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUpLeft.png"));
-      arrowUpRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowUpRight.png"));
-      arrowDownLeftImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDownLeft.png"));
-      arrowDownRightImage = ImageIO.read(getClass().getResourceAsStream("/particles/arrowMarkers/arrowDownRight.png"));
-      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonBalls/cannonball.png"));
-      cannonBallEnemyImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonBalls/cannonballEnemy.png"));
-      explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosions/explosion.png"));
-      queenParticleImageUp = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesUp.png"));
-      queenParticleImageDown = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesDown.png"));
-      queenParticleImageLeft = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesLeft.png"));
-      queenParticleImageRight = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles/queenParticlesRight.png"));
-      bishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceUpLeft.png"));
-      bishopParticleImageUpRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceUpRight.png"));
-      bishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceDownLeft.png"));
-      bishopParticleImageDownRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLance/bishopLanceDownRight.png"));
-      enemyBishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLance/enemyBishopLanceDownLeft.png"));
-      enemyBishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/enemyBishopLance/enemyBishopLanceUpRight.png"));
-      knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles/knightParticles.png"));
-
-    } catch (IOException e) {
-      e.printStackTrace();
-      JOptionPane.showMessageDialog(this, "Could not load images");
-    }
-  }
 
 
   // A simple bobbing animation
@@ -695,12 +589,12 @@ public class GamePanel extends JPanel implements Runnable{
 
   private void drawBackground(Graphics2D g2d){
     //  Draw tiled background, scaled 10x
-    if (tileImage != null) {
-      int sw = tileImage.getWidth() * SCALE;
-      int sh = tileImage.getHeight() * SCALE;
+    if (textureManager.tileImage != null) {
+      int sw = textureManager.tileImage.getWidth() * SCALE;
+      int sh = textureManager.tileImage.getHeight() * SCALE;
       for (int y = 0; y < getHeight(); y += sh) {
         for (int x = 0; x < getWidth(); x += sw) {
-          g2d.drawImage(tileImage, x, y, sw, sh, this);
+          g2d.drawImage(textureManager.tileImage, x, y, sw, sh, this);
         }
       }
     }
@@ -729,14 +623,14 @@ public class GamePanel extends JPanel implements Runnable{
       }
 
       switch (player.facingDirection){
-        case UP_LEFT -> g2d.drawImage(arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case UP_RIGHT -> g2d.drawImage(arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case DOWN_LEFT -> g2d.drawImage(arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
-        case DOWN_RIGHT -> g2d.drawImage(arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
-        case UP -> g2d.drawImage(arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
-        case DOWN -> g2d.drawImage(arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
-        case LEFT -> g2d.drawImage(arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
-        default -> g2d.drawImage(arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
+        case UP_LEFT -> g2d.drawImage(textureManager.arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case UP_RIGHT -> g2d.drawImage(textureManager.arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
+        case DOWN_LEFT -> g2d.drawImage(textureManager.arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
+        case DOWN_RIGHT -> g2d.drawImage(textureManager.arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
+        case UP -> g2d.drawImage(textureManager.arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
+        case DOWN -> g2d.drawImage(textureManager.arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
+        case LEFT -> g2d.drawImage(textureManager.arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
+        default -> g2d.drawImage(textureManager.arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
       }
 
       // Draw hitbox
@@ -898,30 +792,30 @@ public class GamePanel extends JPanel implements Runnable{
     int size = 96;
     int crossSize = 116;
 
-    g2d.drawImage(bottomBarImage,0, Main.HEIGHT - 56,  this);
+    g2d.drawImage(textureManager.bottomBarImage,0, Main.HEIGHT - 56,  this);
 
     g2d.setColor(Color.WHITE);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
 
-    g2d.drawImage(rookImage, xPos, yPos, size, size, this);
-    g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
-    g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
-    g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
-    g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
+    g2d.drawImage(textureManager.rookImage, xPos, yPos, size, size, this);
+    g2d.drawImage(textureManager.knightImage, xPos + 129, yPos, size, size, this);
+    g2d.drawImage(textureManager.kingImage, xPos + 259, yPos, size, size, this);
+    g2d.drawImage(textureManager.queenImage, xPos + 387, yPos, size, size, this);
+    g2d.drawImage(textureManager.bishopImage, xPos + 516, yPos, size, size, this);
     if (!player.rookAlive){
-      g2d.drawImage(unavailablePieceImage, xPos-10, yPos -5, crossSize, crossSize, this);
+      g2d.drawImage(textureManager.unavailablePieceImage, xPos-10, yPos -5, crossSize, crossSize, this);
     }
     if (!player.knightAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 119, yPos - 5, crossSize, crossSize, this);
+      g2d.drawImage(textureManager.unavailablePieceImage, xPos + 119, yPos - 5, crossSize, crossSize, this);
     }
     if (!player.kingAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 249, yPos - 5, crossSize, crossSize, this);
+      g2d.drawImage(textureManager.unavailablePieceImage, xPos + 249, yPos - 5, crossSize, crossSize, this);
     }
     if (!player.queenAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 377, yPos - 5, crossSize, crossSize, this);
+      g2d.drawImage(textureManager.unavailablePieceImage, xPos + 377, yPos - 5, crossSize, crossSize, this);
     }
     if (!player.bishopAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
+      g2d.drawImage(textureManager.unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
     }
   }
 

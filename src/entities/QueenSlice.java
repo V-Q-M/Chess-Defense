@@ -2,18 +2,15 @@ package entities;
 
 import main.Direction;
 import main.GamePanel;
+import main.TextureManager;
 
 import java.awt.image.BufferedImage;
 
 public class QueenSlice extends Projectile {
 
   // Specialized constructor
-  public QueenSlice(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, BufferedImage skin, Direction direction) {
-    this.gamePanel = gamePanel;
-    this.x = x;
-    this.y = y;
-    this.height = size;
-    this.width = size;
+  public QueenSlice(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int decay, int damage, BufferedImage skin, Direction direction) {
+    super(gamePanel, textureManager, x, y, size, size);
     this.direction = direction;
     this.speed = speed;
     this.health = decay;

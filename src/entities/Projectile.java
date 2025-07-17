@@ -2,11 +2,13 @@ package entities;
 
 import main.Direction;
 import main.GamePanel;
+import main.TextureManager;
 
 import java.awt.image.BufferedImage;
 
 public abstract class Projectile {
     public GamePanel gamePanel;
+    public TextureManager textureManager;
     public int x;
     public int y;
     public int width;
@@ -18,6 +20,16 @@ public abstract class Projectile {
     public int damage;
     public boolean diesOnHit = false;
     public BufferedImage skin;
+
+    public Projectile(GamePanel gamePanel, TextureManager textureManager, int x, int y, int width, int height){
+
+        this.gamePanel = gamePanel;
+        this.textureManager = textureManager;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
 
     public void moveProjectile(int speed) {
         switch (direction) {

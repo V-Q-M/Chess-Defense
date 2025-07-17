@@ -4,7 +4,6 @@ import enemies.Enemy;
 import entities.Projectile;
 import main.*;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +12,7 @@ public class Player extends livingBeing {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     SoundManager soundManager;
+    TextureManager textureManager;
     CollisionHandler collisionHandler;
 
     AttackHandler attackHandler;
@@ -29,7 +29,7 @@ public class Player extends livingBeing {
 
     // Ability Cooldowns
     private final int ROOK_ABILITY_COOLDOWN = 40;
-    private final int BISHOP_ABILITY_COOLDOWN = 65;
+    private final int BISHOP_ABILITY_COOLDOWN = 60;
     private final int KNIGHT_ABILITY_COOLDOWN = 150;
     private final int QUEEN_ABILITY_COOLDOWN = 35;
     private final int KING_ABILITY_COOLDOWN = 250;
@@ -41,7 +41,7 @@ public class Player extends livingBeing {
     public boolean queenDashing = false;
     private int queenDashingCounter = 0;
 
-    // Castlehealth
+    // CastleHealth
     public int health = 100;
 
     // Are the pieces alive?
@@ -92,12 +92,13 @@ public class Player extends livingBeing {
     ));
     PieceType lastPiece;
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, CollisionHandler collisionHandler, int startPositionX, int startPositionY){
+    public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
         this.soundManager = soundManager;
+        this.textureManager = textureManager;
         this.collisionHandler = collisionHandler;
-        this.attackHandler = new AttackHandler(gamePanel, this);
+        this.attackHandler = new AttackHandler(gamePanel, textureManager, this);
         this.movementHandler = new MovementHandler(gamePanel, this);
         this.x = startPositionX;
         this.y = startPositionY;
@@ -199,34 +200,34 @@ public class Player extends livingBeing {
             case PieceType.ROOK -> {
 
                 //gamePanel.selectedPiece = gamePanel.rookImage;
-                this.baseSkin = gamePanel.rookImage;
-                this.hurtSkin = gamePanel.rookHurtImage;
+                this.baseSkin = textureManager.rookImage;
+                this.hurtSkin = textureManager.rookHurtImage;
 
                 abilityCoolDown = ROOK_ABILITY_COOLDOWN;
             }
             case PieceType.QUEEN -> {
                 //gamePanel.selectedPiece = gamePanel.queenImage;
                 abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
-                this.baseSkin = gamePanel.queenImage;
-                this.hurtSkin = gamePanel.queenHurtImage;
+                this.baseSkin = textureManager.queenImage;
+                this.hurtSkin = textureManager.queenHurtImage;
             }
             case PieceType.KING -> {
                 //gamePanel.selectedPiece = gamePanel.kingImage;
                 abilityCoolDown = KING_ABILITY_COOLDOWN;
-                this.baseSkin = gamePanel.kingImage;
-                this.hurtSkin = gamePanel.kingHurtImage;
+                this.baseSkin = textureManager.kingImage;
+                this.hurtSkin = textureManager.kingHurtImage;
             }
             case PieceType.KNIGHT -> {
                 //gamePanel.selectedPiece = gamePanel.knightImage;
                 abilityCoolDown = KNIGHT_ABILITY_COOLDOWN;
-                this.baseSkin = gamePanel.knightImage;
-                this.hurtSkin = gamePanel.knightHurtImage;
+                this.baseSkin = textureManager.knightImage;
+                this.hurtSkin = textureManager.knightHurtImage;
             }
             case PieceType.BISHOP -> {
                 //gamePanel.selectedPiece = gamePanel.bishopImage;
                 abilityCoolDown = BISHOP_ABILITY_COOLDOWN;
-                this.baseSkin = gamePanel.bishopImage;
-                this.hurtSkin = gamePanel.bishopHurtImage;
+                this.baseSkin = textureManager.bishopImage;
+                this.hurtSkin = textureManager.bishopHurtImage;
             }
         }
         this.skin = baseSkin;
@@ -462,7 +463,7 @@ public class Player extends livingBeing {
             lastPiece = null;
             forceSwap();
         }
-        // specialcase - king dead
+        // specialCase - king dead
         if (kingHealth <= 0 && kingAlive){
             kingAlive = false;
             availablePieces.remove(PieceType.KING);

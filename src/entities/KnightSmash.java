@@ -3,20 +3,17 @@ package entities;
 import main.Direction;
 import main.GamePanel;
 import main.Main;
+import main.TextureManager;
 
 public class KnightSmash extends Projectile {
     // Specialized constructor
-    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, Direction direction) {
-        this.gamePanel = gamePanel;
-        this.x = x;
-        this.y = y;
-        this.height = size;
-        this.width = size;
+    public KnightSmash(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int decay, int damage, Direction direction) {
+        super(gamePanel, textureManager, x, y, size, size);
         this.direction = direction;
         this.speed = speed;
         this.health = decay;
         this.damage = damage;
-        this.skin = gamePanel.knightParticleImage;
+        this.skin = textureManager.knightParticleImage;
     }
 
     @Override

@@ -3,17 +3,20 @@ package allies.player;
 import main.Direction;
 import main.GamePanel;
 import main.Main;
+import main.TextureManager;
 
 import java.awt.image.BufferedImage;
 
 public class AttackHandler {
 
     GamePanel gamePanel;
+    TextureManager textureManager;
     Player player;
     int size;
 
-    public AttackHandler(GamePanel gamePanel, Player player){
+    public AttackHandler(GamePanel gamePanel, TextureManager textureManager, Player player){
         this.gamePanel = gamePanel;
+        this.textureManager = textureManager;
         this.player = player;
         this.size = gamePanel.PIECE_HEIGHT;
     }
@@ -26,16 +29,16 @@ public class AttackHandler {
         BufferedImage skin;
         switch(facingDirection){
             case UP_LEFT -> {
-                skin = gamePanel.bishopParticleImageUpLeft;
+                skin = textureManager.bishopParticleImageUpLeft;
             }
             case UP_RIGHT -> {
-                skin = gamePanel.bishopParticleImageUpRight;
+                skin = textureManager.bishopParticleImageUpRight;
             }
             case DOWN_LEFT -> {
-                skin = gamePanel.bishopParticleImageDownLeft;
+                skin = textureManager.bishopParticleImageDownLeft;
             }
             default -> {
-                skin = gamePanel.bishopParticleImageDownRight;
+                skin = textureManager.bishopParticleImageDownRight;
             }
         }
 
@@ -44,7 +47,7 @@ public class AttackHandler {
     }
 
     protected void queenAttack(Direction facingDirection){
-        BufferedImage skin = gamePanel.queenParticleImageRight;
+        BufferedImage skin;
 
         player.queenDashing = true;
         player.isInvulnerable = true;
@@ -53,45 +56,45 @@ public class AttackHandler {
             case UP_LEFT -> {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
-                skin = gamePanel.queenParticleImageUp;
+                skin = textureManager.queenParticleImageUp;
                 player.speed = 12;
             }
             case UP_RIGHT -> {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
-                skin = gamePanel.queenParticleImageUp;
+                skin = textureManager.queenParticleImageUp;
                 player.speed = 12;
             }
             case DOWN_LEFT -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
-                skin = gamePanel.queenParticleImageDown;
+                skin = textureManager.queenParticleImageDown;
                 player.speed = 12;
             }
             case DOWN_RIGHT -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
-                skin = gamePanel.queenParticleImageDown;
+                skin = textureManager.queenParticleImageDown;
                 player.speed = 12;
             }
             case UP -> {
                 player.targetY = Math.max(player.targetY - 3 * size, 0);
-                skin = gamePanel.queenParticleImageUp;
+                skin = textureManager.queenParticleImageUp;
                 player.speed = player.DASH_SPEED;
             }
             case DOWN -> {
                 player.targetY = Math.min(player.targetY + 3 * size, Main.HEIGHT - size - 56);
-                skin = gamePanel.queenParticleImageDown;
+                skin = textureManager.queenParticleImageDown;
                 player.speed = player.DASH_SPEED;
             }
             case LEFT -> {
                 player.targetX = Math.max(player.targetX - 3 * size, 0);
-                skin = gamePanel.queenParticleImageLeft;
+                skin = textureManager.queenParticleImageLeft;
                 player.speed = player.DASH_SPEED;
             }
             default -> {
                 player.targetX = Math.min(player.targetX + 3 * size, Main.WIDTH - size);
-                skin = gamePanel.queenParticleImageRight;
+                skin = textureManager.queenParticleImageRight;
                 player.speed = player.DASH_SPEED;
             }
         }

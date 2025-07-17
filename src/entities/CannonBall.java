@@ -1,23 +1,20 @@
 package entities;
 import main.Direction;
 import main.GamePanel;
+import main.TextureManager;
 
 
 public class CannonBall extends Projectile {
 
   // Specialized constructor
-  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage, Direction direction) {
-    this.gamePanel = gamePanel;
-    this.x = x;
-    this.y = y;
-    this.width = size;
-    this.height = size;
+  public CannonBall(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int damage, Direction direction) {
+    super(gamePanel, textureManager, x, y, size, size);
     this.direction = direction;
     this.speed = speed;
     this.health = 200;
     this.damage = damage;
     this.diesOnHit = true;
-    this.skin = gamePanel.cannonBallImage;
+    this.skin = textureManager.cannonBallImage;
   }
 
   @Override

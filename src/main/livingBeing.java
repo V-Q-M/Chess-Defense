@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public abstract class livingBeing {
     public GamePanel gamePanel;
     public SoundManager soundManager;
+    public TextureManager textureManager;
     public CollisionHandler collisionHandler;
 
     public int x, y, width, height;

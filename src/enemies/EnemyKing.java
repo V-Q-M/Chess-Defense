@@ -3,14 +3,14 @@ package enemies;
 import main.*;
 
 public class EnemyKing extends Enemy{
-    public EnemyKing(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        super(gamePanel, soundManager, collisionHandler, x, y, width, height);
+    public EnemyKing(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+        super(gamePanel, soundManager, textureManager,  collisionHandler, x, y, width, height);
         this.damage = 10;
         this.speed = 2;
         this.maxHealth = 400;
         this.health = 400;
-        this.baseSkin = gamePanel.enemyKingImage;
-        this.hurtSkin = gamePanel.enemyKingHurtImage;
+        this.baseSkin = textureManager.enemyKingImage;
+        this.hurtSkin = textureManager.enemyKingHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 600;
         this.width = width * 2;

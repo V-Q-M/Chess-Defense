@@ -7,7 +7,7 @@ public class EnemyManager {
     private int lastSpawnCounter;
     private int spawnCoolDown = 240;
     private int difficultyScalar = 0;
-    private int size = 4 * 32;
+    private final int size = 4 * 32;
 
 
     // Special logic for enemy king
@@ -15,10 +15,10 @@ public class EnemyManager {
     private int kingsY;
     private int kingsSize;
     private boolean shouldSpawnGuard = false;
-    private int rookDamage;
-    private int bishopDamage;
+    private final int rookDamage;
+    private final int bishopDamage;
 
-    private String difficulty;
+    private final String difficulty;
 
     public EnemyManager(GamePanel gamePanel, String difficulty){
         this.gamePanel = gamePanel;
@@ -42,16 +42,16 @@ public class EnemyManager {
 
     void spawnEnemy(int x, int y, int width, int height, PieceType type){
         switch (type){
-            case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
-            case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
-            case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
-            case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
+            case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+            case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
+            case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
+            case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
         }
 
         if (shouldSpawnGuard){
             shouldSpawnGuard = false;
-            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
-            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY + 128, kingsSize, kingsSize));
+            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
+            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, kingsX, kingsY + 128, kingsSize, kingsSize));
             gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
         }
     }
@@ -64,12 +64,12 @@ public class EnemyManager {
     public void spawnPawnBoss(){
         int X = Main.WIDTH;
         int randomY = (int)(Math.random() * ((Main.HEIGHT-size) / size) ) * size;
-        gamePanel.enemies.add(new PawnBoss(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
+        gamePanel.enemies.add(new PawnBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
     }
     public void spawnRookBoss(){
         int X = Main.WIDTH;
         int randomY = (int)(Math.random() * ((Main.HEIGHT-size) / size) ) * size;
-        gamePanel.enemies.add(new RookBoss(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
+        gamePanel.enemies.add(new RookBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, X, randomY, gamePanel.pieceWidth, gamePanel.pieceHeight));
     }
 
     void updateSpawner(){

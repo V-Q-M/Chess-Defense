@@ -1,17 +1,14 @@
 package entities;
 
 import main.GamePanel;
+import main.TextureManager;
 
 public class Explosion extends Projectile{
 
-    public Explosion(GamePanel gamePanel, int x, int y, int size) {
-        this.gamePanel = gamePanel;
-        this.x = x;
-        this.y = y;
-        this.height = size;
-        this.width = size;
+    public Explosion(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size) {
+        super(gamePanel, textureManager, x, y, size, size);
         this.health = 30;
-        this.skin = gamePanel.explosionImage;
+        this.skin = textureManager.explosionImage;
         this.speed = 4;
     }
 

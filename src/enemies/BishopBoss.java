@@ -1,19 +1,16 @@
 package enemies;
 
-import main.CollisionHandler;
-import main.GamePanel;
-import main.Main;
-import main.SoundManager;
+import main.*;
 
 public class BishopBoss extends Enemy{
-    public BishopBoss(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        super(gamePanel, soundManager, collisionHandler, x, y, width, height);
+    public BishopBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 20;
         this.speed = 1;
         this.health = 400;
         this.maxHealth = 400;
-        this.baseSkin = gamePanel.enemyBishopImage;
-        this.hurtSkin = gamePanel.enemyBishopHurtImage;
+        this.baseSkin = textureManager.enemyBishopImage;
+        this.hurtSkin = textureManager.enemyBishopHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 600;
         this.attackCoolDownCounter = 0;
