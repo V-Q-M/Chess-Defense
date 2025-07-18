@@ -51,6 +51,17 @@ public class TextureManager {
     public BufferedImage arrowDownRightImage;
     public BufferedImage arrowUpLeftImage;
     public BufferedImage arrowUpRightImage;
+    public BufferedImage greyArrowLeftImage;
+    public BufferedImage greyArrowRightImage;
+    public BufferedImage greyArrowUpImage;
+    public BufferedImage greyArrowDownImage;
+    public BufferedImage greyArrowDownLeftImage;
+    public BufferedImage greyArrowDownRightImage;
+    public BufferedImage greyArrowUpLeftImage;
+    public BufferedImage greyArrowUpRightImage;
+
+
+
     public BufferedImage cannonBallImage;
     public BufferedImage cannonBallEnemyImage;
     public BufferedImage explosionImage;
@@ -130,6 +141,17 @@ public class TextureManager {
             arrowUpRightImage = getTextureUpscaled(7,2, UPSCALED_SIZE);
             arrowUpLeftImage = getTextureUpscaled(7, 3, UPSCALED_SIZE);
 
+            greyArrowUpImage = getTextureUpscaled(6, 4, UPSCALED_SIZE);
+            greyArrowDownImage = getTextureUpscaled(6, 5, UPSCALED_SIZE);
+            greyArrowRightImage = getTextureUpscaled(6,6, UPSCALED_SIZE);
+            greyArrowLeftImage = getTextureUpscaled(6,7, UPSCALED_SIZE);
+
+            greyArrowDownRightImage = getTextureUpscaled(7,4, UPSCALED_SIZE);
+            greyArrowDownLeftImage = getTextureUpscaled(7,5, UPSCALED_SIZE);
+            greyArrowUpRightImage = getTextureUpscaled(7,6, UPSCALED_SIZE);
+            greyArrowUpLeftImage = getTextureUpscaled(7, 7, UPSCALED_SIZE);
+
+
             cannonBallImage = getTextureUpscaled(0, 4, 64);
             cannonBallEnemyImage = getTextureUpscaled(0,5, 64);
 
@@ -150,10 +172,10 @@ public class TextureManager {
             enemyBishopParticleImageUpLeft = getTextureUpscaled(2,5, 96);
             enemyBishopParticleImageDownLeft = getTextureUpscaled(2,7, 96);
 
-            stopwatchImage = getTextureUpscaled(5, 6,48);
+            stopwatchImage = getTextureUpscaled(5, 4,48);
 
-            unavailablePieceImage = getTexture(7,4);
-            tileImage = imageAtlas.getSubimage(5 * TILE_SIZE, 4 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+            unavailablePieceImage = getTexture(5,5);
+            tileImage = imageAtlas.getSubimage(0 * TILE_SIZE, 8 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
             mapImage = generateBackgroundImage();
 
         } catch (IOException e) {

@@ -616,17 +616,35 @@ public class GamePanel extends JPanel implements Runnable{
         g2d.drawImage(player.skin, player.x, player.y, pieceWidth, pieceHeight, this);
       }
 
-      switch (player.facingDirection){
-        case UP_LEFT -> g2d.drawImage(textureManager.arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case UP_RIGHT -> g2d.drawImage(textureManager.arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
-        case DOWN_LEFT -> g2d.drawImage(textureManager.arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
-        case DOWN_RIGHT -> g2d.drawImage(textureManager.arrowDownRightImage, player.x + 56 , player.y + 56, pieceWidth, pieceHeight, this);
-        case UP -> g2d.drawImage(textureManager.arrowUpImage, player.x , player.y - 56, pieceWidth, pieceHeight, this);
-        case DOWN -> g2d.drawImage(textureManager.arrowDownImage, player.x , player.y + 56, pieceWidth, pieceHeight, this);
-        case LEFT -> g2d.drawImage(textureManager.arrowLeftImage, player.x - 56 , player.y, pieceWidth, pieceHeight, this);
-        default -> g2d.drawImage(textureManager.arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
+      // CoolDown UI
+      float factor = 0f;
+      if (player.abilityCoolDown != 0){
+        factor = player.attackCoolDownCounter / (float) player.abilityCoolDown;
       }
 
+      if (factor == 0){
+        switch (player.facingDirection) {
+          case UP_LEFT    -> g2d.drawImage(textureManager.arrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
+          case UP_RIGHT   -> g2d.drawImage(textureManager.arrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
+          case DOWN_LEFT  -> g2d.drawImage(textureManager.arrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
+          case DOWN_RIGHT -> g2d.drawImage(textureManager.arrowDownRightImage, player.x + 56, player.y + 56, pieceWidth, pieceHeight, this);
+          case UP         -> g2d.drawImage(textureManager.arrowUpImage, player.x, player.y - 56, pieceWidth, pieceHeight, this);
+          case DOWN       -> g2d.drawImage(textureManager.arrowDownImage, player.x, player.y + 56, pieceWidth, pieceHeight, this);
+          case LEFT       -> g2d.drawImage(textureManager.arrowLeftImage, player.x - 56, player.y, pieceWidth, pieceHeight, this);
+          default         -> g2d.drawImage(textureManager.arrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
+        }
+      } else {
+        switch (player.facingDirection) {
+          case UP_LEFT    -> g2d.drawImage(textureManager.greyArrowUpLeftImage, player.x - 56, player.y - 56, pieceWidth, pieceHeight, this);
+          case UP_RIGHT   -> g2d.drawImage(textureManager.greyArrowUpRightImage, player.x + 56, player.y - 56, pieceWidth, pieceHeight, this);
+          case DOWN_LEFT  -> g2d.drawImage(textureManager.greyArrowDownLeftImage, player.x - 56, player.y + 56, pieceWidth, pieceHeight, this);
+          case DOWN_RIGHT -> g2d.drawImage(textureManager.greyArrowDownRightImage, player.x + 56, player.y + 56, pieceWidth, pieceHeight, this);
+          case UP         -> g2d.drawImage(textureManager.greyArrowUpImage, player.x, player.y - 56, pieceWidth, pieceHeight, this);
+          case DOWN       -> g2d.drawImage(textureManager.greyArrowDownImage, player.x, player.y + 56, pieceWidth, pieceHeight, this);
+          case LEFT       -> g2d.drawImage(textureManager.greyArrowLeftImage, player.x - 56, player.y, pieceWidth, pieceHeight, this);
+          default         -> g2d.drawImage(textureManager.greyArrowRightImage, player.x + 56, player.y, pieceWidth, pieceHeight, this);
+        }
+      }
       // Draw hitbox
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
@@ -810,22 +828,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
     if (!player.bishopAlive){
       g2d.drawImage(textureManager.unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
-    }
-    // CoolDown UI
-    g2d.setColor(Color.WHITE);
-    int cooldownBarSize = 32;
-    float factor = 0f;
-    if (player.abilityCoolDown != 0){
-      factor = player.attackCoolDownCounter / (float) player.abilityCoolDown;
-    }
-
-// Circle position and size
-    int x = player.x + 90;
-    int y = player.y - 3;
-
-    if (factor > 0){
-     g2d.drawImage(textureManager.stopwatchImage, x, y, 48, 48, this);
-
     }
   }
 
