@@ -3,6 +3,7 @@ import allies.Ally;
 import enemies.Enemy;
 import entities.Projectile;
 import allies.player.Player;
+import mapObjects.ImmovableObject;
 
 public class CollisionHandler {
     GamePanel gamePanel;
@@ -67,5 +68,12 @@ public class CollisionHandler {
             pawn.x < enemy.x + enemy.width &&
             pawn.y + pawn.height > enemy.y + 10 &&
             pawn.y < enemy.y + enemy.height - 10;
+    }
+
+    public boolean mapObjectCollision(ImmovableObject mapObject, Projectile projectile){
+        return projectile.x + projectile.width > mapObject.x &&
+                projectile.x < mapObject.x + mapObject.width &&
+                projectile.y + projectile.height > mapObject.y + 10 &&
+                projectile.y < mapObject.y + mapObject.height - 10;
     }
 }

@@ -10,6 +10,8 @@ import allies.*;
 import allies.player.Player;
 import enemies.Enemy;
 import entities.Projectile;
+import mapObjects.ImmovableObject;
+import mapObjects.Rock;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -74,6 +76,8 @@ public class GamePanel extends JPanel implements Runnable{
   public final List<Ally> allies = new ArrayList<>();
   public final List<Ally> wall = new ArrayList<>();
   public final List<Ally> turrets = new ArrayList<>();
+  // carries other objects
+  public final List<ImmovableObject> mapObjects = new ArrayList<>();
 
   // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
@@ -127,17 +131,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     player.selectPiece(PieceType.ROOK);
 
-    /*
-    player.rookHealth = 0;
-    player.knightHealth = 0;
-    player.bishopHealth = 0;
-
-     */
-
-
-
-    // Refreshrate. Might have to improve that. Edit: I did in fact improve it
-    //new Timer(16, e -> update()).start(); // ~60 FPS
+    mapObjects.add(new Rock(this, soundManager, textureManager, collisionHandler, 6*128, 6*128, 128, 128));
 
     running = true;
     gameThread = new Thread(this);
@@ -441,6 +435,12 @@ public class GamePanel extends JPanel implements Runnable{
         player.playerUpdate();
       }
 
+      for (ImmovableObject mapObject : mapObjects){
+        mapObject.update();
+      }
+      mapObjects.removeIf(mapObject -> mapObject.isDead);
+
+
       for (Projectile projectile : projectiles){
         projectile.update();
       }
@@ -589,6 +589,9 @@ public class GamePanel extends JPanel implements Runnable{
 
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);
+    for (ImmovableObject mapObject : mapObjects){
+      g2d.drawImage(mapObject.skin, mapObject.x, mapObject.y, this);
+    }
   }
 
 

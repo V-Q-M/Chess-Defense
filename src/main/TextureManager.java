@@ -184,8 +184,8 @@ public class TextureManager {
 
             stopwatchImage = getTextureUpscaled(6, 8,48);
 
-            rockImage = getTextureUpscaled(6,9,TILE_SIZE);
-            iceImage = getTextureUpscaled(6,10,TILE_SIZE);
+            rockImage = getTextureUpscaled(6,9, UPSCALED_SIZE);
+            iceImage = getTextureUpscaled(6,10, UPSCALED_SIZE);
 
             unavailablePieceImage = getTexture(7,8);
             earthTileImage = imageAtlas.getSubimage(8 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
