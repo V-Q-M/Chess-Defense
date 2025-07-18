@@ -10,7 +10,9 @@ public class TextureManager {
 
     GamePanel gamePanel;
 
-    public BufferedImage tileImage;
+    public BufferedImage earthTileImage;
+    public BufferedImage snowTileImage;
+    public BufferedImage grassTileImage;
     public BufferedImage mapImage;
     public BufferedImage bottomBarImage;
     public BufferedImage unavailablePieceImage;
@@ -63,7 +65,8 @@ public class TextureManager {
 
 
     public BufferedImage cannonBallImage;
-    public BufferedImage cannonBallEnemyImage;
+    public BufferedImage cannonBallEarthEnemyImage;
+    public BufferedImage cannonBallSnowEnemyImage;
     public BufferedImage explosionImage;
     public BufferedImage queenParticleImageUp;
     public BufferedImage queenParticleImageDown;
@@ -75,7 +78,12 @@ public class TextureManager {
     public BufferedImage bishopParticleImageDownRight;
     public BufferedImage enemyBishopParticleImageDownLeft;
     public BufferedImage enemyBishopParticleImageUpLeft;
-    public BufferedImage knightParticleImage;
+    public BufferedImage knightEarthParticleImage;
+    public BufferedImage knightSnowParticleImage;
+
+    public BufferedImage rockImage;
+    public BufferedImage bushImage;
+    public BufferedImage iceImage;
 
     public BufferedImage stopwatchImage;
 
@@ -86,7 +94,7 @@ public class TextureManager {
     }
 
     final int TILE_SIZE = 16;
-    void loadImages() {
+    void loadImages(Map map) {
         try
         {
             // No atlas
@@ -152,31 +160,37 @@ public class TextureManager {
             greyArrowUpLeftImage = getTextureUpscaled(7, 7, UPSCALED_SIZE);
 
 
-            cannonBallImage = getTextureUpscaled(0, 4, 64);
-            cannonBallEnemyImage = getTextureUpscaled(0,5, 64);
+            cannonBallImage = getTextureUpscaled(0, 8, 64);
+            cannonBallEarthEnemyImage = getTextureUpscaled(0,9, 64);
+            cannonBallSnowEnemyImage = getTextureUpscaled(0,10, 64);
 
-            knightParticleImage = getTextureUpscaled(0,6, 128);
+            knightEarthParticleImage = getTextureUpscaled(5,8, 128);
+            knightSnowParticleImage = getTextureUpscaled(5,9, 128);
 
-            explosionImage = getTextureUpscaled(0,7, 64);
+            explosionImage = getTextureUpscaled(0,11, 64);
 
-            queenParticleImageUp = getTextureUpscaled(3,4, UPSCALED_SIZE);
-            queenParticleImageDown = getTextureUpscaled(3,5, UPSCALED_SIZE);
-            queenParticleImageRight = getTextureUpscaled(3, 6, UPSCALED_SIZE);
-            queenParticleImageLeft = getTextureUpscaled(3, 7, UPSCALED_SIZE);
+            queenParticleImageUp = getTextureUpscaled(3,8, UPSCALED_SIZE);
+            queenParticleImageDown = getTextureUpscaled(3,9, UPSCALED_SIZE);
+            queenParticleImageRight = getTextureUpscaled(3, 10, UPSCALED_SIZE);
+            queenParticleImageLeft = getTextureUpscaled(3, 11, UPSCALED_SIZE);
 
-            bishopParticleImageUpRight = getTextureUpscaled(1,4, 96);
-            bishopParticleImageUpLeft = getTextureUpscaled(1,5, 96);
-            bishopParticleImageDownRight = getTextureUpscaled(1,6, 96);
-            bishopParticleImageDownLeft = getTextureUpscaled(1,7, 96);
+            bishopParticleImageUpRight = getTextureUpscaled(1,8, 96);
+            bishopParticleImageUpLeft = getTextureUpscaled(1,9, 96);
+            bishopParticleImageDownRight = getTextureUpscaled(1,10, 96);
+            bishopParticleImageDownLeft = getTextureUpscaled(1,11, 96);
 
-            enemyBishopParticleImageUpLeft = getTextureUpscaled(2,5, 96);
-            enemyBishopParticleImageDownLeft = getTextureUpscaled(2,7, 96);
+            enemyBishopParticleImageUpLeft = getTextureUpscaled(2,9, 96);
+            enemyBishopParticleImageDownLeft = getTextureUpscaled(2,11, 96);
 
-            stopwatchImage = getTextureUpscaled(5, 4,48);
+            stopwatchImage = getTextureUpscaled(6, 8,48);
 
-            unavailablePieceImage = getTexture(5,5);
-            tileImage = imageAtlas.getSubimage(0 * TILE_SIZE, 8 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
-            mapImage = generateBackgroundImage();
+            rockImage = getTextureUpscaled(6,9,TILE_SIZE);
+            iceImage = getTextureUpscaled(6,10,TILE_SIZE);
+
+            unavailablePieceImage = getTexture(7,8);
+            earthTileImage = imageAtlas.getSubimage(8 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+            snowTileImage = imageAtlas.getSubimage(8 * TILE_SIZE, 2 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+            mapImage = generateBackgroundImage(map);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,7 +219,16 @@ public class TextureManager {
     }
 
 
-    private BufferedImage generateBackgroundImage() {
+    private BufferedImage generateBackgroundImage(Map mapType) {
+        BufferedImage tileImage;
+
+        switch (mapType){
+            case Map.SNOW -> tileImage = snowTileImage;
+            case Map.WOODS -> tileImage = grassTileImage;
+            default -> tileImage = earthTileImage;
+        }
+
+
         if (tileImage == null) {
             return null;
         }

@@ -5,15 +5,17 @@ import main.GamePanel;
 import main.Main;
 import main.TextureManager;
 
+import java.awt.image.BufferedImage;
+
 public class KnightSmash extends Projectile {
     // Specialized constructor
-    public KnightSmash(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int decay, int damage, Direction direction) {
+    public KnightSmash(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int decay, int damage, Direction direction, BufferedImage skin) {
         super(gamePanel, textureManager, x, y, size, size);
         this.direction = direction;
         this.speed = speed;
         this.health = decay;
         this.damage = damage;
-        this.skin = textureManager.knightParticleImage;
+        this.skin = skin;
     }
 
     @Override

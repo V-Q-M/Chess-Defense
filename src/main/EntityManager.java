@@ -48,18 +48,33 @@ public class EntityManager {
     }
 
     public void spawnEnemyCannonBall(int x, int y, int damage){
-       if (textureManager.enemyRookImage != null) {
+        BufferedImage skin;
+        if (gamePanel.map == Map.SNOW) {
+           skin = textureManager.cannonBallSnowEnemyImage;
+        } else {
+            skin = textureManager.cannonBallEarthEnemyImage;
+        }
+
+
+       if (skin != null) {
            int size = CANNON_BALL_SIZE;
            int bx = x + (gamePanel.pieceWidth - size) / 2;
-           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, textureManager, bx, y, size, DEFAULT_ENEMY_CANNONBALL_SPEED, damage));
+           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, textureManager, bx, y, size, DEFAULT_ENEMY_CANNONBALL_SPEED, damage, skin));
            soundManager.playClip(soundManager.shootClip);
        }
     }
     public void spawnBossCannonBall(int x, int y){
-        if (textureManager.enemyRookImage != null) {
+        BufferedImage skin;
+        if (gamePanel.map == Map.SNOW){
+            skin = textureManager.cannonBallSnowEnemyImage;
+        } else {
+            skin = textureManager.cannonBallEarthEnemyImage;
+        }
+
+        if (skin != null) {
             int size = CANNON_BALL_SIZE * 2;
             int bx = x + (gamePanel.pieceWidth - size) / 2;
-            gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, textureManager, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG * 2));
+            gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, textureManager, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG * 2, skin));
             soundManager.playClip(soundManager.shootClip);
         }
     }
@@ -105,13 +120,21 @@ public class EntityManager {
     }
 
     public void spawnKnightParticles() {
-       if (textureManager.knightImage != null) {
+        BufferedImage skin;
+        if (gamePanel.map == Map.SNOW){
+           skin = textureManager.knightSnowParticleImage;
+        } else {
+            skin = textureManager.knightEarthParticleImage;
+        }
+
+
+       if (skin != null) {
            int size = 128; // size of the cannonball
            // spawn at top‐center of the rook
            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
            int by = player.y + (gamePanel.pieceHeight - size) / 2;
 
-           gamePanel.projectiles.add(new KnightSmash(gamePanel, textureManager, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_KNIGHT, DEFAULT_SLAM_DMG, player.facingDirection));
+           gamePanel.projectiles.add(new KnightSmash(gamePanel, textureManager, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_KNIGHT, DEFAULT_SLAM_DMG, player.facingDirection, skin));
            soundManager.playClip(soundManager.smashClip);
        }
     }

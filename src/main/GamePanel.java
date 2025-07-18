@@ -2,7 +2,6 @@ package main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -28,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
   private boolean turretsRepaired = false;
   private boolean bishopsRevived = false;
   public int score = 0;
+  public Map map = Map.EARTH;
 
   boolean gameStart = true;
   public boolean swapSoon = false;
@@ -109,7 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
     this.difficulty = difficulty;
     System.out.println("DIFFICULTY: " + difficulty);
     enemyManager = new EnemyManager(this, difficulty);
-    textureManager.loadImages();
+    textureManager.loadImages(map);
     //this.loadFonts();
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
@@ -586,8 +586,6 @@ public class GamePanel extends JPanel implements Runnable{
     drawHealthBars(g2d);
     drawUI(g2d);
   }
-
-  private BufferedImage mapImage;
 
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);

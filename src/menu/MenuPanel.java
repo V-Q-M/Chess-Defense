@@ -171,7 +171,6 @@ public class MenuPanel extends JPanel {
                 System.out.println(SettingsManager.easyText);
                 startingGame = true;
                 repaint();
-                soundManager.stopMusic();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
                     Main.startMainGame(this, null, "easy");
@@ -179,7 +178,6 @@ public class MenuPanel extends JPanel {
             } else if (buttonIndexY % 4 == 1) {
                 System.out.println(SettingsManager.mediumText);
                 startingGame = true;
-                soundManager.stopMusic();
                 repaint();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
@@ -189,7 +187,6 @@ public class MenuPanel extends JPanel {
                 System.out.println(SettingsManager.hardText);
                 startingGame = true;
                 repaint();
-                soundManager.stopMusic();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
                     Main.startMainGame(this, null, "hard");

@@ -3,14 +3,16 @@ package entities;
 import main.GamePanel;
 import main.TextureManager;
 
+import java.awt.image.BufferedImage;
+
 public class EnemyCannonBall extends Projectile {
 
-    public EnemyCannonBall(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int damage) {
+    public EnemyCannonBall(GamePanel gamePanel, TextureManager textureManager, int x, int y, int size, int speed, int damage, BufferedImage skin) {
         super(gamePanel, textureManager, x, y, size, size);
         this.health = 200;
         this.speed = speed;
         this.damage = damage;
-        this.skin = textureManager.cannonBallEnemyImage;
+        this.skin = skin;
     }
 
     @Override
