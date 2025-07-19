@@ -27,7 +27,8 @@ public abstract class ImmovableObject {
     public int recoveryMarkerTime = 15;
 
     public int damage;
-    public int health = 100;
+    public int maxHealth = 100;
+    public int health = maxHealth;
 
 
     public ImmovableObject(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {

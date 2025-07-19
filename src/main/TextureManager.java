@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TextureManager {
 
@@ -94,98 +95,99 @@ public class TextureManager {
     }
 
     final int TILE_SIZE = 16;
+    final int UPSCALED_SIZE = 128;
     void loadImages(Map map) {
         try
         {
             // No atlas
-            bottomBarImage = ImageIO.read(getClass().getResourceAsStream("/background/BottomBar.png"));
+            bottomBarImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/BottomBar.png")));
 
             // Use an imageAtlas
-            imageAtlas = ImageIO.read(getClass().getResourceAsStream("/imageAtlas.png"));
+            imageAtlas = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/imageAtlas.png")));
 
-            rookImage = getTextureUpscaled(0,0, UPSCALED_SIZE);
-            rookHurtImage = getTextureUpscaled(0,1, UPSCALED_SIZE);
+            rookImage = getTextureUpscaled(0, 0, TILE_SIZE, UPSCALED_SIZE);
+            rookHurtImage = getTextureUpscaled(0, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            knightImage = getTextureUpscaled(1, 0, UPSCALED_SIZE);
-            knightHurtImage = getTextureUpscaled(1, 1, UPSCALED_SIZE);
+            knightImage = getTextureUpscaled(1, 0, TILE_SIZE, UPSCALED_SIZE);
+            knightHurtImage = getTextureUpscaled(1, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            bishopImage = getTextureUpscaled(2, 0, UPSCALED_SIZE);
-            bishopHurtImage = getTextureUpscaled(2,1, UPSCALED_SIZE);
+            bishopImage = getTextureUpscaled(2, 0, TILE_SIZE, UPSCALED_SIZE);
+            bishopHurtImage = getTextureUpscaled(2, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            queenImage = getTextureUpscaled(3, 0, UPSCALED_SIZE);
-            queenHurtImage = getTextureUpscaled(3,1, UPSCALED_SIZE);
+            queenImage = getTextureUpscaled(3, 0, TILE_SIZE, UPSCALED_SIZE);
+            queenHurtImage = getTextureUpscaled(3, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            kingImage = getTextureUpscaled(4,0, UPSCALED_SIZE);
-            kingHurtImage = getTextureUpscaled(4,1, UPSCALED_SIZE);
+            kingImage = getTextureUpscaled(4, 0, TILE_SIZE, UPSCALED_SIZE);
+            kingHurtImage = getTextureUpscaled(4, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            pawnImage = getTextureUpscaled(5,0, UPSCALED_SIZE);
-            pawnHurtImage = getTextureUpscaled(5,1, UPSCALED_SIZE);
+            pawnImage = getTextureUpscaled(5, 0, TILE_SIZE, UPSCALED_SIZE);
+            pawnHurtImage = getTextureUpscaled(5, 1, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyRookImage = getTextureUpscaled(0,2, UPSCALED_SIZE);
-            enemyRookHurtImage = getTextureUpscaled(0,3, UPSCALED_SIZE);
+            enemyRookImage = getTextureUpscaled(0, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyRookHurtImage = getTextureUpscaled(0, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyKnightImage = getTextureUpscaled(1,2, UPSCALED_SIZE);
-            enemyKnightHurtImage = getTextureUpscaled(1,3, UPSCALED_SIZE);
+            enemyKnightImage = getTextureUpscaled(1, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyKnightHurtImage = getTextureUpscaled(1, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyBishopImage = getTextureUpscaled(2,2, UPSCALED_SIZE);
-            enemyBishopHurtImage = getTextureUpscaled(2,3, UPSCALED_SIZE);
+            enemyBishopImage = getTextureUpscaled(2, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyBishopHurtImage = getTextureUpscaled(2, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyQueenImage = getTextureUpscaled(3,2, UPSCALED_SIZE);
-            enemyQueenHurtImage = getTextureUpscaled(3,3, UPSCALED_SIZE);
+            enemyQueenImage = getTextureUpscaled(3, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyQueenHurtImage = getTextureUpscaled(3, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyKingImage = getTextureUpscaled(4,2, UPSCALED_SIZE);
-            enemyKingHurtImage = getTextureUpscaled(4,3, UPSCALED_SIZE);
+            enemyKingImage = getTextureUpscaled(4, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyKingHurtImage = getTextureUpscaled(4, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            enemyPawnImage = getTextureUpscaled(5,2, UPSCALED_SIZE);
-            enemyPawnHurtImage = getTextureUpscaled(5,3, UPSCALED_SIZE);
+            enemyPawnImage = getTextureUpscaled(5, 2, TILE_SIZE, UPSCALED_SIZE);
+            enemyPawnHurtImage = getTextureUpscaled(5, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            arrowUpImage = getTextureUpscaled(6, 0, UPSCALED_SIZE);
-            arrowDownImage = getTextureUpscaled(6, 1, UPSCALED_SIZE);
-            arrowRightImage = getTextureUpscaled(6,2, UPSCALED_SIZE);
-            arrowLeftImage = getTextureUpscaled(6,3, UPSCALED_SIZE);
+            arrowUpImage = getTextureUpscaled(6, 0, TILE_SIZE, UPSCALED_SIZE);
+            arrowDownImage = getTextureUpscaled(6, 1, TILE_SIZE, UPSCALED_SIZE);
+            arrowRightImage = getTextureUpscaled(6, 2, TILE_SIZE, UPSCALED_SIZE);
+            arrowLeftImage = getTextureUpscaled(6, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            arrowDownRightImage = getTextureUpscaled(7,0, UPSCALED_SIZE);
-            arrowDownLeftImage = getTextureUpscaled(7,1, UPSCALED_SIZE);
-            arrowUpRightImage = getTextureUpscaled(7,2, UPSCALED_SIZE);
-            arrowUpLeftImage = getTextureUpscaled(7, 3, UPSCALED_SIZE);
+            arrowDownRightImage = getTextureUpscaled(7, 0, TILE_SIZE, UPSCALED_SIZE);
+            arrowDownLeftImage = getTextureUpscaled(7, 1, TILE_SIZE, UPSCALED_SIZE);
+            arrowUpRightImage = getTextureUpscaled(7, 2, TILE_SIZE, UPSCALED_SIZE);
+            arrowUpLeftImage = getTextureUpscaled(7, 3, TILE_SIZE, UPSCALED_SIZE);
 
-            greyArrowUpImage = getTextureUpscaled(6, 4, UPSCALED_SIZE);
-            greyArrowDownImage = getTextureUpscaled(6, 5, UPSCALED_SIZE);
-            greyArrowRightImage = getTextureUpscaled(6,6, UPSCALED_SIZE);
-            greyArrowLeftImage = getTextureUpscaled(6,7, UPSCALED_SIZE);
+            greyArrowUpImage = getTextureUpscaled(6, 4, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowDownImage = getTextureUpscaled(6, 5, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowRightImage = getTextureUpscaled(6,6, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowLeftImage = getTextureUpscaled(6,7, TILE_SIZE, UPSCALED_SIZE);
 
-            greyArrowDownRightImage = getTextureUpscaled(7,4, UPSCALED_SIZE);
-            greyArrowDownLeftImage = getTextureUpscaled(7,5, UPSCALED_SIZE);
-            greyArrowUpRightImage = getTextureUpscaled(7,6, UPSCALED_SIZE);
-            greyArrowUpLeftImage = getTextureUpscaled(7, 7, UPSCALED_SIZE);
+            greyArrowDownRightImage = getTextureUpscaled(7,4, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowDownLeftImage = getTextureUpscaled(7,5, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowUpRightImage = getTextureUpscaled(7,6, TILE_SIZE, UPSCALED_SIZE);
+            greyArrowUpLeftImage = getTextureUpscaled(7, 7, TILE_SIZE, UPSCALED_SIZE);
 
 
-            cannonBallImage = getTextureUpscaled(0, 8, 64);
-            cannonBallEarthEnemyImage = getTextureUpscaled(0,9, 64);
-            cannonBallSnowEnemyImage = getTextureUpscaled(0,10, 64);
+            cannonBallImage = getTextureUpscaled(0, 8, TILE_SIZE, 64);
+            cannonBallEarthEnemyImage = getTextureUpscaled(0,9, TILE_SIZE, 64);
+            cannonBallSnowEnemyImage = getTextureUpscaled(0,10, TILE_SIZE, 64);
 
-            knightEarthParticleImage = getTextureUpscaled(5,8, 128);
-            knightSnowParticleImage = getTextureUpscaled(5,9, 128);
+            knightEarthParticleImage = getTextureUpscaled(5,8, TILE_SIZE, 128);
+            knightSnowParticleImage = getTextureUpscaled(5,9, TILE_SIZE, 128);
 
-            explosionImage = getTextureUpscaled(0,11, 64);
+            explosionImage = getTextureUpscaled(0,11, TILE_SIZE, 64);
 
-            queenParticleImageUp = getTextureUpscaled(3,8, UPSCALED_SIZE);
-            queenParticleImageDown = getTextureUpscaled(3,9, UPSCALED_SIZE);
-            queenParticleImageRight = getTextureUpscaled(3, 10, UPSCALED_SIZE);
-            queenParticleImageLeft = getTextureUpscaled(3, 11, UPSCALED_SIZE);
+            queenParticleImageUp = getTextureUpscaled(3,8, TILE_SIZE, UPSCALED_SIZE);
+            queenParticleImageDown = getTextureUpscaled(3,9, TILE_SIZE, UPSCALED_SIZE);
+            queenParticleImageRight = getTextureUpscaled(3, 10, TILE_SIZE, UPSCALED_SIZE);
+            queenParticleImageLeft = getTextureUpscaled(3, 11, TILE_SIZE, UPSCALED_SIZE);
 
-            bishopParticleImageUpRight = getTextureUpscaled(1,8, 96);
-            bishopParticleImageUpLeft = getTextureUpscaled(1,9, 96);
-            bishopParticleImageDownRight = getTextureUpscaled(1,10, 96);
-            bishopParticleImageDownLeft = getTextureUpscaled(1,11, 96);
+            bishopParticleImageUpRight = getTextureUpscaled(1,8, TILE_SIZE, 96);
+            bishopParticleImageUpLeft = getTextureUpscaled(1,9, TILE_SIZE, 96);
+            bishopParticleImageDownRight = getTextureUpscaled(1,10, TILE_SIZE, 96);
+            bishopParticleImageDownLeft = getTextureUpscaled(1,11, TILE_SIZE, 96);
 
-            enemyBishopParticleImageUpLeft = getTextureUpscaled(2,9, 96);
-            enemyBishopParticleImageDownLeft = getTextureUpscaled(2,11, 96);
+            enemyBishopParticleImageUpLeft = getTextureUpscaled(2,9, TILE_SIZE, 96);
+            enemyBishopParticleImageDownLeft = getTextureUpscaled(2,11, TILE_SIZE, 96);
 
-            stopwatchImage = getTextureUpscaled(6, 8,48);
+            stopwatchImage = getTextureUpscaled(6, 8, TILE_SIZE ,48);
 
-            rockImage = getTextureUpscaled(6,9, UPSCALED_SIZE);
-            iceImage = getTextureUpscaled(6,10, UPSCALED_SIZE);
+            rockImage = getTextureUpscaled(6,9, TILE_SIZE, UPSCALED_SIZE);
+            iceImage = getTextureUpscaled(6, 10, TILE_SIZE * 2, UPSCALED_SIZE * 2);
 
             unavailablePieceImage = getTexture(7,8);
             earthTileImage = imageAtlas.getSubimage(8 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
@@ -199,10 +201,8 @@ public class TextureManager {
 
     }
 
-    private final int UPSCALED_SIZE = 128;
-
-    private BufferedImage getTextureUpscaled(int col, int row, int desiredSize){
-        BufferedImage texture = imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE ,TILE_SIZE);
+    private BufferedImage getTextureUpscaled(int col, int row, int originalSize, int desiredSize){
+        BufferedImage texture = imageAtlas.getSubimage(col * TILE_SIZE, row * TILE_SIZE, originalSize ,originalSize);
 
         BufferedImage upscaledTexture = new BufferedImage(desiredSize, desiredSize, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = upscaledTexture.createGraphics();

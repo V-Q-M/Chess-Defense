@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -10,8 +9,7 @@ import allies.*;
 import allies.player.Player;
 import enemies.Enemy;
 import entities.Projectile;
-import mapObjects.ImmovableObject;
-import mapObjects.Rock;
+import mapObjects.*;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -84,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable{
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
   TextureManager textureManager = new TextureManager(this);
+  MapManager mapManager = new MapManager(this);
 
   // Start position at ca. center
   int startX = pieceWidth*4;
@@ -109,16 +108,26 @@ public class GamePanel extends JPanel implements Runnable{
     requestFocusInWindow();
     addKeyListener(keyHandler);
 
-    // setup
     this.difficulty = difficulty;
     System.out.println("DIFFICULTY: " + difficulty);
     enemyManager = new EnemyManager(this, difficulty);
+    mapManager.pickMap();
     textureManager.loadImages(map);
-    //this.loadFonts();
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
     soundManager.loadSounds();
     getSettings();
+
+    setupGame();
+
+    running = true;
+    gameThread = new Thread(this);
+    gameThread.start();
+  }
+
+  private void setupGame(){
+    // Spawn the mapObjects
+    mapManager.spawnMapObjects();
 
     // Builds the pawnwall on the left
     buildWall();
@@ -130,13 +139,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     player.selectPiece(PieceType.ROOK);
-
-    mapObjects.add(new Rock(this, soundManager, textureManager, collisionHandler, 6*128, 6*128, 128, 128));
-
-    running = true;
-    gameThread = new Thread(this);
-    gameThread.start();
   }
+
 
   @Override
   public void run(){
@@ -590,7 +594,7 @@ public class GamePanel extends JPanel implements Runnable{
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);
     for (ImmovableObject mapObject : mapObjects){
-      g2d.drawImage(mapObject.skin, mapObject.x, mapObject.y, this);
+      g2d.drawImage(mapObject.skin, mapObject.x, mapObject.y,this);
     }
   }
 
@@ -727,6 +731,13 @@ public class GamePanel extends JPanel implements Runnable{
         createHealthBar(g2d, ally.x, ally.y, ally.width, 15, ally.health, ally.maxHealth, LIME);
       }
     }
+
+    for (ImmovableObject mapObject : mapObjects) {
+      if (mapObject.health != mapObject.maxHealth){
+        createHealthBar(g2d, mapObject.x, mapObject.y, mapObject.width, 15, mapObject.health, mapObject.maxHealth, LIME);
+      }
+    }
+
 
     int playerMaxHealth = 100;
     int playerHealth = playerMaxHealth;

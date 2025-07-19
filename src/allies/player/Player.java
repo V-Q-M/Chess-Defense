@@ -120,7 +120,6 @@ public class Player extends livingBeing {
 
     private void forceSwap() {
 
-        System.out.println("SIZE" + availablePieces.size());
         if (lastPiece != null && !availablePieces.contains(lastPiece)){
             availablePieces.add(lastPiece);
         }
@@ -382,8 +381,6 @@ public class Player extends livingBeing {
            }
         }
 
-        System.out.println("ATTACKCD" + attackCoolDownCounter);
-        System.out.println("ABCD" + abilityCoolDown);
         if (hasAttacked && attackCoolDownCounter < abilityCoolDown){
             attackCoolDownCounter++;
         } else {

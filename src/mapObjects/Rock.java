@@ -11,6 +11,7 @@ public class Rock extends ImmovableObject{
        this.baseSkin = textureManager.rockImage;
        this.hurtSkin = textureManager.rockImage;
        this.skin = baseSkin;
-       this.health = 500;
+       this.maxHealth = 500;
+       this.health = maxHealth;
     }
 }
