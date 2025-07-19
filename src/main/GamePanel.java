@@ -819,9 +819,11 @@ public class GamePanel extends JPanel implements Runnable{
 
     g2d.drawImage(textureManager.bottomBarImage,0, Main.HEIGHT - 56,  this);
 
+    // Score
     g2d.setColor(Color.WHITE);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
 
+    // Available pieces
     g2d.drawImage(textureManager.rookImage, xPos, yPos, size, size, this);
     g2d.drawImage(textureManager.knightImage, xPos + 129, yPos, size, size, this);
     g2d.drawImage(textureManager.kingImage, xPos + 259, yPos, size, size, this);
@@ -841,6 +843,21 @@ public class GamePanel extends JPanel implements Runnable{
     }
     if (!player.bishopAlive){
       g2d.drawImage(textureManager.unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
+    }
+
+    // difficulty
+    if (SettingsManager.languageGerman){
+      switch (difficulty) {
+        case "easy" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
+        case "medium" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
+        case "hard" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
+      }
+    } else {
+      switch (difficulty) {
+        case "easy" -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
+        case "medium" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
+        case "hard" -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
+      }
     }
   }
 
