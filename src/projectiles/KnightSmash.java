@@ -1,8 +1,7 @@
-package entities;
+package projectiles;
 
 import main.Direction;
 import main.GamePanel;
-import main.Main;
 import main.TextureManager;
 
 import java.awt.image.BufferedImage;

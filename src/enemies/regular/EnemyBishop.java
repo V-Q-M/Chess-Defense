@@ -13,6 +13,7 @@ public class EnemyBishop extends Enemy {
         this.lanceDamage = lanceDamage;
         this.baseSpeed = 2;
         this.speed = baseSpeed;
+        this.slowedSpeed = 1;
         this.health = 150;
         this.maxHealth = 150;
         this.baseSkin = textureManager.enemyRookImage;

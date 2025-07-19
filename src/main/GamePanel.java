@@ -8,8 +8,7 @@ import javax.swing.*;
 import allies.*;
 import allies.player.Player;
 import enemies.Enemy;
-import enemies.ghosts.GhostRook;
-import entities.Projectile;
+import projectiles.Projectile;
 import mapObjects.*;
 
 public class GamePanel extends JPanel implements Runnable{

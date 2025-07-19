@@ -1,13 +1,14 @@
 package enemies;
 
 import allies.Ally;
-import entities.Projectile;
+import projectiles.Projectile;
 import main.*;
 import mapObjects.ImmovableObject;
 
 public abstract class Enemy extends LivingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean isBoss = false;
+    public int slowedSpeed;
 
 
     public Enemy(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
@@ -101,7 +102,7 @@ public abstract class Enemy extends LivingBeing {
         }
         if (isSlowed) {
             if (speed == baseSpeed) {
-                speed = Math.min(speed / 2, 1);
+                speed =  slowedSpeed;
             }
         } else {
             if (speed < baseSpeed) {

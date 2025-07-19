@@ -40,19 +40,19 @@ public class EnemyManager {
                 rookDamage = 50;
                 bishopDamage = 75;
                 ghostSpawnChance = 0.1;
-                zombieSpawnChance = 0.12;
+                zombieSpawnChance = 0.15;
             }
             case "medium" -> {
                 rookDamage = 40;
                 bishopDamage = 55;
-                ghostSpawnChance = 0.06;
-                zombieSpawnChance = 0.08;
+                ghostSpawnChance = 0.08;
+                zombieSpawnChance = 0.1;
             }
             default -> {
                 rookDamage = 25;
                 bishopDamage = 40;
-                ghostSpawnChance = 0.04;
-                zombieSpawnChance = 0.06;
+                ghostSpawnChance = 0.05;
+                zombieSpawnChance = 0.08;
             }
         }
     }

@@ -12,6 +12,7 @@ public class GhostRook extends Enemy {
         this.cannonDamage = cannonDamage;
         this.baseSpeed = 4;
         this.speed = baseSpeed;
+        this.slowedSpeed = baseSpeed; // ghosts arent slowed
         this.maxHealth = 1;
         this.health = maxHealth;
         this.baseSkin = textureManager.ghostRookImage;

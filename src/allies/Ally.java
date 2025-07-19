@@ -1,6 +1,6 @@
 package allies;
 
-import entities.Projectile;
+import projectiles.Projectile;
 import main.*;
 
 public abstract class Ally extends LivingBeing {

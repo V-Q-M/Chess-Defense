@@ -1,6 +1,6 @@
 package mapObjects;
 
-import entities.Projectile;
+import projectiles.Projectile;
 import main.CollisionHandler;
 import main.GamePanel;
 import main.SoundManager;

@@ -1,7 +1,7 @@
 package allies.player;
 
 import enemies.Enemy;
-import entities.Projectile;
+import projectiles.Projectile;
 import main.*;
 import mapObjects.ImmovableObject;
 

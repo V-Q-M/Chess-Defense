@@ -1,4 +1,4 @@
-package entities;
+package projectiles;
 
 import main.GamePanel;
 import main.TextureManager;

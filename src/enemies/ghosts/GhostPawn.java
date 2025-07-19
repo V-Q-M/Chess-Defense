@@ -12,6 +12,7 @@ public class GhostPawn extends Enemy {
         this.damage = 10;
         this.baseSpeed = 5;
         this.speed = baseSpeed;
+        this.slowedSpeed = baseSpeed;
         this.maxHealth = 1;
         this.health = maxHealth;
         this.baseSkin = textureManager.ghostPawnImage;

@@ -12,6 +12,7 @@ public class EnemyRook extends Enemy {
         this.cannonDamage = cannonDamage;
         this.baseSpeed = 2;
         this.speed = baseSpeed;
+        this.slowedSpeed = 1;
         this.maxHealth = 150;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyRookImage;
