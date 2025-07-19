@@ -34,6 +34,11 @@ public class TextureManager {
     // Enemy textures
     public BufferedImage enemyRookImage;
     public BufferedImage enemyRookHurtImage;
+    public BufferedImage ghostRookImage;
+    public BufferedImage ghostRookHurtImage;
+    public BufferedImage zombieRookImage;
+    public BufferedImage zombieRookHurtImage;
+
     public BufferedImage enemyKnightImage;
     public BufferedImage enemyKnightHurtImage;
     public BufferedImage enemyBishopImage;
@@ -42,8 +47,13 @@ public class TextureManager {
     public BufferedImage enemyQueenHurtImage;
     public BufferedImage enemyKingImage;
     public BufferedImage enemyKingHurtImage;
+
     public BufferedImage enemyPawnImage;
     public BufferedImage enemyPawnHurtImage;
+    public BufferedImage ghostPawnImage;
+    public BufferedImage ghostPawnHurtImage;
+    public BufferedImage zombiePawnImage;
+    public BufferedImage zombiePawnHurtImage;
 
     // Projectile textures
     public BufferedImage arrowLeftImage;
@@ -126,6 +136,12 @@ public class TextureManager {
             enemyRookImage = getTextureUpscaled(0, 2, TILE_SIZE, UPSCALED_SIZE);
             enemyRookHurtImage = getTextureUpscaled(0, 3, TILE_SIZE, UPSCALED_SIZE);
 
+            ghostRookImage = getTextureUpscaled(0, 4, TILE_SIZE, UPSCALED_SIZE);
+            ghostRookHurtImage = getTextureUpscaled(0, 5, TILE_SIZE, UPSCALED_SIZE);
+
+            zombieRookImage = getTextureUpscaled(0, 6, TILE_SIZE, UPSCALED_SIZE);
+            zombieRookHurtImage = getTextureUpscaled(0, 7, TILE_SIZE, UPSCALED_SIZE);
+
             enemyKnightImage = getTextureUpscaled(1, 2, TILE_SIZE, UPSCALED_SIZE);
             enemyKnightHurtImage = getTextureUpscaled(1, 3, TILE_SIZE, UPSCALED_SIZE);
 
@@ -140,6 +156,12 @@ public class TextureManager {
 
             enemyPawnImage = getTextureUpscaled(5, 2, TILE_SIZE, UPSCALED_SIZE);
             enemyPawnHurtImage = getTextureUpscaled(5, 3, TILE_SIZE, UPSCALED_SIZE);
+
+            ghostPawnImage = getTextureUpscaled(5, 4, TILE_SIZE, UPSCALED_SIZE);
+            ghostPawnHurtImage = getTextureUpscaled(5, 5, TILE_SIZE, UPSCALED_SIZE);
+
+            zombiePawnImage = getTextureUpscaled(5, 6, TILE_SIZE, UPSCALED_SIZE);
+            zombiePawnHurtImage = getTextureUpscaled(5, 7, TILE_SIZE, UPSCALED_SIZE);
 
             arrowUpImage = getTextureUpscaled(6, 0, TILE_SIZE, UPSCALED_SIZE);
             arrowDownImage = getTextureUpscaled(6, 1, TILE_SIZE, UPSCALED_SIZE);

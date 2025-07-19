@@ -1,22 +1,22 @@
-package enemies.regular;
+package enemies.zombies;
 
 import enemies.Enemy;
 import main.*;
 
-public class EnemyRook extends Enemy {
+public class ZombieRook extends Enemy {
     private int cannonDamage;
 
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
+    public ZombieRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
-        this.speed = 2;
-        this.maxHealth = 150;
+        this.speed = 1;
+        this.maxHealth = 75;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyRookImage;
         this.hurtSkin = textureManager.enemyRookHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 150;
+        this.attackCoolDown = 600;
         this.attackCoolDownCounter = 0;
     }
 

@@ -1,20 +1,20 @@
-package enemies.regular;
+package enemies.ghosts;
 
 import enemies.Enemy;
 import main.*;
 
-public class EnemyRook extends Enemy {
+public class GhostRook extends Enemy {
     private int cannonDamage;
 
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
+    public GhostRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
-        this.speed = 2;
-        this.maxHealth = 150;
+        this.speed = 4;
+        this.maxHealth = 1;
         this.health = maxHealth;
-        this.baseSkin = textureManager.enemyRookImage;
-        this.hurtSkin = textureManager.enemyRookHurtImage;
+        this.baseSkin = textureManager.ghostRookImage;
+        this.hurtSkin = textureManager.ghostRookHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 150;
         this.attackCoolDownCounter = 0;

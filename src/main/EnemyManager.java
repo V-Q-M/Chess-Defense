@@ -3,6 +3,8 @@ package main;
 import enemies.bosses.KingBoss;
 import enemies.bosses.PawnBoss;
 import enemies.bosses.RookBoss;
+import enemies.ghosts.GhostPawn;
+import enemies.ghosts.GhostRook;
 import enemies.regular.EnemyBishop;
 import enemies.regular.EnemyPawn;
 import enemies.regular.EnemyRook;
@@ -46,12 +48,23 @@ public class EnemyManager {
     }
 
     void spawnEnemy(int x, int y, int width, int height, PieceType type){
-        switch (type){
-            case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
-            case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
-            case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
-            case PieceType.KING   -> gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
-        }
+       boolean spawnGhost = Math.random() < 0.1;
+
+       if (spawnGhost){
+           switch (type) {
+               case PieceType.PAWN   -> gamePanel.enemies.add(new GhostPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+               case PieceType.ROOK   -> gamePanel.enemies.add(new GhostRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
+               case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
+               case PieceType.KING   -> gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+           }
+       } else {
+           switch (type) {
+               case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+               case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
+               case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
+               case PieceType.KING   -> gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+           }
+       }
 
         if (shouldSpawnGuard){
             shouldSpawnGuard = false;

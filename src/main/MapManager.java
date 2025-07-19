@@ -21,7 +21,7 @@ public class MapManager {
 
         for (int i = 0; i < count; i++) {
             int x = ((int)(Math.random() * (10 - 3 + 1)) + 3) * 128; // from tile 3 to 13
-            int y = ((int)(Math.random() * 9)) * 128; // Adjust 10 to your map height in tiles
+            int y = ((int)(Math.random() * 7)) * 128; // Adjust 10 to your map height in tiles
 
             if (gamePanel.map == Map.SNOW) {
                     gamePanel.mapObjects.add(new Ice(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, 256, 256));

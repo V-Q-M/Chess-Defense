@@ -8,6 +8,7 @@ import javax.swing.*;
 import allies.*;
 import allies.player.Player;
 import enemies.Enemy;
+import enemies.ghosts.GhostRook;
 import entities.Projectile;
 import mapObjects.*;
 
