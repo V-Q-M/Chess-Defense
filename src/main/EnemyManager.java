@@ -27,22 +27,24 @@ public class EnemyManager {
     private final int rookDamage;
     private final int bishopDamage;
 
-    private final String difficulty;
+    private final GameMode gameMode;
+    private final GameMode difficulty;
     private double zombieSpawnChance = 0.1;
     private double ghostSpawnChance = 0.12;
 
-    public EnemyManager(GamePanel gamePanel, String difficulty){
+    public EnemyManager(GamePanel gamePanel, GameMode gameMode, GameMode difficulty){
         this.gamePanel = gamePanel;
+        this.gameMode = gameMode;
         this.difficulty = difficulty;
 
         switch (difficulty){
-            case "hard" -> {
+            case HARD -> {
                 rookDamage = 50;
                 bishopDamage = 75;
                 ghostSpawnChance = 0.1;
                 zombieSpawnChance = 0.15;
             }
-            case "medium" -> {
+            case MEDIUM -> {
                 rookDamage = 40;
                 bishopDamage = 55;
                 ghostSpawnChance = 0.08;
@@ -60,6 +62,10 @@ public class EnemyManager {
     void spawnEnemy(int x, int y, int width, int height, PieceType type){
        boolean spawnGhost = Math.random() < ghostSpawnChance;
        boolean spawnZombie = Math.random() < zombieSpawnChance;
+       if (gameMode != GameMode.SPOOKY){
+            spawnGhost = false;
+            spawnZombie = false;
+       }
 
         if (spawnGhost) {
             switch (type) {
@@ -128,8 +134,8 @@ public class EnemyManager {
             }
         }
         switch (difficulty){
-            case "hard" -> adjustDifficultyHard();
-            case "medium" -> adjustDifficultyMedium();
+            case HARD -> adjustDifficultyHard();
+            case MEDIUM -> adjustDifficultyMedium();
             default -> adjustDifficultyEasy();
         }
     }

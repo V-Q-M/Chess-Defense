@@ -18,7 +18,7 @@ public class GhostRook extends Enemy {
         this.baseSkin = textureManager.ghostRookImage;
         this.hurtSkin = textureManager.ghostRookHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 150;
+        this.attackCoolDown = 50;
         this.attackCoolDownCounter = 0;
         soundManager.playClip(soundManager.ghostSpawnClip);
     }

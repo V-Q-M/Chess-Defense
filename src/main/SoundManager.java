@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 public class SoundManager {
     JPanel gamePanel;
+    GameMode gameMode;
 
     public Clip shootClip;
     public Clip sliceClip;
@@ -30,9 +31,12 @@ public class SoundManager {
 
     public Clip menuTheme;
     public Clip mainTheme;
+    public Clip spookyTheme;
+    public Clip eerieTheme;
 
-    public SoundManager(JPanel gamePanel){
+    public SoundManager(JPanel gamePanel, GameMode gameMode){
         this.gamePanel = gamePanel;
+        this.gameMode = gameMode;
     }
 
     public void playClip(Clip clip) {
@@ -46,24 +50,46 @@ public class SoundManager {
        if (mainTheme == null) return;
        if (menuTheme.isRunning()) menuTheme.stop();
        if (mainTheme.isRunning()) mainTheme.stop();
-       mainTheme.setFramePosition(0);
-       mainTheme.loop(Clip.LOOP_CONTINUOUSLY);
-       mainTheme.start();
+       if (spookyTheme.isRunning()) spookyTheme.stop();
+        if (eerieTheme.isRunning()) eerieTheme.stop();
+       if (gameMode == GameMode.SPOOKY){
+           spookyTheme.setFramePosition(0);
+           spookyTheme.loop(Clip.LOOP_CONTINUOUSLY);
+           spookyTheme.start();
+       } else {
+           mainTheme.setFramePosition(0);
+           mainTheme.loop(Clip.LOOP_CONTINUOUSLY);
+           mainTheme.start();
+       }
     }
 
     public void startMenuMusic(){
         if(menuTheme == null) return;
         if (menuTheme.isRunning()) menuTheme.stop();
         if (mainTheme.isRunning()) mainTheme.stop();
+        if (spookyTheme.isRunning()) spookyTheme.stop();
+        if (eerieTheme.isRunning()) eerieTheme.stop();
         menuTheme.setFramePosition(0);
         menuTheme.loop(Clip.LOOP_CONTINUOUSLY);
         menuTheme.start();
     }
 
+    public void startEerieMenuMusic(){
+        if (menuTheme == null) return;
+        if (menuTheme.isRunning()) menuTheme.stop();
+        if (mainTheme.isRunning()) mainTheme.stop();
+        if (spookyTheme.isRunning()) spookyTheme.stop();
+        if (eerieTheme.isRunning()) eerieTheme.stop();
+        eerieTheme.setFramePosition(0);
+        eerieTheme.loop(Clip.LOOP_CONTINUOUSLY);
+        eerieTheme.start();
+    }
     public void stopMusic(){
         if (mainTheme == null) return;
         if (menuTheme.isRunning()) menuTheme.stop();
         if (mainTheme.isRunning()) mainTheme.stop();
+        if (spookyTheme.isRunning()) spookyTheme.stop();
+        if (eerieTheme.isRunning()) eerieTheme.stop();
     }
 
     public void loadSounds() {
@@ -78,6 +104,8 @@ public class SoundManager {
         summonClip = loadClip("/sounds/summon.wav");
         menuTheme = loadClip("/sounds/menuTheme.wav");
         mainTheme = loadClip("/sounds/mainTheme2.wav");
+        spookyTheme = loadClip("/sounds/spookyTheme.wav");
+        eerieTheme = loadClip("/sounds/eerie.wav");
         buttonHoverClip = loadClip("/sounds/buttonHover.wav");
         buttonClickClip = loadClip("/sounds/buttonClick.wav");
         healClip = loadClip("/sounds/heal.wav");

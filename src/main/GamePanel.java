@@ -80,18 +80,17 @@ public class GamePanel extends JPanel implements Runnable{
   // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
   CollisionHandler collisionHandler = new CollisionHandler(this);
-  SoundManager soundManager = new SoundManager(this);
+  SoundManager soundManager;
   TextureManager textureManager = new TextureManager(this);
   MapManager mapManager = new MapManager(this);
+  public EnemyManager enemyManager;
+  public EntityManager entityManager;
+  Player player;
 
   // Start position at ca. center
   int startX = pieceWidth*4;
   int startY = pieceHeight*4;
 
-  // Rest of managers and player
-  Player player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
-  public EnemyManager enemyManager;
-  public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, textureManager, player);
 
   // Upgrades. Available in the shop
   private final boolean turretUpgradeUnlocked = true;
@@ -99,24 +98,38 @@ public class GamePanel extends JPanel implements Runnable{
   private final boolean kingUpgradeUnlocked = true;
   private final boolean queenUpgradeUnlocked = false;
 
-  private String difficulty;
+  public GameMode gameMode;
+  private GameMode difficulty;
 
-  public GamePanel(String difficulty) {
+  private Color textColor = Color.WHITE;
+  private Color hoverColor = Color.YELLOW;
+
+  public GamePanel(GameMode gameMode,GameMode difficulty) {
     // Window size
     setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
     setFocusable(true);
     requestFocusInWindow();
     addKeyListener(keyHandler);
 
+    this.gameMode = gameMode;
     this.difficulty = difficulty;
+    System.out.println("GAMEMODE: " + gameMode);
     System.out.println("DIFFICULTY: " + difficulty);
-    enemyManager = new EnemyManager(this, difficulty);
-    mapManager.pickMap();
+    soundManager = new SoundManager(this, gameMode);
+    enemyManager = new EnemyManager(this, gameMode, difficulty);
+    player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
+    entityManager = new EntityManager(this, keyHandler, soundManager, textureManager, player);
+    soundManager.loadSounds();
     textureManager.loadImages(map);
+
+    mapManager.pickMap();
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
-    soundManager.loadSounds();
     getSettings();
+    if (gameMode == GameMode.SPOOKY){
+      textColor = Color.GREEN;
+      hoverColor = Color.MAGENTA;
+    }
 
     setupGame();
 
@@ -528,7 +541,7 @@ public class GamePanel extends JPanel implements Runnable{
       } else if (pauseMenuIndex % 2 == 1){
         soundManager.playClip(soundManager.buttonClickClip);
         soundManager.stopMusic();
-        Main.startMainGame(null, this, difficulty);
+        Main.startMainGame(null, this, gameMode, difficulty);
       }
     }
   }
@@ -587,10 +600,18 @@ public class GamePanel extends JPanel implements Runnable{
     drawAllies(g2d);
     drawEnemies(g2d);
     drawEntities(g2d);
+    drawNightFilter(g2d);
+    drawLightEffects(g2d);
     drawHealthBars(g2d);
     drawUI(g2d);
   }
 
+  private void drawNightFilter(Graphics2D g2d){
+    g2d.setColor(new Color(0,0,50, 130));
+    if (gameMode == GameMode.SPOOKY){
+      g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+    }
+  }
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);
     for (ImmovableObject mapObject : mapObjects){
@@ -682,12 +703,6 @@ public class GamePanel extends JPanel implements Runnable{
         g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
       }
     }
-    for (Projectile projectile : effects){
-      g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
-      if (DEBUG_MODE){
-        g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
-      }
-    }
     for (Projectile projectile : enemyBalls){
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
       if (DEBUG_MODE){
@@ -696,6 +711,14 @@ public class GamePanel extends JPanel implements Runnable{
     }
   }
 
+  private void drawLightEffects(Graphics2D g2d){
+    for (Projectile projectile : effects){
+      g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+      if (DEBUG_MODE){
+        g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
+      }
+    }
+  }
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
       if (animationFrame == 2){
@@ -718,7 +741,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
       if (enemy.isBoss){
-        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 20, enemy.health, enemy.maxHealth, Color.YELLOW);
+        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 20, enemy.health, enemy.maxHealth, hoverColor);
       }
       else if (enemy.health != enemy.maxHealth) {
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth, LIME);
@@ -771,7 +794,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     // Castle healthbar
     createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100, Color.GRAY);
-    g2d.setColor(Color.YELLOW);
+    g2d.setColor(hoverColor);
     drawText(g2d, 0, 90, gameFontTiny, castleHealthText);
   }
 
@@ -792,11 +815,11 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     if (gameStart && !gamePaused) {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(textColor);
       drawText(g2d,0,0, gameFont, startMessage);
     }
     if (swapSoon && !gamePaused && !gameOver){
-      g2d.setColor(Color.YELLOW);
+      g2d.setColor(hoverColor);
       drawText(g2d,0,0, gameFont, swappingSoonText);
     }
 
@@ -819,7 +842,7 @@ public class GamePanel extends JPanel implements Runnable{
     g2d.drawImage(textureManager.bottomBarImage,0, Main.HEIGHT - 56,  this);
 
     // Score
-    g2d.setColor(Color.WHITE);
+    g2d.setColor(textColor);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
 
     // Available pieces
@@ -847,15 +870,15 @@ public class GamePanel extends JPanel implements Runnable{
     // difficulty
     if (SettingsManager.languageGerman){
       switch (difficulty) {
-        case "easy" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
-        case "medium" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
-        case "hard" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
+        case EASY -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
+        case MEDIUM -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
+        case HARD -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
       }
     } else {
       switch (difficulty) {
-        case "easy" -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
-        case "medium" -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
-        case "hard" -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
+        case EASY -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.easyText);
+        case MEDIUM -> drawText(g2d, Main.WIDTH - 160, Main.HEIGHT - 12, gameFontTiny, SettingsManager.mediumText);
+        case HARD -> drawText(g2d, Main.WIDTH - 115, Main.HEIGHT - 12, gameFontTiny, SettingsManager.hardText);
       }
     }
   }
@@ -868,15 +891,15 @@ public class GamePanel extends JPanel implements Runnable{
     drawText(g2d,0,420, gameFont, gameOverText);
 
     if(pauseMenuIndex % 2 == 0){
-      g2d.setColor(Color.YELLOW);
+      g2d.setColor(hoverColor);
     } else {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(textColor);
     }
     drawText(g2d,0,550, gameFont, quitGameText);
     if(pauseMenuIndex % 2 == 1){
-      g2d.setColor(Color.YELLOW);
+      g2d.setColor(hoverColor);
     } else {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(textColor);
     }
     drawText(g2d, 0, 680, gameFont, restartText);
   }
@@ -886,15 +909,15 @@ public class GamePanel extends JPanel implements Runnable{
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
     if(pauseMenuIndex % 2 == 0){
-      g2d.setColor(Color.YELLOW);
+      g2d.setColor(hoverColor);
     } else {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(textColor);
     }
     drawText(g2d,0,0, gameFont, quitGameText);
     if(pauseMenuIndex % 2 == 1){
-      g2d.setColor(Color.YELLOW);
+      g2d.setColor(hoverColor);
     } else {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(textColor);
     }
     drawText(g2d, 0, 700, gameFont, resumeText);
   }

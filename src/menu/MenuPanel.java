@@ -15,11 +15,21 @@ import java.util.List;
 
 public class MenuPanel extends JPanel {
     MenuKeyHandler keyHandler = new MenuKeyHandler(this);
-    SoundManager soundManager = new SoundManager(this);
+    SoundManager soundManager = new SoundManager(this, null);
     BufferedImage backgroundImg;
+    BufferedImage normalBackgroundImg;
+    BufferedImage hauntedBackgroundImg;
+    BufferedImage knightImage;
+    BufferedImage zombieRookImage;
+    BufferedImage ghostRookImage;
     BufferedImage pawnImage;
+    BufferedImage ghostPawnImage;
+    BufferedImage whitePawnImage;
+    BufferedImage whiteRookImage;
+    BufferedImage whiteKingImage;
     BufferedImage rookImage;
     BufferedImage kingImage;
+    BufferedImage ghostKingImage;
 
     Font gameFont;
     Font gameFontSmall;
@@ -35,6 +45,9 @@ public class MenuPanel extends JPanel {
     private boolean hoveringQuit = false;
     private boolean hoveringSettings = false;
     private boolean hoveringHelp = false;
+
+    private boolean hoveringNormalGamemode;
+    private boolean hoveringSpookyGamemode;
 
     private boolean hoveringEasyMode = false;
     private boolean hoveringMediumMode = false;
@@ -53,7 +66,12 @@ public class MenuPanel extends JPanel {
     private boolean showingShop = false;
     private boolean showingHelp = false;
     private boolean showingSettings = false;
-    private boolean showingDifficultySelection;
+    private boolean showingDifficultySelection = false;
+    private boolean showingModeSelection = false;
+
+
+    private Color textColor = Color.WHITE;
+    private Color hoverColor = Color.YELLOW;
 
     // Carries the text values of the main menu
 
@@ -128,7 +146,29 @@ public class MenuPanel extends JPanel {
     }
 
 
+    private void swapToSpookyTheme(){
+        textColor = Color.GREEN;
+        hoverColor = Color.MAGENTA;
+        backgroundImg = hauntedBackgroundImg;
+        pawnImage = ghostPawnImage;
+        rookImage = ghostRookImage;
+        kingImage = ghostKingImage;
+        showingDifficultySelection = true;
 
+        soundManager.startEerieMenuMusic();
+    }
+
+    private void revertToNormalTheme(){
+        textColor = Color.WHITE;
+        hoverColor = Color.YELLOW;
+        backgroundImg = normalBackgroundImg;
+        pawnImage = whitePawnImage;
+        rookImage = whiteRookImage;
+        kingImage = whiteKingImage;
+        gameMode = GameMode.NORMAL;
+
+        soundManager.startMenuMusic();
+    }
 
     private void update(){
         updateMenuState();
@@ -144,8 +184,64 @@ public class MenuPanel extends JPanel {
             updateHelpMenu();
         } else if (showingDifficultySelection){
             updateDifficultySelectionMenu();
+        } else if (showingModeSelection){
+            updateModeSelectionMenu();
         } else {
             updateMainMenu();
+        }
+    }
+
+    private GameMode gameMode;
+    private void updateModeSelectionMenu(){
+        // Pressing a key increments or decrements index
+        if (keyHandler.goingUp){
+            keyHandler.goingUp = false;
+            buttonIndexY--;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        } else if (keyHandler.goingDown){
+            keyHandler.goingDown = false;
+            buttonIndexY++;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        }
+        // Enter performs action on the button
+        if (keyHandler.enterPressed || keyHandler.spacePressed){
+            keyHandler.enterPressed = false;
+            keyHandler.spacePressed = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+
+            if (buttonIndexY % 3 == 0) {
+                System.out.println(SettingsManager.normalModeText);
+                gameMode = GameMode.NORMAL;
+                showingDifficultySelection = true;
+                while(buttonIndexY % 4 != 0){
+                    buttonIndexY++;
+                }
+            } else if (buttonIndexY % 3 == 1) {
+                System.out.println(SettingsManager.spookyModeText);
+                gameMode = GameMode.SPOOKY;
+                swapToSpookyTheme();
+                while(buttonIndexY % 4 != 0){
+                    buttonIndexY++;
+                }
+            } else if (buttonIndexY % 3 == 2){
+                System.out.println(SettingsManager.goBackText);
+                showingModeSelection = false;
+                buttonIndexY = 100000;
+                while(buttonIndexY % 5 != 0){
+                    buttonIndexY++;
+                }
+            }
+        }
+
+        // Hover effect
+        resetButtons(); // Resets hover effect
+        // Color buttons correctly
+        if (buttonIndexY % 3 == 0) {
+            hoveringNormalGamemode = true;
+        } else if (buttonIndexY % 3 == 1) {
+            hoveringSpookyGamemode = true;
+        } else if (buttonIndexY % 3 == 2) {
+            hoveringGoBack = true;
         }
     }
 
@@ -173,7 +269,7 @@ public class MenuPanel extends JPanel {
                 repaint();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
-                    Main.startMainGame(this, null, "easy");
+                    Main.startMainGame(this, null, gameMode, gameMode.EASY);
                 });
             } else if (buttonIndexY % 4 == 1) {
                 System.out.println(SettingsManager.mediumText);
@@ -181,7 +277,7 @@ public class MenuPanel extends JPanel {
                 repaint();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
-                    Main.startMainGame(this, null, "medium");
+                    Main.startMainGame(this, null, gameMode, gameMode.MEDIUM);
                 });
             } else if (buttonIndexY % 4 == 2) {
                 System.out.println(SettingsManager.hardText);
@@ -189,11 +285,15 @@ public class MenuPanel extends JPanel {
                 repaint();
                 SwingUtilities.invokeLater(() -> {
                     soundManager.stopMusic();
-                    Main.startMainGame(this, null, "hard");
+                    Main.startMainGame(this, null, gameMode, GameMode.HARD);
                 });
             } else if (buttonIndexY % 4 == 3) {
                 System.out.println(SettingsManager.goBackText);
                 showingDifficultySelection = false;
+                revertToNormalTheme();
+                while (buttonIndexY % 3 != 0){
+                    buttonIndexY++;
+                }
             }
         }
 
@@ -348,7 +448,11 @@ public class MenuPanel extends JPanel {
 
             if (buttonIndexY % 5 == 0) {
                 System.out.println(SettingsManager.playText);
-                showingDifficultySelection = true;
+                // set the index to hover on the first element
+                while (buttonIndexY % 3 != 0){
+                    buttonIndexY++;
+                }
+                showingModeSelection = true;
             } else if (buttonIndexY % 5 == 1) {
                 System.out.println(SettingsManager.shopText);
                 showingShop = true;
@@ -388,6 +492,8 @@ public class MenuPanel extends JPanel {
         hoveringSettings = false;
         hoveringHelp = false;
 
+        hoveringNormalGamemode = false;
+        hoveringSpookyGamemode = false;
 
         hoveringEasyMode = false;
         hoveringMediumMode = false;
@@ -406,10 +512,21 @@ public class MenuPanel extends JPanel {
 
     private void loadImages() {
         try {
-            backgroundImg = ImageIO.read(getClass().getResourceAsStream("/background/BackgroundMenu.png"));
-            pawnImage = ImageIO.read(getClass().getResourceAsStream("/background/pawn.png"));
-            rookImage = ImageIO.read(getClass().getResourceAsStream("/background/rook.png"));
-            kingImage = ImageIO.read(getClass().getResourceAsStream("/background/king.png"));
+            normalBackgroundImg = ImageIO.read(getClass().getResourceAsStream("/background/BackgroundMenu.png"));
+            hauntedBackgroundImg = ImageIO.read(getClass().getResourceAsStream("/background/hauntedBackground.png"));
+            backgroundImg = normalBackgroundImg;
+
+            knightImage = ImageIO.read(getClass().getResourceAsStream("/background/knight.png"));
+            zombieRookImage = ImageIO.read(getClass().getResourceAsStream("/background/zombieRook.png"));
+            whitePawnImage = ImageIO.read(getClass().getResourceAsStream("/background/pawn.png"));
+            whiteRookImage = ImageIO.read(getClass().getResourceAsStream("/background/rook.png"));
+            whiteKingImage = ImageIO.read(getClass().getResourceAsStream("/background/king.png"));
+            pawnImage = whitePawnImage;
+            rookImage = whiteRookImage;
+            kingImage = whiteKingImage;
+            ghostPawnImage = ImageIO.read(getClass().getResourceAsStream("/background/ghostPawn.png"));
+            ghostRookImage = ImageIO.read(getClass().getResourceAsStream("/background/ghostRook.png"));
+            ghostKingImage = ImageIO.read(getClass().getResourceAsStream("/background/ghostKing.png"));
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Could not load images");
@@ -431,6 +548,8 @@ public class MenuPanel extends JPanel {
             drawHelp(g2d);
         } else if (showingDifficultySelection){
             drawDifficultySelection(g2d);
+        } else if (showingModeSelection){
+            drawModeSelection(g2d);
         } else {
             drawMainMenu(g2d);
         }
@@ -438,11 +557,49 @@ public class MenuPanel extends JPanel {
 
     private Color translucentBlack = new Color(0, 0 ,0 , 220);
 
+
+    private void drawModeSelection(Graphics2D g2d){
+        g2d.setFont(gameFontMedium);
+        // Title
+        g2d.setColor(textColor);
+        drawText(g2d,0,180, "Chess");
+        drawText(g2d,0,260, "Defense");
+
+        // Play button
+        drawText(g2d,leftSpace + 8,500, SettingsManager.chooseGamemodeText);
+        g2d.setFont(gameFontSmall);
+
+        // Shop button
+        if(hoveringNormalGamemode){
+            g2d.setColor(hoverColor);
+        } else {
+            g2d.setColor(textColor);
+        }
+        g2d.drawImage(knightImage, leftSpace, 520, 70, 70, this);
+        drawText(g2d,leftSpace + 102,580, SettingsManager.normalModeText);
+
+        if(hoveringSpookyGamemode){
+            g2d.setColor(Color.MAGENTA);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        g2d.drawImage(zombieRookImage, leftSpace, 600, 70, 70, this);
+        drawText(g2d, leftSpace + 102, 660, SettingsManager.spookyModeText);
+
+        // GoBack button
+        if(hoveringGoBack){
+            g2d.setColor(hoverColor);
+        } else {
+            g2d.setColor(textColor);
+        }
+        drawText(g2d,leftSpace,820, SettingsManager.goBackText);
+
+    }
+
     private void drawDifficultySelection(Graphics2D g2d){
         g2d.setFont(gameFontMedium);
-
         // Title
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         drawText(g2d,0,180, "Chess");
         drawText(g2d,0,260, "Defense");
 
@@ -452,34 +609,34 @@ public class MenuPanel extends JPanel {
 
         // Shop button
         if(hoveringEasyMode){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         g2d.drawImage(pawnImage, leftSpace, 520, 70, 70, this);
         drawText(g2d,leftSpace + 102,580, SettingsManager.easyText);
 
         if(hoveringMediumMode){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         g2d.drawImage(rookImage, leftSpace, 600, 70, 70, this);
         drawText(g2d, leftSpace + 102, 660, SettingsManager.mediumText);
 
         if(hoveringHardMode){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         g2d.drawImage(kingImage, leftSpace, 678, 70, 70, this);
         drawText(g2d,leftSpace + 102,740, SettingsManager.hardText);
 
         // GoBack button
         if(hoveringGoBack){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,leftSpace,820, SettingsManager.goBackText);
 
@@ -488,13 +645,30 @@ public class MenuPanel extends JPanel {
             g2d.setColor(translucentBlack);
             g2d.fillRect(400, 400, Main.WIDTH-800, Main.HEIGHT-800);
             g2d.setFont(gameFont);
-            g2d.setColor(Color.WHITE);
-            drawText(g2d, 0,0, "Loading...");
+            g2d.setColor(textColor);
+            drawText(g2d, 0,0, SettingsManager.loadingText);
         }
     }
 
+    private int hauntedCounter = 0;
     private void drawBackground(Graphics2D g2d){
         g2d.drawImage(backgroundImg, 0, 0, Main.WIDTH, Main.HEIGHT, this);
+        if (gameMode == GameMode.SPOOKY) {
+            hauntedCounter++;
+
+            // Reset every 16 seconds (960 frames at 60 FPS)
+            if (hauntedCounter >= 960) {
+                hauntedCounter = 0;
+            }
+
+            // Flash twice during the cycle
+            // First flash: frames 160–170 (~2.6–2.8 seconds)
+            // Second flash: frames 320–330 (~5.3–5.5 seconds)
+            if ((hauntedCounter >= 320 && hauntedCounter < 340) ||
+                    (hauntedCounter >= 520 && hauntedCounter < 570)) {
+                g2d.drawImage(ghostKingImage, 838, 417, 242, 242, this);
+            }
+        }
     }
 
     private void drawShop(Graphics2D g2d) {
@@ -504,41 +678,41 @@ public class MenuPanel extends JPanel {
 
 
         g2d.setFont(gameFont);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         drawText(g2d,0,230, "Shop");
 
         // Wall upgrade Button
         g2d.setFont(gameFontSmall);
         if(hoveringShopItemOne){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,150,350, SettingsManager.wallUpgradeText);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,400, SettingsManager.wallUpgradeDescriptionText);
 
         // King upgrade Button
         g2d.setFont(gameFontSmall);
         if(hoveringShopItemTwo){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,150,500, SettingsManager.kingUpgradeText);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,550, SettingsManager.kingUpgradeDescriptionText);
 
         g2d.setFont(gameFontSmall);
         if (hoveringShopItemThree){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,150,650, SettingsManager.queenUpgradeText);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,700, SettingsManager.queenUpgradeDescriptionText);
         drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
@@ -551,15 +725,15 @@ public class MenuPanel extends JPanel {
 
 
         g2d.setFont(gameFont);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         drawText(g2d,0,230, SettingsManager.settingsText);
 
         g2d.setFont(gameFontSmall);
         // Music button
         if(hoveringMusicSettingButton){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         if(SettingsManager.musicOff){
             drawText(g2d,0,400, SettingsManager.musicOffText);
@@ -569,9 +743,9 @@ public class MenuPanel extends JPanel {
 
         // Language button
         if(hoveringLanguageSettingButton){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         if(SettingsManager.languageGerman){
             drawText(g2d,0,500, SettingsManager.languageGermanText);
@@ -580,34 +754,34 @@ public class MenuPanel extends JPanel {
         }
         // Debugmode button
         if(hoveringDebugSettingButton){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         if(SettingsManager.debugMode){
             drawText(g2d,0,600, SettingsManager.debugOnText);
         } else {
             drawText(g2d,0,600, SettingsManager.debugOffText);
         }
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         g2d.setFont(gameFontTiny);
         drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
     }
 
-    private int currentHelpPage = 0;
+    private int currentHelpPage = 100000;
     private void drawHelp(Graphics2D g2d){
         // Background
         g2d.setColor(translucentBlack);
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
 
         g2d.setFont(gameFont);
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         drawText(g2d,0,230, SettingsManager.helpText);
 
-        if (currentHelpPage % 3 == 0){
+        if (currentHelpPage % 4 == 0){
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, SettingsManager.welcomeText);
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
             g2d.setFont(gameFontTiny);
             drawText(g2d,155,375, SettingsManager.helpTextArray[0]);
             drawText(g2d,155,425, SettingsManager.helpTextArray[1]);
@@ -621,10 +795,9 @@ public class MenuPanel extends JPanel {
             drawText(g2d,155,800, SettingsManager.helpTextArray[5]);
             drawText(g2d,155,845, SettingsManager.helpTextArray[6]);
 
-            drawText(g2d, 155, 950, SettingsManager.pressLeftText);
             drawText(g2d, 1250, 950, SettingsManager.pressRightText);
 
-        } else if (currentHelpPage % 3 == 1){
+        } else if (currentHelpPage % 4 == 1){
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, SettingsManager.piecesText);
 
@@ -646,7 +819,7 @@ public class MenuPanel extends JPanel {
 
             drawText(g2d, 155, 950, SettingsManager.pressLeftText);
             drawText(g2d, 1250, 950, SettingsManager.pressRightText);
-        } else {
+        } else if (currentHelpPage % 4 == 2){
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, SettingsManager.queenNameText);
             g2d.setFont(gameFontTiny);
@@ -659,6 +832,19 @@ public class MenuPanel extends JPanel {
             drawText(g2d, 155, 545, SettingsManager.helpTextArray[15]);
             drawText(g2d, 155, 590, SettingsManager.helpTextArray[16]);
 
+            drawText(g2d, 155, 950, SettingsManager.pressLeftText);
+            drawText(g2d, 1250, 950, SettingsManager.pressRightText);
+        } else if (currentHelpPage % 4 == 3){
+            g2d.setFont(gameFontSmall);
+            g2d.setColor(Color.GREEN);
+            drawText(g2d, 155, 320, SettingsManager.spookyModeDefinitionText);
+            g2d.setFont(gameFontTiny);
+            g2d.setColor(Color.WHITE);
+            drawText(g2d, 155, 370, SettingsManager.helpTextArray[17]);
+            drawText(g2d, 155, 415, SettingsManager.helpTextArray[18]);
+            drawText(g2d, 155, 470, SettingsManager.helpTextArray[19]);
+            drawText(g2d, 155, 515, SettingsManager.helpTextArray[20]);
+
             drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
         }
         g2d.setFont(gameFontSmall);
@@ -670,46 +856,46 @@ public class MenuPanel extends JPanel {
         g2d.setFont(gameFont);
 
         // Title
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(textColor);
         drawText(g2d,0,180, "Chess");
         drawText(g2d,0,260, "Defense");
 
         // Play button
         if(hoveringPlay){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,leftSpace,500, SettingsManager.playText);
 
         g2d.setFont(gameFontSmall);
         // Shop button
         if(hoveringShop){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,leftSpace,580, SettingsManager.shopText);
 
         if(hoveringSettings){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d, leftSpace, 660, SettingsManager.settingsText);
 
         if(hoveringHelp){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,leftSpace,740, SettingsManager.helpText);
 
         // Quit button
         if(hoveringQuit){
-            g2d.setColor(Color.YELLOW);
+            g2d.setColor(hoverColor);
         } else {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(textColor);
         }
         drawText(g2d,leftSpace,820, SettingsManager.quitText);
 
