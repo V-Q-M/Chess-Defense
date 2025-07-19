@@ -7,7 +7,8 @@ public class RookBoss extends Enemy {
     public RookBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 20;
-        this.speed = 1;
+        this.baseSpeed = 1;
+        this.speed = baseSpeed;
         this.health = 400;
         this.maxHealth = 400;
         this.baseSkin = textureManager.enemyRookImage;

@@ -10,7 +10,8 @@ public class EnemyRook extends Enemy {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
-        this.speed = 2;
+        this.baseSpeed = 2;
+        this.speed = baseSpeed;
         this.maxHealth = 150;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyRookImage;

@@ -3,12 +3,13 @@ package allies.player;
 import enemies.Enemy;
 import entities.Projectile;
 import main.*;
+import mapObjects.ImmovableObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Player extends livingBeing {
+public class Player extends LivingBeing {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     SoundManager soundManager;
@@ -392,7 +393,9 @@ public class Player extends livingBeing {
 
     }
 
+    private boolean slowed = false;
     private void checkCollision(){
+
         if (!isInvulnerable) {
             for (Enemy enemy : gamePanel.enemies) {
                 if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
@@ -402,6 +405,23 @@ public class Player extends livingBeing {
                     this.skin = hurtSkin;
                     soundManager.playClip(soundManager.hitClip);
                 }
+            }
+        }
+
+        boolean isSlowed = false;
+        for (ImmovableObject mapObject : gamePanel.mapObjects) {
+            if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
+                isSlowed = true;
+                break;
+            }
+        }
+        if (isSlowed) {
+            if (speed == BASE_MOVE_SPEED) {
+                speed = speed / 2;
+            }
+        } else {
+            if (speed < BASE_MOVE_SPEED) {
+                speed = BASE_MOVE_SPEED;
             }
         }
     }

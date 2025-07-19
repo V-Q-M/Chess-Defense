@@ -2,7 +2,7 @@ package main;
 
 import java.awt.image.BufferedImage;
 
-public abstract class livingBeing {
+public abstract class LivingBeing {
     public GamePanel gamePanel;
     public SoundManager soundManager;
     public TextureManager textureManager;
@@ -21,5 +21,5 @@ public abstract class livingBeing {
     public int recoveryMarkerTime = 15;
 
 
-    public int speed, damage, health;
+    public int speed, baseSpeed, damage, health;
 }

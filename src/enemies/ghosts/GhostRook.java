@@ -10,7 +10,8 @@ public class GhostRook extends Enemy {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
-        this.speed = 4;
+        this.baseSpeed = 4;
+        this.speed = baseSpeed;
         this.maxHealth = 1;
         this.health = maxHealth;
         this.baseSkin = textureManager.ghostRookImage;

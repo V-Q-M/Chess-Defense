@@ -3,8 +3,9 @@ package enemies;
 import allies.Ally;
 import entities.Projectile;
 import main.*;
+import mapObjects.ImmovableObject;
 
-public abstract class Enemy extends livingBeing {
+public abstract class Enemy extends LivingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean isBoss = false;
 
@@ -88,6 +89,23 @@ public abstract class Enemy extends livingBeing {
                             projectile.isDead = true;
                     }
                 }
+            }
+        }
+
+        boolean isSlowed = false;
+        for (ImmovableObject mapObject : gamePanel.mapObjects) {
+            if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
+                isSlowed = true;
+                break;
+            }
+        }
+        if (isSlowed) {
+            if (speed == baseSpeed) {
+                speed = speed / 2;
+            }
+        } else {
+            if (speed < baseSpeed) {
+                speed = baseSpeed;
             }
         }
     }

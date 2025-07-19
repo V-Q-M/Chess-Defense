@@ -42,7 +42,7 @@ public class CollisionHandler {
         }
     }
 
-    public boolean projectileCollision(livingBeing enemy, Projectile projectile) {
+    public boolean projectileCollision(LivingBeing enemy, Projectile projectile) {
         return projectile.x + projectile.width > enemy.x &&
             projectile.x < enemy.x + enemy.width &&
             projectile.y + projectile.height > enemy.y + 10 &&
@@ -75,5 +75,12 @@ public class CollisionHandler {
                 projectile.x < mapObject.x + mapObject.width &&
                 projectile.y + projectile.height > mapObject.y + 10 &&
                 projectile.y < mapObject.y + mapObject.height - 10;
+    }
+
+    public boolean mapObjectMovementCollision(ImmovableObject mapObject, LivingBeing livingBeing){
+        return livingBeing.x + livingBeing.width > mapObject.x &&
+                livingBeing.x < mapObject.x + mapObject.width &&
+                livingBeing.y + livingBeing.height > mapObject.y + 10 &&
+                livingBeing.y < mapObject.y + mapObject.height - 10;
     }
 }

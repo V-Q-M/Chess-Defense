@@ -3,7 +3,7 @@ package allies;
 import entities.Projectile;
 import main.*;
 
-public abstract class Ally extends livingBeing {
+public abstract class Ally extends LivingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean canMove = false;
 
@@ -23,6 +23,7 @@ public abstract class Ally extends livingBeing {
         checkAlive();
         move();
         updateCooldowns();
+        checkCollision();
         checkProjectileCollision();
     }
 
@@ -31,6 +32,10 @@ public abstract class Ally extends livingBeing {
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
         }
+    }
+
+    void checkCollision(){
+
     }
 
     void checkProjectileCollision(){

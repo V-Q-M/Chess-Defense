@@ -11,7 +11,8 @@ public class PawnBoss extends Enemy {
     public PawnBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 20;
-        this.speed = 1;
+        this.baseSpeed = 1;
+        this.speed = baseSpeed;
         this.maxHealth = 500;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyPawnImage;

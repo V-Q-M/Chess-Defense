@@ -11,7 +11,8 @@ public class EnemyBishop extends Enemy {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 10;
         this.lanceDamage = lanceDamage;
-        this.speed = 2;
+        this.baseSpeed = 2;
+        this.speed = baseSpeed;
         this.health = 150;
         this.maxHealth = 150;
         this.baseSkin = textureManager.enemyRookImage;
