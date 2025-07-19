@@ -41,7 +41,7 @@ public class BishopBoss extends Enemy {
     public void update(){
         checkAlive();
         move();
-        checkPlayerCollision();
+        checkCollision();
         checkPawnWallCollision();
         updateCooldowns();
     }

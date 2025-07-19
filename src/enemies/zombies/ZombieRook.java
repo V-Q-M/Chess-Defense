@@ -5,18 +5,20 @@ import main.*;
 
 public class ZombieRook extends Enemy {
     private int cannonDamage;
+    private boolean hasTransformed = false;
 
     public ZombieRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 15;
         this.cannonDamage = cannonDamage;
-        this.speed = 1;
-        this.maxHealth = 75;
+        this.baseSpeed = 2;
+        this.speed = baseSpeed;
+        this.maxHealth = 150;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyRookImage;
         this.hurtSkin = textureManager.enemyRookHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 600;
+        this.attackCoolDown = 150;
         this.attackCoolDownCounter = 0;
     }
 
@@ -40,14 +42,13 @@ public class ZombieRook extends Enemy {
     public void update(){
         checkAlive();
         move();
-        checkPlayerCollision();
+        checkCollision();
         checkPawnWallCollision();
         updateCooldowns();
     }
 
     @Override
     protected void updateCooldowns(){
-
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;
@@ -69,5 +70,32 @@ public class ZombieRook extends Enemy {
 
     private void performAttack() {
         gamePanel.entityManager.spawnEnemyCannonBall(x, y, cannonDamage);
+    }
+
+    @Override
+    protected void checkAlive(){
+        if (health <= 0 && !hasTransformed) {
+            hasTransformed = true;
+            transformIntoZombie();
+        } else if (health <= 0) {
+            this.isDead = true;
+            gamePanel.score+=maxHealth;
+            soundManager.playClip(soundManager.deathClip);
+        }
+    }
+
+    private void transformIntoZombie(){
+        soundManager.playClip(soundManager.zombieSpawnClip);
+        this.damage = 15;
+        this.cannonDamage = cannonDamage;
+        this.baseSpeed = 1;
+        this.speed = baseSpeed;
+        this.maxHealth = 75;
+        this.health = maxHealth;
+        this.baseSkin = textureManager.zombieRookImage;
+        this.hurtSkin = textureManager.zombieRookHurtImage;
+        this.skin = baseSkin;
+        this.attackCoolDown = 400;
+        this.attackCoolDownCounter = 0;
     }
 }

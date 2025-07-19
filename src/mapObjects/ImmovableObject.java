@@ -68,6 +68,8 @@ public abstract class ImmovableObject {
                     if (projectile.diesOnHit) {
                         gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                         projectile.isDead = true;
+                    } else if (projectile.destroyable) {
+                        projectile.isDead = true;
                     }
                 }
             }

@@ -19,6 +19,7 @@ public abstract class Projectile {
     public boolean isDead = false;
     public int damage;
     public boolean diesOnHit = false;
+    public boolean destroyable = false;
     public BufferedImage skin;
 
     public Projectile(GamePanel gamePanel, TextureManager textureManager, int x, int y, int width, int height){

@@ -52,7 +52,7 @@ public class KingBoss extends Enemy {
     public void update(){
         checkAlive();
         move();
-        checkPlayerCollision();
+        checkCollision();
         checkPawnWallCollision();
         updateCooldowns();
     }

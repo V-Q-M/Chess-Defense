@@ -16,6 +16,7 @@ public class QueenSlice extends Projectile {
     this.health = decay;
     this.damage = damage;
     this.skin = skin;
+    this.destroyable = true;
   }
 
   @Override

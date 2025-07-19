@@ -12,7 +12,8 @@ public class EnemyPawn extends Enemy {
         this.damage = 10;
         this.baseSpeed = 3;
         this.speed = baseSpeed;
-        this.health = 100;
+        this.maxHealth = 100;
+        this.health = maxHealth;
         this.baseSkin = textureManager.enemyPawnImage;
         this.hurtSkin = textureManager.enemyPawnHurtImage;
         this.skin = baseSkin;

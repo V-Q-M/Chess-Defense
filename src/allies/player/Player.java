@@ -417,7 +417,7 @@ public class Player extends LivingBeing {
         }
         if (isSlowed) {
             if (speed == BASE_MOVE_SPEED) {
-                speed = speed / 2;
+                speed = Math.min(speed / 3, 1);
             }
         } else {
             if (speed < BASE_MOVE_SPEED) {

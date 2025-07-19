@@ -24,6 +24,8 @@ public class SoundManager {
     public Clip summonClip;
     public Clip healClip;
     public Clip kingSpawnClip;
+    public Clip ghostSpawnClip;
+    public Clip zombieSpawnClip;
 
 
     public Clip menuTheme;
@@ -80,6 +82,8 @@ public class SoundManager {
         buttonClickClip = loadClip("/sounds/buttonClick.wav");
         healClip = loadClip("/sounds/heal.wav");
         kingSpawnClip = loadClip("/sounds/kingSpawn.wav");
+        ghostSpawnClip = loadClip("/sounds/ghost.wav");
+        zombieSpawnClip = loadClip("/sounds/zombie.wav");
     }
 
     private Clip loadClip(String path) {

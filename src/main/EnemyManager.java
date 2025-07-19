@@ -8,6 +8,8 @@ import enemies.ghosts.GhostRook;
 import enemies.regular.EnemyBishop;
 import enemies.regular.EnemyPawn;
 import enemies.regular.EnemyRook;
+import enemies.zombies.ZombiePawn;
+import enemies.zombies.ZombieRook;
 
 public class EnemyManager {
     GamePanel gamePanel;
@@ -26,6 +28,8 @@ public class EnemyManager {
     private final int bishopDamage;
 
     private final String difficulty;
+    private double zombieSpawnChance = 0.1;
+    private double ghostSpawnChance = 0.12;
 
     public EnemyManager(GamePanel gamePanel, String difficulty){
         this.gamePanel = gamePanel;
@@ -35,28 +39,46 @@ public class EnemyManager {
             case "hard" -> {
                 rookDamage = 50;
                 bishopDamage = 75;
+                ghostSpawnChance = 0.1;
+                zombieSpawnChance = 0.12;
             }
             case "medium" -> {
                 rookDamage = 40;
                 bishopDamage = 55;
+                ghostSpawnChance = 0.06;
+                zombieSpawnChance = 0.08;
             }
             default -> {
                 rookDamage = 25;
                 bishopDamage = 40;
+                ghostSpawnChance = 0.04;
+                zombieSpawnChance = 0.06;
             }
         }
     }
 
     void spawnEnemy(int x, int y, int width, int height, PieceType type){
-       boolean spawnGhost = Math.random() < 0.1;
+       boolean spawnGhost = Math.random() < ghostSpawnChance;
+       boolean spawnZombie = Math.random() < zombieSpawnChance;
 
-       if (spawnGhost){
-           switch (type) {
-               case PieceType.PAWN   -> gamePanel.enemies.add(new GhostPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
-               case PieceType.ROOK   -> gamePanel.enemies.add(new GhostRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
+        if (spawnGhost) {
+            switch (type) {
+                case PieceType.PAWN ->
+                        gamePanel.enemies.add(new GhostPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+                case PieceType.ROOK ->
+                        gamePanel.enemies.add(new GhostRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
+                case PieceType.BISHOP ->
+                        gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
+                case PieceType.KING ->
+                        gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+            }
+        } else if (spawnZombie){
+            switch (type) {
+               case PieceType.PAWN   -> gamePanel.enemies.add(new ZombiePawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+               case PieceType.ROOK   -> gamePanel.enemies.add(new ZombieRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
                case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
                case PieceType.KING   -> gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
-           }
+            }
        } else {
            switch (type) {
                case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));

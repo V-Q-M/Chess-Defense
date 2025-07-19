@@ -15,6 +15,7 @@ public class BishopLance extends Projectile{
         this.speed = speed;
         this.damage = damage;
         this.skin = skin;
+        this.destroyable = true;
     }
 
     // Moves the ball

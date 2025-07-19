@@ -18,5 +18,6 @@ public class GhostPawn extends Enemy {
         this.hurtSkin = textureManager.ghostPawnHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 40;
+        soundManager.playClip(soundManager.ghostSpawnClip);
     }
 }

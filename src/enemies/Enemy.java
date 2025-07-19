@@ -25,7 +25,7 @@ public abstract class Enemy extends LivingBeing {
     public void update(){
         checkAlive();
         move();
-        checkPlayerCollision();
+        checkCollision();
         checkPawnWallCollision();
         updateCooldowns();
     }
@@ -75,7 +75,7 @@ public abstract class Enemy extends LivingBeing {
         }
     }
 
-    protected void checkPlayerCollision(){
+    protected void checkCollision(){
         if (!isInvulnerable) {
             for (Projectile projectile : gamePanel.projectiles) {
                 if (collisionHandler.projectileCollision(this, projectile)) {
@@ -101,7 +101,7 @@ public abstract class Enemy extends LivingBeing {
         }
         if (isSlowed) {
             if (speed == baseSpeed) {
-                speed = speed / 2;
+                speed = Math.min(speed / 2, 1);
             }
         } else {
             if (speed < baseSpeed) {
