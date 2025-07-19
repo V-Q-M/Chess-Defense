@@ -1,8 +1,9 @@
-package enemies;
+package enemies.bosses;
 
+import enemies.Enemy;
 import main.*;
 
-public class BishopBoss extends Enemy{
+public class BishopBoss extends Enemy {
     public BishopBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.damage = 20;
@@ -45,7 +46,7 @@ public class BishopBoss extends Enemy{
     }
 
     @Override
-    void updateCooldowns(){
+    protected void updateCooldowns(){
 
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
@@ -71,7 +72,7 @@ public class BishopBoss extends Enemy{
     }
 
     @Override
-    void checkAlive(){
+    protected void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;

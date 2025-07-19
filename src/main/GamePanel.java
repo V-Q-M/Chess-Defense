@@ -734,7 +734,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     for (ImmovableObject mapObject : mapObjects) {
       if (mapObject.health != mapObject.maxHealth){
-        createHealthBar(g2d, mapObject.x, mapObject.y, mapObject.width, 15, mapObject.health, mapObject.maxHealth, LIME);
+        createHealthBar(g2d, mapObject.x, mapObject.y, mapObject.width, 18, mapObject.health, mapObject.maxHealth, LIME);
       }
     }
 

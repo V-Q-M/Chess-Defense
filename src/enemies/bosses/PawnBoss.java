@@ -1,11 +1,12 @@
-package enemies;
+package enemies.bosses;
 
+import enemies.Enemy;
 import main.CollisionHandler;
 import main.GamePanel;
 import main.SoundManager;
 import main.TextureManager;
 
-public class PawnBoss extends Enemy{
+public class PawnBoss extends Enemy {
 
     public PawnBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
@@ -23,7 +24,7 @@ public class PawnBoss extends Enemy{
     }
     private boolean diedToWall = false;
     @Override
-    void checkAlive(){
+    protected void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;

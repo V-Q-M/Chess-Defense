@@ -29,7 +29,7 @@ public abstract class Enemy extends livingBeing {
         updateCooldowns();
     }
 
-    void checkAlive(){
+    protected void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
@@ -54,7 +54,7 @@ public abstract class Enemy extends livingBeing {
         }
     }
 
-    void updateCooldowns(){
+    protected void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;
@@ -74,7 +74,7 @@ public abstract class Enemy extends livingBeing {
         }
     }
 
-    void checkPlayerCollision(){
+    protected void checkPlayerCollision(){
         if (!isInvulnerable) {
             for (Projectile projectile : gamePanel.projectiles) {
                 if (collisionHandler.projectileCollision(this, projectile)) {
@@ -91,7 +91,7 @@ public abstract class Enemy extends livingBeing {
             }
         }
     }
-     void checkPawnWallCollision(){
+     protected void checkPawnWallCollision(){
         for (Ally pawn : gamePanel.allies){
             if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
                 health -= 100;

@@ -1,28 +1,40 @@
-package enemies;
+package enemies.bosses;
 
+import enemies.Enemy;
 import main.*;
 
-public class RookBoss extends Enemy{
-    public RookBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
-        this.damage = 20;
-        this.speed = 1;
-        this.health = 400;
+public class KingBoss extends Enemy {
+    public KingBoss(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+        super(gamePanel, soundManager, textureManager,  collisionHandler, x, y, width, height);
+        this.damage = 10;
+        this.speed = 2;
         this.maxHealth = 400;
-        this.baseSkin = textureManager.enemyRookImage;
-        this.hurtSkin = textureManager.enemyRookHurtImage;
+        this.health = 400;
+        this.baseSkin = textureManager.enemyKingImage;
+        this.hurtSkin = textureManager.enemyKingHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 600;
-        this.attackCoolDownCounter = 0;
         this.width = width * 2;
         this.height = height * 2;
+        this.attackCoolDownCounter = 150;
         this.isBoss = true;
+    }
+
+
+    @Override
+    protected void checkAlive(){
+        if (health <= 0){
+            this.isDead = true;
+            gamePanel.score+=maxHealth;
+            gamePanel.enemyKingSlain = true;
+            soundManager.playClip(soundManager.deathClip);
+        }
     }
 
     boolean allowAttack = false;
     @Override
     public void move(){
-        if (x < Main.WIDTH - 508){
+        if (x < Main.WIDTH - 382){
             allowAttack = true;
         } else {
             x -= speed;
@@ -35,6 +47,7 @@ public class RookBoss extends Enemy{
         }
     }
 
+
     @Override
     public void update(){
         checkAlive();
@@ -45,7 +58,7 @@ public class RookBoss extends Enemy{
     }
 
     @Override
-    void updateCooldowns(){
+    protected void updateCooldowns(){
 
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
@@ -57,26 +70,18 @@ public class RookBoss extends Enemy{
             invulnerableCounter ++;
         }
 
-        if (attackCoolDownCounter > attackCoolDown){
+        if (this.attackCoolDownCounter > this.attackCoolDown){
             performAttack();
             hasAttacked = false;
-            attackCoolDownCounter = 0;
+            this.attackCoolDownCounter = 0;
         } else {
-            attackCoolDownCounter++;
+            this.attackCoolDownCounter++;
         }
     }
 
     private void performAttack() {
-        gamePanel.entityManager.spawnBossCannonBall(x, y);
+
+        gamePanel.enemyManager.spawnKingsGuard(x-128,y,width/2);
     }
 
-    @Override
-    void checkAlive(){
-        if (health <= 0){
-            this.isDead = true;
-            gamePanel.score+=maxHealth;
-            soundManager.playClip(soundManager.deathClip);
-            gamePanel.rookBossSlain = true;
-        }
-    }
 }

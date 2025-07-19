@@ -1,5 +1,6 @@
-package enemies;
+package enemies.regular;
 
+import enemies.Enemy;
 import main.CollisionHandler;
 import main.GamePanel;
 import main.SoundManager;

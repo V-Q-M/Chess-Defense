@@ -1,6 +1,11 @@
 package main;
 
-import enemies.*;
+import enemies.bosses.KingBoss;
+import enemies.bosses.PawnBoss;
+import enemies.bosses.RookBoss;
+import enemies.regular.EnemyBishop;
+import enemies.regular.EnemyPawn;
+import enemies.regular.EnemyRook;
 
 public class EnemyManager {
     GamePanel gamePanel;
@@ -45,7 +50,7 @@ public class EnemyManager {
             case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, rookDamage));
             case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height, bishopDamage));
-            case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
+            case PieceType.KING   -> gamePanel.enemies.add(new KingBoss(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, x, y, width, height));
         }
 
         if (shouldSpawnGuard){

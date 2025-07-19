@@ -1,14 +1,16 @@
-package enemies;
+package enemies.regular;
 
+import enemies.Enemy;
 import main.*;
 
-public class EnemyRook extends Enemy{
-    private int cannonDamage;
+public class EnemyBishop extends Enemy {
 
-    public EnemyRook(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int cannonDamage) {
+    private int lanceDamage;
+
+    public EnemyBishop(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height, int lanceDamage) {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
-        this.damage = 15;
-        this.cannonDamage = cannonDamage;
+        this.damage = 10;
+        this.lanceDamage = lanceDamage;
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;
@@ -45,7 +47,7 @@ public class EnemyRook extends Enemy{
     }
 
     @Override
-    void updateCooldowns(){
+    protected void updateCooldowns(){
 
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
@@ -67,6 +69,6 @@ public class EnemyRook extends Enemy{
     }
 
     private void performAttack() {
-        gamePanel.entityManager.spawnEnemyCannonBall(x, y, cannonDamage);
+        gamePanel.entityManager.spawnEnemyCannonBall(x, y, lanceDamage);
     }
 }
