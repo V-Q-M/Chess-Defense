@@ -63,7 +63,7 @@ public abstract class Enemy extends Entity {
 
         boolean isSlowed = false;
         for (MapObject mapObject : gamePanel.mapObjects) {
-            if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
+            if (collisionHandler.entityHitsMapObject(this,mapObject)) {
                 isSlowed = true;
                 break;
             }
@@ -83,7 +83,7 @@ public abstract class Enemy extends Entity {
     protected void checkProjectileCollision(){
         if (!isInvulnerable) {
             for (Projectile projectile : gamePanel.projectiles) {
-                if (collisionHandler.projectileCollision(this, projectile)) {
+                if (collisionHandler.projectileHitsEntity(projectile, this)) {
                     isInvulnerable = true;
                     this.skin = hurtSkin;
                     //soundManager.playClip(soundManager.hitClip);
@@ -101,7 +101,7 @@ public abstract class Enemy extends Entity {
 
      protected void checkAllyCollision(){
         for (Ally pawn : gamePanel.allies){
-            if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
+            if (!pawn.isDead && collisionHandler.entityHitsEntity(pawn, this)) {
                 health -= 100;
                 pawn.health = 0;
             }

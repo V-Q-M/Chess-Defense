@@ -25,13 +25,12 @@ public abstract class Ally extends Entity {
 
     void checkProjectileCollision(){
         for (Projectile projectile : gamePanel.enemyBalls){
-            if (collisionHandler.projectileCollision(this, projectile)){
+            if (collisionHandler.projectileHitsEntity(projectile, this)){
                 health -= projectile.damage;
                 projectile.isDead = true;
                 this.isInvulnerable = true;
                 this.skin = hurtSkin;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
-                //soundManager.playClip(soundManager.hitClip);
                 soundManager.playClip("hit");
             }
         }

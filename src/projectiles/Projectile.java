@@ -1,18 +1,13 @@
 package projectiles;
 
 import main.Direction;
+import main.Entity;
 import main.GamePanel;
 import main.TextureManager;
 
 import java.awt.image.BufferedImage;
 
-public abstract class Projectile {
-    public GamePanel gamePanel;
-    public TextureManager textureManager;
-    public int x;
-    public int y;
-    public int width;
-    public int height;
+public abstract class Projectile extends Entity {
     public int speed;
     public int health = 100;
     public Direction direction;
@@ -23,16 +18,10 @@ public abstract class Projectile {
     public BufferedImage skin;
 
     public Projectile(GamePanel gamePanel, TextureManager textureManager, int x, int y, int width, int height){
-
-        this.gamePanel = gamePanel;
-        this.textureManager = textureManager;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        super(gamePanel, null, textureManager, null, x, y, width, height);
     }
 
-    public void moveProjectile(int speed) {
+    public void move() {
         switch (direction) {
             case UP -> y -= speed;
             case DOWN -> y += speed;
@@ -41,9 +30,10 @@ public abstract class Projectile {
         }
     }
 
+    @Override
     public void update(){
         checkAlive();
-        moveProjectile(speed);
+        move();
     }
 
     public void checkAlive(){
@@ -52,5 +42,13 @@ public abstract class Projectile {
         } else {
             health--;
         }
+    }
+
+    public void checkCollision(){
+
+    }
+
+    public void updateCooldowns(){
+
     }
 }

@@ -19,7 +19,7 @@ public class EnemyLance extends Projectile{
 
     // Moves the ball
     @Override
-    public void moveProjectile(int speed) {
+    public void move() {
         if (direction == Direction.UP_LEFT){
            y -= speed;
         } else {

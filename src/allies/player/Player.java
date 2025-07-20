@@ -223,7 +223,7 @@ public class Player extends Entity {
 
 
     private boolean reachedBorder(){
-        return collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
+        return collisionHandler.borderCollision(this, speed, facingDirection);
     }
 
     @Override
@@ -386,7 +386,7 @@ public class Player extends Entity {
     public void checkCollision(){
         if (!isInvulnerable) {
             for (Enemy enemy : gamePanel.enemies) {
-                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
+                if (collisionHandler.entityHitsEntity(this, enemy) && !enemy.hasAttacked) {
                     enemy.hasAttacked = true;
                     takeDamage(enemy.damage);
                     isInvulnerable = true;
@@ -399,7 +399,7 @@ public class Player extends Entity {
 
         boolean isSlowed = false;
         for (MapObject mapObject : gamePanel.mapObjects) {
-            if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
+            if (collisionHandler.entityHitsMapObject(this, mapObject)) {
                 isSlowed = true;
                 break;
             }
@@ -418,7 +418,7 @@ public class Player extends Entity {
 
     private void checkProjectileCollision(){
         for (Projectile projectile : gamePanel.enemyBalls){
-            if (collisionHandler.projectileEnemyCollision(projectile, this)){
+            if (collisionHandler.projectileHitsPlayer(projectile, this)){
                 takeDamage(projectile.damage/3);
                 projectile.isDead = true;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);

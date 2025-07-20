@@ -17,9 +17,8 @@ public class EnemyCannonBall extends Projectile {
 
     @Override
     public void update(){
-        checkAlive();
+        super.update();
         animateBall();
-        moveProjectile(speed);
     }
     int animateCounter = 0;
 
@@ -32,7 +31,7 @@ public class EnemyCannonBall extends Projectile {
         }
     }
     @Override
-    public void moveProjectile(int speed) {
+    public void move() {
         x -= speed;
     }
 

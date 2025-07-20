@@ -53,7 +53,7 @@ public abstract class MapObject extends Entity {
     void checkProjectileCollision(){
         if (!isInvulnerable) {
             for (Projectile projectile : gamePanel.projectiles) {
-                if (collisionHandler.mapObjectCollision(this, projectile)) {
+                if (collisionHandler.projectileHitsMapObject(projectile, this)) {
                     isInvulnerable = true;
                     this.skin = hurtSkin;
                     //soundManager.playClip(soundManager.hitClip);
@@ -69,7 +69,7 @@ public abstract class MapObject extends Entity {
                 }
             }
             for (Projectile projectile : gamePanel.enemyBalls){
-                if (collisionHandler.mapObjectCollision(this, projectile)){
+                if (collisionHandler.projectileHitsMapObject(projectile, this)){
                     health -= projectile.damage;
                     projectile.isDead = true;
                     this.isInvulnerable = true;

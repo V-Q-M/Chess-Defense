@@ -13,7 +13,7 @@ public class Explosion extends Projectile{
     }
 
     @Override
-    public void moveProjectile(int speed) {
+    public void move() {
         int spreadSpeed = speed;
         x -= spreadSpeed/2;
         y -= spreadSpeed/2;

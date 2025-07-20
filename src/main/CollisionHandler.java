@@ -7,80 +7,72 @@ import mapObjects.MapObject;
 
 public class CollisionHandler {
     GamePanel gamePanel;
+
     public CollisionHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
     }
 
-    public boolean borderCollision(int playerX, int playerY, int playerWidth, int playerHeight, int speed, Direction direction){
+    public boolean borderCollision(Entity entity, int speed, Direction direction){
+        int nextX = entity.x;
+        int nextY = entity.y;
+
         switch (direction){
             case UP_RIGHT -> {
-                return (playerY - speed <= 0) || (playerX + playerWidth + speed >= Main.WIDTH);
+                nextY -= speed;
+                nextX += speed;
             }
             case UP_LEFT -> {
-                return (playerY - speed <= 0) || (playerX - speed <= 0);
+                nextY -= speed;
+                nextX -= speed;
             }
             case DOWN_RIGHT -> {
-                return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
-                        (playerX + playerWidth + speed >= Main.WIDTH);
+                nextY += speed;
+                nextX += speed;
             }
             case DOWN_LEFT -> {
-                return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
-                        (playerX - speed <= 0);
+                nextY += speed;
+                nextX -= speed;
             }
-            case UP -> {
-                return (playerY - speed <= 0);
-            }
-            case DOWN -> {
-                return (playerY + playerHeight + speed >= Main.HEIGHT - 56);
-            }
-            case LEFT -> {
-                return (playerX - speed <= 0);
-            }
-            default -> {
-                return (playerX + playerWidth + speed >= Main.WIDTH);
-            }
+            case UP -> nextY -= speed;
+            case DOWN -> nextY += speed;
+            case LEFT -> nextX -= speed;
+            default -> nextX += speed;
         }
+
+        return nextX < 0 || nextY < 0 || nextX + entity.width > Main.WIDTH || nextY + entity.height > Main.HEIGHT - 56;
     }
 
-    public boolean projectileCollision(Entity enemy, Projectile projectile) {
-        return projectile.x + projectile.width > enemy.x &&
-            projectile.x < enemy.x + enemy.width &&
-            projectile.y + projectile.height > enemy.y + 10 &&
-            projectile.y < enemy.y + enemy.height - 10;
+    public boolean checkCollision(Entity a, Entity b) {
+        return  a.x + a.width > b.x &&
+                a.x < b.x + b.width &&
+                a.y + a.height > b.y &&
+                a.y < b.y + b.height;
     }
 
-
-    public boolean projectileEnemyCollision(Projectile projectile, Player player){
-        return player.x + gamePanel.pieceWidth > projectile.x &&
-                player.x < projectile.x + projectile.width &&
-                player.y + gamePanel.pieceHeight > projectile.y &&
-                player.y < projectile.y + projectile.height;
+    public boolean checkCollisionWithPadding(Entity a, Entity b, int padding) {
+        return  a.x + a.width > b.x + padding &&
+                a.x < b.x + b.width - padding &&
+                a.y + a.height > b.y + padding &&
+                a.y < b.y + b.height - padding;
     }
 
-    public boolean enemyCollision(Entity enemy, Player player){
-        return player.x + gamePanel.pieceWidth > enemy.x &&
-            player.x < enemy.x + enemy.width &&
-            player.y + gamePanel.pieceHeight > enemy.y &&
-            player.y < enemy.y + enemy.height;
-    }
-    public boolean allyCollision(Enemy enemy, Ally pawn){
-        return pawn.x + pawn.width > enemy.x &&
-            pawn.x < enemy.x + enemy.width &&
-            pawn.y + pawn.height > enemy.y + 10 &&
-            pawn.y < enemy.y + enemy.height - 10;
+    public boolean projectileHitsEntity(Projectile projectile, Entity target){
+        return checkCollisionWithPadding(projectile, target, 10);
     }
 
-    public boolean mapObjectCollision(MapObject mapObject, Projectile projectile){
-        return projectile.x + projectile.width > mapObject.x &&
-                projectile.x < mapObject.x + mapObject.width &&
-                projectile.y + projectile.height > mapObject.y + 10 &&
-                projectile.y < mapObject.y + mapObject.height - 10;
+    public boolean projectileHitsPlayer(Projectile projectile, Entity player){
+        return checkCollision(projectile, player);
     }
 
-    public boolean mapObjectMovementCollision(MapObject mapObject, Entity entity){
-        return entity.x + entity.width > mapObject.x &&
-                entity.x < mapObject.x + mapObject.width &&
-                entity.y + entity.height > mapObject.y + 10 &&
-                entity.y < mapObject.y + mapObject.height - 10;
+    public boolean entityHitsEntity(Entity a, Entity b){
+        return checkCollision(a, b);
+    }
+
+    public boolean entityHitsMapObject(Entity entity, MapObject mapObject){
+        return checkCollisionWithPadding(entity, mapObject, 10);
+    }
+
+    public boolean projectileHitsMapObject(Projectile projectile, MapObject mapObject){
+        return checkCollisionWithPadding(projectile, mapObject, 10);
     }
 }

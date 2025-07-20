@@ -20,7 +20,7 @@ public class QueenSlice extends Projectile {
   }
 
   @Override
-  public void moveProjectile(int speed) {
+  public void move() {
     switch (direction) {
       case UP_LEFT -> {
         y -= 15;

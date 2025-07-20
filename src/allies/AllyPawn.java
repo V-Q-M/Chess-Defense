@@ -26,7 +26,7 @@ public class AllyPawn extends Ally {
     public void checkCollision() {
         boolean isSlowed = false;
         for (MapObject mapObject : gamePanel.mapObjects) {
-            if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
+            if (collisionHandler.entityHitsMapObject(this, mapObject)) {
                 isSlowed = true;
                 break;
             }

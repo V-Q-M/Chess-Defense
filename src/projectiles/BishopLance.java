@@ -20,7 +20,7 @@ public class BishopLance extends Projectile{
 
     // Moves the ball
     @Override
-    public void moveProjectile(int speed) {
+    public void move() {
         switch (direction) {
             case UP_LEFT -> {
                 y -= speed;
