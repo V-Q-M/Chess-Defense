@@ -150,7 +150,8 @@ public class AttackHandler {
     }
 
     protected void kingAttack(){
-        player.soundManager.playClip(player.soundManager.summonClip);
+        //player.soundManager.playClip(player.soundManager.summonClip);
+        player.soundManager.playClip("summon");
         gamePanel.entityManager.spawnPawns(player.x , player.y - size);
         gamePanel.entityManager.spawnPawns(player.x + gamePanel.pieceWidth, player.y);
         gamePanel.entityManager.spawnPawns(player.x , player.y + size);

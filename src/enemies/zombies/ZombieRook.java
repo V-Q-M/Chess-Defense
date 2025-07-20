@@ -81,12 +81,14 @@ public class ZombieRook extends Enemy {
         } else if (health <= 0) {
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
         }
     }
 
     private void transformIntoZombie(){
-        soundManager.playClip(soundManager.zombieSpawnClip);
+        //soundManager.playClip(soundManager.zombieSpawnClip);
+        soundManager.playClip("zombieSpawn");
         this.damage = 15;
         this.cannonDamage = cannonDamage;
         this.baseSpeed = 1;

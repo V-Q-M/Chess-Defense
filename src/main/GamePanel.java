@@ -119,13 +119,15 @@ public class GamePanel extends JPanel implements Runnable{
     enemyManager = new EnemyManager(this, gameMode, difficulty);
     player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
     entityManager = new EntityManager(this, keyHandler, soundManager, textureManager, player);
-    soundManager.loadSounds();
 
     mapManager.pickMap();
     textureManager.loadImages(map);
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
     getSettings();
+    soundManager.setGlobalVolume(SettingsManager.volume);
+    soundManager.loadMusic();
+    soundManager.startMusic();
     if (gameMode == GameMode.SPOOKY){
       textColor = Color.GREEN;
       hoverColor = Color.MAGENTA;
@@ -238,7 +240,8 @@ public class GamePanel extends JPanel implements Runnable{
         allies.add(pawn);
       }
     }
-    soundManager.playClip(soundManager.healClip);
+    //soundManager.playClip(soundManager.healClip);
+    soundManager.playClip("heal");
   }
   public void rebuildSomePawns(){
     int pawnsRebuild = 0;
@@ -253,7 +256,8 @@ public class GamePanel extends JPanel implements Runnable{
         allies.add(pawn);
       }
     }
-    soundManager.playClip(soundManager.healClip);
+    //soundManager.playClip(soundManager.healClip);
+    soundManager.playClip("heal");
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
@@ -317,7 +321,8 @@ public class GamePanel extends JPanel implements Runnable{
 
      if (!redFlashScreen){
        redFlashScreen = true;
-       soundManager.playClip(soundManager.castleHitClip);
+       //soundManager.playClip(soundManager.castleHitClip);
+       soundManager.playClip("castleHit");
      }
      if (castleHitElapsedTime > 20) {
        castleGotHit = false;
@@ -349,7 +354,8 @@ public class GamePanel extends JPanel implements Runnable{
           bossRotationIndex = 0;
         }
       }
-      soundManager.playClip(soundManager.kingSpawnClip);
+      //soundManager.playClip(soundManager.kingSpawnClip);
+      soundManager.playClip("kingSpawn");
     }
 
     // Revive everyone but the king as there is only one true king
@@ -501,21 +507,25 @@ public class GamePanel extends JPanel implements Runnable{
   private void updatePauseMenu(){
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
+      //soundManager.playClip(soundManager.buttonHoverClip);
+      soundManager.playClip("buttonHover");
       pauseMenuIndex++;
     } else if (keyHandler.goingUp){
       keyHandler.goingUp = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
+      //soundManager.playClip(soundManager.buttonHoverClip);
+      soundManager.playClip("buttonHover");
       pauseMenuIndex--;
     }
     if(keyHandler.enterPressed){
       keyHandler.enterPressed = false;
       if (pauseMenuIndex % 2 == 0){
-        soundManager.playClip(soundManager.buttonClickClip);
+        //soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.playClip("buttonClick");
         soundManager.stopMusic();
         Main.returnToMenu(this);
       } else if (pauseMenuIndex % 2 == 1){
-        soundManager.playClip(soundManager.buttonClickClip);
+        //soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.playClip("buttonClick");
         gamePaused = false;
       }
     }
@@ -525,21 +535,25 @@ public class GamePanel extends JPanel implements Runnable{
   private void updateGameOverScreen(){
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
+      //soundManager.playClip(soundManager.buttonClickClip);
+      soundManager.playClip("buttonHover");
       pauseMenuIndex++;
     } else if (keyHandler.goingUp){
       keyHandler.goingUp = false;
-      soundManager.playClip(soundManager.buttonHoverClip);
+      //soundManager.playClip(soundManager.buttonClickClip);
+      soundManager.playClip("buttonClick");
       pauseMenuIndex--;
     }
     if(keyHandler.enterPressed){
       keyHandler.enterPressed = false;
       if (pauseMenuIndex % 2 == 0){
-        soundManager.playClip(soundManager.buttonClickClip);
+        //soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.playClip("buttonClick");
         soundManager.stopMusic();
         Main.returnToMenu(this);
       } else if (pauseMenuIndex % 2 == 1){
-        soundManager.playClip(soundManager.buttonClickClip);
+        //soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.playClip("buttonClick");
         soundManager.stopMusic();
         Main.startMainGame(null, this, gameMode, difficulty);
       }

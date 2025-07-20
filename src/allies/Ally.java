@@ -30,7 +30,8 @@ public abstract class Ally extends LivingBeing {
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
         }
     }
 
@@ -46,7 +47,8 @@ public abstract class Ally extends LivingBeing {
                 this.isInvulnerable = true;
                 this.skin = hurtSkin;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
-                soundManager.playClip(soundManager.hitClip);
+                //soundManager.playClip(soundManager.hitClip);
+                soundManager.playClip("hit");
             }
         }
     }

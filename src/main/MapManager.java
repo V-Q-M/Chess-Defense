@@ -11,7 +11,12 @@ public class MapManager {
 
 
     protected void pickMap(){
-        gamePanel.map = Map.EARTH;
+        boolean pickSnow = Math.random() < 0.5;
+        if (pickSnow){
+            gamePanel.map = Map.SNOW;
+        } else {
+            gamePanel.map = Map.EARTH;
+        }
     }
 
     protected void spawnMapObjects() {

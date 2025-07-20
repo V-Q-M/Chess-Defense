@@ -27,7 +27,8 @@ public class KingBoss extends Enemy {
             this.isDead = true;
             gamePanel.score+=maxHealth;
             gamePanel.enemyKingSlain = true;
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
         }
     }
 

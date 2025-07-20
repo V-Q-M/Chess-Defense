@@ -168,7 +168,8 @@ public class Player extends LivingBeing {
     }
 
     public void revivePieces(){
-        soundManager.playClip(soundManager.healClip);
+        //soundManager.playClip(soundManager.healClip);
+        soundManager.playClip("heal");
         rookAlive = true;
         queenAlive = true;
         bishopAlive = true;
@@ -194,7 +195,8 @@ public class Player extends LivingBeing {
     public void selectPiece(PieceType changePiece) {
         gamePanel.selectedPieceType = changePiece;
         swapCounter = 0;
-        soundManager.playClip(soundManager.swapClip);
+        //soundManager.playClip(soundManager.swapClip);
+        soundManager.playClip("swap");
         gamePanel.swapSoon = false;
         switch (changePiece) {
             case PieceType.ROOK -> {
@@ -403,7 +405,8 @@ public class Player extends LivingBeing {
                     takeDamage(enemy.damage);
                     isInvulnerable = true;
                     this.skin = hurtSkin;
-                    soundManager.playClip(soundManager.hitClip);
+                    //soundManager.playClip(soundManager.hitClip);
+                    soundManager.playClip("hit");
                 }
             }
         }
@@ -432,7 +435,8 @@ public class Player extends LivingBeing {
                 takeDamage(projectile.damage/3);
                 projectile.isDead = true;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
-                soundManager.playClip(soundManager.hitClip);
+                //soundManager.playClip(soundManager.hitClip);
+                soundManager.playClip("hit");
             }
         }
     }
@@ -451,7 +455,8 @@ public class Player extends LivingBeing {
     private void checkAlive(){
         if (health <= 0){
             this.isDead = true;
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
             gamePanel.gameOver = true;
         }
 

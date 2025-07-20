@@ -55,6 +55,7 @@ public class MenuPanel extends JPanel {
     private boolean hoveringGoBack = false;
 
     private boolean hoveringMusicSettingButton = false;
+    private boolean hoveringVolumeButton = false;
     private boolean hoveringLanguageSettingButton = false;
     private boolean hoveringDebugSettingButton = false;
 
@@ -88,7 +89,7 @@ public class MenuPanel extends JPanel {
         gameFontMedium = FontManager.gameFont55;
         gameFontSmall = FontManager.gameFont40;
         gameFontTiny = FontManager.gameFont20;
-        soundManager.loadSounds();
+        //soundManager.loadSounds();
         //soundManager.startMenuMusic();
         initializeSettings();
         readSettings();
@@ -126,9 +127,13 @@ public class MenuPanel extends JPanel {
         if (line != null) {
             System.out.println(line[0]);
             if (line[0].equals("music off")) {
+                soundManager.setGlobalVolume(SettingsManager.volume);
                 soundManager.stopMusic();
                 SettingsManager.musicOff = true;
             } else {
+                soundManager.setGlobalVolume(SettingsManager.volume);
+                soundManager.stopMusic();
+                soundManager.loadMusic();
                 soundManager.startMenuMusic();
                 SettingsManager.musicOff = false;
             }
@@ -165,9 +170,10 @@ public class MenuPanel extends JPanel {
         pawnImage = whitePawnImage;
         rookImage = whiteRookImage;
         kingImage = whiteKingImage;
+        if (gameMode == GameMode.SPOOKY){
+            soundManager.startMenuMusic();
+        }
         gameMode = GameMode.NORMAL;
-
-        soundManager.startMenuMusic();
     }
 
     private void update(){
@@ -194,20 +200,33 @@ public class MenuPanel extends JPanel {
     private GameMode gameMode;
     private void updateModeSelectionMenu(){
         // Pressing a key increments or decrements index
+        if(keyHandler.escapePressed){
+            keyHandler.escapePressed = false;
+            System.out.println(SettingsManager.goBackText);
+            soundManager.playClip("buttonClick");
+            showingModeSelection = false;
+            buttonIndexY = 100000;
+            while(buttonIndexY % 5 != 0){
+                buttonIndexY++;
+            }
+        }
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
             buttonIndexY++;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         }
         // Enter performs action on the button
         if (keyHandler.enterPressed || keyHandler.spacePressed){
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonClick");
 
             if (buttonIndexY % 3 == 0) {
                 System.out.println(SettingsManager.normalModeText);
@@ -247,21 +266,34 @@ public class MenuPanel extends JPanel {
 
     private boolean startingGame = false;
     private void updateDifficultySelectionMenu(){
+        if(keyHandler.escapePressed){
+            keyHandler.escapePressed = false;
+            System.out.println(SettingsManager.goBackText);
+            soundManager.playClip("buttonClick");
+            showingDifficultySelection = false;
+            revertToNormalTheme();
+            while (buttonIndexY % 3 != 0){
+                buttonIndexY++;
+            }
+        }
         // Pressing a key increments or decrements index
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
             buttonIndexY++;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         }
         // Enter performs action on the button
         if (keyHandler.enterPressed || keyHandler.spacePressed){
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonClick");
 
             if (buttonIndexY % 4 == 0) {
                 System.out.println(SettingsManager.easyText);
@@ -315,23 +347,28 @@ public class MenuPanel extends JPanel {
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingShop = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonClick");
+
         }
         else if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
             buttonIndexY++;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
         }
 
         // Enter performs action on the button
         if (keyHandler.enterPressed || keyHandler.spacePressed) {
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonClick");
 
             if (buttonIndexY % 3 == 0) {
                 System.out.println("Item01");
@@ -361,32 +398,66 @@ public class MenuPanel extends JPanel {
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingSettings = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonClick");
         }
         else if (keyHandler.goingUp){
             keyHandler.goingUp = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
             buttonIndexY--;
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            //soundManager.playClip("buttonHover");
+            soundManager.playClip("buttonHover");
             buttonIndexY++;
         }
 
+        if (hoveringVolumeButton) {
+            if (keyHandler.goingRight){
+                keyHandler.goingRight = false;
+                volumeBars = Math.min(volumeBars + 1, 10);
+                soundManager.playClip("buttonHover");
+                System.out.println("VolumeSetting");
+                System.out.println(5 * volumeBars);
+                SettingsManager.volume = 5 * volumeBars;
+                SettingsManager.writeSettings();
+                readSettings();
+                System.out.println("APPLY SETTINGS");
+            } else if (keyHandler.goingLeft){
+                keyHandler.goingLeft = false;
+                volumeBars = Math.max(volumeBars - 1, 0);
+                soundManager.playClip("buttonHover");
+                System.out.println("VolumeSetting");
+                System.out.println(5 * volumeBars);
+                SettingsManager.volume = 5 * volumeBars;
+                SettingsManager.writeSettings();
+                readSettings();
+                System.out.println("APPLY SETTINGS");
+            }
+        }
+
+
         // Enter performs action on the button
-        if (keyHandler.enterPressed || keyHandler.spacePressed) {
+        if (keyHandler.enterPressed || keyHandler.spacePressed ) {
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            //soundManager.playClip("buttonClick");
+            soundManager.playClip("buttonHover");
 
-            if (buttonIndexY % 3 == 0) {
+            if (buttonIndexY % 4 == 0){
+                System.out.println("VolumeSetting");
+                System.out.println(5 * volumeBars);
+                SettingsManager.volume = 5 * volumeBars;
+            }
+            else if (buttonIndexY % 4 == 1) {
                 System.out.println("MusicSetting");
                 SettingsManager.musicOff = !SettingsManager.musicOff;
-            } else if (buttonIndexY % 3 == 1) {
+            } else if (buttonIndexY % 4 == 2) {
                 System.out.println("LanguageSetting");
                 SettingsManager.languageGerman = !SettingsManager.languageGerman;
 
-            } else if (buttonIndexY % 3 == 2) {
+            } else if (buttonIndexY % 4 == 3) {
                 System.out.println("DebugSetting");
                 SettingsManager.debugMode = !SettingsManager.debugMode;
             }
@@ -400,13 +471,16 @@ public class MenuPanel extends JPanel {
         // Hover effect
         resetButtons();
         // Color buttons correctly
-        if (buttonIndexY % 3 == 0) {
+        if (buttonIndexY % 4 == 0){
+            hoveringVolumeButton = true;
+        }
+        else if (buttonIndexY % 4 == 1) {
             hoveringMusicSettingButton = true;
         }
-        else if (buttonIndexY % 3 == 1) {
+        else if (buttonIndexY % 4 == 2) {
             hoveringLanguageSettingButton = true;
         }
-        else if (buttonIndexY % 3 == 2) {
+        else if (buttonIndexY % 4 == 3) {
             hoveringDebugSettingButton = true;
         }
     }
@@ -415,16 +489,16 @@ public class MenuPanel extends JPanel {
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingHelp = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            soundManager.playClip("buttonClick");
         }
         else if (keyHandler.goingRight){
             keyHandler.goingRight = false;
             currentHelpPage++;
-            soundManager.playClip(soundManager.buttonClickClip);
+            soundManager.playClip("buttonClick");
         } else if (keyHandler.goingLeft){
             keyHandler.goingLeft = false;
             currentHelpPage--;
-            soundManager.playClip(soundManager.buttonClickClip);
+            soundManager.playClip("buttonClick");
         }
     }
 
@@ -433,18 +507,18 @@ public class MenuPanel extends JPanel {
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            soundManager.playClip("buttonHover");
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
             buttonIndexY++;
-            soundManager.playClip(soundManager.buttonHoverClip);
+            soundManager.playClip("buttonHover");
         }
 
         // Enter performs action on the button
         if (keyHandler.enterPressed || keyHandler.spacePressed){
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
-            soundManager.playClip(soundManager.buttonClickClip);
+            soundManager.playClip("buttonClick");
 
             if (buttonIndexY % 5 == 0) {
                 System.out.println(SettingsManager.playText);
@@ -501,6 +575,7 @@ public class MenuPanel extends JPanel {
         hoveringGoBack = false;
 
         hoveringMusicSettingButton = false;
+        hoveringVolumeButton = false;
         hoveringLanguageSettingButton = false;
         hoveringDebugSettingButton = false;
 
@@ -718,17 +793,42 @@ public class MenuPanel extends JPanel {
         drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
     }
 
+    private int volumeBars = SettingsManager.volume/5;
     private void drawSettings(Graphics2D g2d){
         // Background
         g2d.setColor(translucentBlack);
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
-
 
         g2d.setFont(gameFont);
         g2d.setColor(textColor);
         drawText(g2d,0,230, SettingsManager.settingsText);
 
         g2d.setFont(gameFontSmall);
+        drawText(g2d,0, 330, SettingsManager.volumeText);
+
+        int y = 380;
+
+        int layoutWidth = 90 * 10 - (90 - 80); // spacing * 10 - (spacing - buttonWidth) = 890
+        int grayBgWidth = layoutWidth + 10 * 2; // padding on both sides = 920
+        int grayBgX = (1920 - grayBgWidth) / 2; // center on 1920 screen
+        int startX = grayBgX + 10; // padding
+
+        g2d.setColor(Color.DARK_GRAY);
+        g2d.fillRect(grayBgX, y - 8, grayBgWidth, 40 + 16); // height + top/bottom padding
+
+        for (int i = 0; i < 10; i++) {
+            if (i < volumeBars){
+                if(hoveringVolumeButton){
+                    g2d.setColor(Color.YELLOW);
+                } else {
+                    g2d.setColor(Color.WHITE);
+                }
+            } else {
+                g2d.setColor(Color.BLACK);
+            }
+            g2d.fillRect(startX + i * 90, y, 80, 40); // button width = 80, spacing = 90
+        }
+
         // Music button
         if(hoveringMusicSettingButton){
             g2d.setColor(hoverColor);
@@ -736,9 +836,9 @@ public class MenuPanel extends JPanel {
             g2d.setColor(textColor);
         }
         if(SettingsManager.musicOff){
-            drawText(g2d,0,400, SettingsManager.musicOffText);
+            drawText(g2d,0,540, SettingsManager.musicOffText);
         } else {
-            drawText(g2d,0,400, SettingsManager.musicOnText);
+            drawText(g2d,0,540, SettingsManager.musicOnText);
         }
 
         // Language button
@@ -748,9 +848,9 @@ public class MenuPanel extends JPanel {
             g2d.setColor(textColor);
         }
         if(SettingsManager.languageGerman){
-            drawText(g2d,0,500, SettingsManager.languageGermanText);
+            drawText(g2d,0,630, SettingsManager.languageGermanText);
         } else {
-            drawText(g2d,0,500, SettingsManager.languageEnglishText);
+            drawText(g2d,0,630, SettingsManager.languageEnglishText);
         }
         // Debugmode button
         if(hoveringDebugSettingButton){
@@ -759,9 +859,9 @@ public class MenuPanel extends JPanel {
             g2d.setColor(textColor);
         }
         if(SettingsManager.debugMode){
-            drawText(g2d,0,600, SettingsManager.debugOnText);
+            drawText(g2d,0,720, SettingsManager.debugOnText);
         } else {
-            drawText(g2d,0,600, SettingsManager.debugOffText);
+            drawText(g2d,0,720, SettingsManager.debugOffText);
         }
         g2d.setColor(textColor);
         g2d.setFont(gameFontTiny);

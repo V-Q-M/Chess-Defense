@@ -52,7 +52,8 @@ public abstract class ImmovableObject {
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
         }
     }
 
@@ -62,7 +63,8 @@ public abstract class ImmovableObject {
                 if (collisionHandler.mapObjectCollision(this, projectile)) {
                     isInvulnerable = true;
                     this.skin = hurtSkin;
-                    soundManager.playClip(soundManager.hitClip);
+                    //soundManager.playClip(soundManager.hitClip);
+                    soundManager.playClip("hit");
                     health -= projectile.damage;
 
                     if (projectile.diesOnHit) {
@@ -80,7 +82,8 @@ public abstract class ImmovableObject {
                     this.isInvulnerable = true;
                     this.skin = hurtSkin;
                     gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
-                    soundManager.playClip(soundManager.hitClip);
+                    //soundManager.playClip(soundManager.hitClip);
+                    soundManager.playClip("hit");
                 }
             }
         }

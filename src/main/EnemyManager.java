@@ -98,7 +98,8 @@ public class EnemyManager {
             shouldSpawnGuard = false;
             gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
             gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.textureManager, gamePanel.collisionHandler, kingsX, kingsY + 128, kingsSize, kingsSize));
-            gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
+            //gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
+            gamePanel.soundManager.playClip("summon");
         }
     }
     public void spawnKingsGuard(int x, int y, int size){

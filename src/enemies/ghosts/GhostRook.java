@@ -20,7 +20,8 @@ public class GhostRook extends Enemy {
         this.skin = baseSkin;
         this.attackCoolDown = 50;
         this.attackCoolDownCounter = 0;
-        soundManager.playClip(soundManager.ghostSpawnClip);
+        //soundManager.playClip(soundManager.ghostSpawnClip);
+        soundManager.playClip("ghostSpawn");
     }
 
     boolean allowAttack = false;

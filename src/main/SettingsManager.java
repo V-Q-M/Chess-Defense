@@ -21,6 +21,7 @@ public class SettingsManager {
     public static String helpText = "Help";
 
     // For the Settings
+    public static String volumeText = "Main volume";
     public static String musicOnText = "Music on";
     public static String musicOffText = "Music off";
     public static String languageEnglishText = "Language English";
@@ -77,6 +78,7 @@ public class SettingsManager {
     public static boolean musicOff = false;
     public static boolean languageGerman = false;
     public static boolean debugMode = false;
+    public static int volume = 10;
 
 
     public static void writeSettings(){
@@ -123,6 +125,7 @@ public class SettingsManager {
         helpText = "Hilfe";
 
         // Settings Menu
+        volumeText = "Gesamtlautstärke";
         musicOnText = "Musik an";
         musicOffText = "Musik aus";
         languageEnglishText = "Sprache Englisch";
@@ -194,6 +197,7 @@ public class SettingsManager {
         goBackText = "Go back";
         loadingText = "Loading...";
 
+        volumeText = "Main volume";
         musicOnText = "Music on";
         musicOffText = "Music off";
         languageEnglishText = "Language English";

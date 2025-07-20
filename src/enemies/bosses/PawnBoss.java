@@ -32,7 +32,8 @@ public class PawnBoss extends Enemy {
             if (!diedToWall){
                 gamePanel.pawnBossSlain = true;
             }
-            soundManager.playClip(soundManager.deathClip);
+            //soundManager.playClip(soundManager.deathClip);
+            soundManager.playClip("death");
 
         }
     }
