@@ -108,6 +108,7 @@ public class SettingsManager {
         chooseGamemodeText = "Spielmodus:";
         normalModeText = "Normal";
         spookyModeText = "Gruselig";
+        spookyModeDefinitionText = "Gruseliger Modus:";
 
         chooseDifficultyText = "Schwierigkeit:";
         easyText = "Leicht";
@@ -184,6 +185,7 @@ public class SettingsManager {
         chooseGamemodeText = "Gamemode:";
         normalModeText = "Normal";
         spookyModeText = "Spooky";
+        spookyModeDefinitionText = "Spooky mode:";
 
         chooseDifficultyText = "Difficulty:";
         easyText = "Easy";

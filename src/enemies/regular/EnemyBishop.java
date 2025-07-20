@@ -16,8 +16,8 @@ public class EnemyBishop extends Enemy {
         this.slowedSpeed = 1;
         this.health = 150;
         this.maxHealth = 150;
-        this.baseSkin = textureManager.enemyRookImage;
-        this.hurtSkin = textureManager.enemyRookHurtImage;
+        this.baseSkin = textureManager.enemyBishopImage;
+        this.hurtSkin = textureManager.enemyBishopHurtImage;
         this.skin = baseSkin;
         this.attackCoolDown = 300;
         this.attackCoolDownCounter = 0;

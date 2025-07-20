@@ -120,9 +120,9 @@ public class GamePanel extends JPanel implements Runnable{
     player = new Player(this, keyHandler, soundManager, textureManager, collisionHandler, startX, startY);
     entityManager = new EntityManager(this, keyHandler, soundManager, textureManager, player);
     soundManager.loadSounds();
-    textureManager.loadImages(map);
 
     mapManager.pickMap();
+    textureManager.loadImages(map);
     gameFont = FontManager.gameFont80;
     gameFontTiny = FontManager.gameFont25;
     getSettings();
@@ -600,17 +600,36 @@ public class GamePanel extends JPanel implements Runnable{
     drawAllies(g2d);
     drawEnemies(g2d);
     drawEntities(g2d);
-    drawNightFilter(g2d);
+    if (gameMode == GameMode.SPOOKY){
+      drawNightFilter(g2d);
+    } else {
+      drawDayFilter(g2d);
+    }
     drawLightEffects(g2d);
     drawHealthBars(g2d);
     drawUI(g2d);
   }
 
-  private void drawNightFilter(Graphics2D g2d){
-    g2d.setColor(new Color(0,0,50, 130));
-    if (gameMode == GameMode.SPOOKY){
-      g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+  Color earthDay = new Color(120,40,00, 20);
+  Color snowDay = new Color(70,35,15, 40);
+  private void drawDayFilter(Graphics2D g2d){
+    if (map == Map.SNOW){
+      g2d.setColor(snowDay);
+    } else {
+      g2d.setColor(earthDay);
     }
+    g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+  }
+
+  Color earthNight = new Color(0,0,50, 130);
+  Color snowNight = new Color(0,0,50, 180);
+  private void drawNightFilter(Graphics2D g2d){
+    if (map == Map.SNOW){
+      g2d.setColor(snowNight);
+    } else {
+      g2d.setColor(earthNight);
+    }
+    g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
   }
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);
