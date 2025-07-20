@@ -417,23 +417,9 @@ public class MenuPanel extends JPanel {
             if (keyHandler.goingRight){
                 keyHandler.goingRight = false;
                 volumeBars = Math.min(volumeBars + 1, 10);
-                soundManager.playClip("buttonHover");
-                System.out.println("VolumeSetting");
-                System.out.println(5 * volumeBars);
-                SettingsManager.volume = 5 * volumeBars;
-                SettingsManager.writeSettings();
-                readSettings();
-                System.out.println("APPLY SETTINGS");
             } else if (keyHandler.goingLeft){
                 keyHandler.goingLeft = false;
                 volumeBars = Math.max(volumeBars - 1, 0);
-                soundManager.playClip("buttonHover");
-                System.out.println("VolumeSetting");
-                System.out.println(5 * volumeBars);
-                SettingsManager.volume = 5 * volumeBars;
-                SettingsManager.writeSettings();
-                readSettings();
-                System.out.println("APPLY SETTINGS");
             }
         }
 
