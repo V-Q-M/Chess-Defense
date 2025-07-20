@@ -5,21 +5,13 @@ import projectiles.Projectile;
 import main.*;
 import mapObjects.ImmovableObject;
 
-public abstract class Enemy extends LivingBeing {
+public abstract class Enemy extends Entity {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean isBoss = false;
-    public int slowedSpeed;
 
 
     public Enemy(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        this.gamePanel = gamePanel;
-        this.soundManager = soundManager;
-        this.textureManager = textureManager;
-        this.collisionHandler = collisionHandler;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.recoveryTime = 41;
     }
 

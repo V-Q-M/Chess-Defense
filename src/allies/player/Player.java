@@ -9,13 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Player extends LivingBeing {
-    GamePanel gamePanel;
+public class Player extends Entity {
+    // Player specific handlers
     KeyHandler keyHandler;
-    SoundManager soundManager;
-    TextureManager textureManager;
-    CollisionHandler collisionHandler;
-
     AttackHandler attackHandler;
     MovementHandler movementHandler;
 
@@ -94,19 +90,12 @@ public class Player extends LivingBeing {
     PieceType lastPiece;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int startPositionX, int startPositionY){
-        this.gamePanel = gamePanel;
+        super(gamePanel, soundManager, textureManager, collisionHandler, startPositionX, startPositionY, 128, 128);
         this.keyHandler = keyHandler;
-        this.soundManager = soundManager;
-        this.textureManager = textureManager;
-        this.collisionHandler = collisionHandler;
         this.attackHandler = new AttackHandler(gamePanel, textureManager, this);
         this.movementHandler = new MovementHandler(gamePanel, this);
-        this.x = startPositionX;
-        this.y = startPositionY;
         this.targetX = startPositionX;
         this.targetY = startPositionY;
-        this.height = gamePanel.squareSize;
-        this.width  = gamePanel.squareSize;
         this.speed = BASE_MOVE_SPEED;
     }
 

@@ -3,20 +3,13 @@ package allies;
 import projectiles.Projectile;
 import main.*;
 
-public abstract class Ally extends LivingBeing {
+public abstract class Ally extends Entity {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean canMove = false;
 
 
     public Ally(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        this.gamePanel = gamePanel;
-        this.soundManager = soundManager;
-        this.textureManager = textureManager;
-        this.collisionHandler = collisionHandler;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
     }
 
     public void update(){

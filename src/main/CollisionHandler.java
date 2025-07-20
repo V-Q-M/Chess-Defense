@@ -42,7 +42,7 @@ public class CollisionHandler {
         }
     }
 
-    public boolean projectileCollision(LivingBeing enemy, Projectile projectile) {
+    public boolean projectileCollision(Entity enemy, Projectile projectile) {
         return projectile.x + projectile.width > enemy.x &&
             projectile.x < enemy.x + enemy.width &&
             projectile.y + projectile.height > enemy.y + 10 &&
@@ -57,7 +57,7 @@ public class CollisionHandler {
                 player.y < projectile.y + projectile.height;
     }
 
-    public boolean enemyCollision(Enemy enemy, Player player){
+    public boolean enemyCollision(Entity enemy, Player player){
         return player.x + gamePanel.pieceWidth > enemy.x &&
             player.x < enemy.x + enemy.width &&
             player.y + gamePanel.pieceHeight > enemy.y &&
@@ -77,10 +77,10 @@ public class CollisionHandler {
                 projectile.y < mapObject.y + mapObject.height - 10;
     }
 
-    public boolean mapObjectMovementCollision(ImmovableObject mapObject, LivingBeing livingBeing){
-        return livingBeing.x + livingBeing.width > mapObject.x &&
-                livingBeing.x < mapObject.x + mapObject.width &&
-                livingBeing.y + livingBeing.height > mapObject.y + 10 &&
-                livingBeing.y < mapObject.y + mapObject.height - 10;
+    public boolean mapObjectMovementCollision(ImmovableObject mapObject, Entity entity){
+        return entity.x + entity.width > mapObject.x &&
+                entity.x < mapObject.x + mapObject.width &&
+                entity.y + entity.height > mapObject.y + 10 &&
+                entity.y < mapObject.y + mapObject.height - 10;
     }
 }
