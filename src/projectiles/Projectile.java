@@ -15,6 +15,7 @@ public abstract class Projectile extends Entity {
     public int damage;
     public boolean diesOnHit = false;
     public boolean destroyable = false;
+    public boolean crushesIce = false;
     public BufferedImage skin;
 
     public Projectile(GamePanel gamePanel, TextureManager textureManager, int x, int y, int width, int height){

@@ -85,7 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
   MapManager mapManager = new MapManager(this);
   public EnemyManager enemyManager;
   public EntityManager entityManager;
-  Player player;
+  public Player player;
 
   // Start position at ca. center
   int startX = pieceWidth*4;

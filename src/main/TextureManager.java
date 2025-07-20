@@ -95,6 +95,7 @@ public class TextureManager {
     public BufferedImage rockImage;
     public BufferedImage bushImage;
     public BufferedImage iceImage;
+    public BufferedImage lakeImage;
 
     public BufferedImage stopwatchImage;
 
@@ -210,6 +211,7 @@ public class TextureManager {
 
             rockImage = getTextureUpscaled(6,9, TILE_SIZE, UPSCALED_SIZE);
             iceImage = getTextureUpscaled(6, 10, TILE_SIZE * 2, UPSCALED_SIZE * 2);
+            lakeImage = getTextureUpscaled(8, 10, TILE_SIZE * 2, UPSCALED_SIZE * 2);
 
             unavailablePieceImage = getTexture(7,8);
             earthTileImage = imageAtlas.getSubimage(8 * TILE_SIZE, 0 * TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);

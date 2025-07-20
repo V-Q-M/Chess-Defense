@@ -13,6 +13,7 @@ public class PawnBoss extends Enemy {
         this.damage = 20;
         this.baseSpeed = 1;
         this.speed = baseSpeed;
+        this.slowedSpeed = 1;
         this.maxHealth = 500;
         this.health = maxHealth;
         this.baseSkin = textureManager.enemyPawnImage;

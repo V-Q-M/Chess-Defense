@@ -15,6 +15,7 @@ public class KnightSmash extends Projectile {
         this.health = decay;
         this.damage = damage;
         this.skin = skin;
+        this.crushesIce = true;
     }
 
     @Override

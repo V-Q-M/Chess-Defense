@@ -8,6 +8,7 @@ public class KingBoss extends Enemy {
         super(gamePanel, soundManager, textureManager,  collisionHandler, x, y, width, height);
         this.damage = 10;
         this.speed = 2;
+        this.slowedSpeed = 1;
         this.maxHealth = 400;
         this.health = 400;
         this.baseSkin = textureManager.enemyKingImage;

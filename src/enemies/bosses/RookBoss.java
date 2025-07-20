@@ -9,6 +9,7 @@ public class RookBoss extends Enemy {
         this.damage = 20;
         this.baseSpeed = 1;
         this.speed = baseSpeed;
+        this.slowedSpeed = 1;
         this.health = 400;
         this.maxHealth = 400;
         this.baseSkin = textureManager.enemyRookImage;
