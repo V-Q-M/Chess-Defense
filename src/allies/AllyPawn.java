@@ -4,7 +4,7 @@ import main.CollisionHandler;
 import main.GamePanel;
 import main.SoundManager;
 import main.TextureManager;
-import mapObjects.ImmovableObject;
+import mapObjects.MapObject;
 
 public class AllyPawn extends Ally {
 
@@ -13,6 +13,7 @@ public class AllyPawn extends Ally {
         this.damage = 10;
         this.baseSpeed = 3;
         this.speed = baseSpeed;
+        this.slowedSpeed = 1;
         this.health = 100;
         this.baseSkin = textureManager.pawnImage;
         this.hurtSkin = textureManager.pawnHurtImage;
@@ -22,9 +23,9 @@ public class AllyPawn extends Ally {
     }
 
     @Override
-    void checkCollision() {
+    public void checkCollision() {
         boolean isSlowed = false;
-        for (ImmovableObject mapObject : gamePanel.mapObjects) {
+        for (MapObject mapObject : gamePanel.mapObjects) {
             if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
                 isSlowed = true;
                 break;
@@ -32,12 +33,13 @@ public class AllyPawn extends Ally {
         }
         if (isSlowed) {
             if (speed == baseSpeed) {
-                speed = speed / 2;
+                speed = slowedSpeed;
             }
         } else {
             if (speed < baseSpeed) {
                 speed = baseSpeed;
             }
         }
+        checkProjectileCollision();
     }
 }

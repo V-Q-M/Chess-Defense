@@ -5,7 +5,7 @@ import main.GamePanel;
 import main.SoundManager;
 import main.TextureManager;
 
-public class Rock extends ImmovableObject{
+public class Rock extends MapObject {
     public Rock(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height){
        super(gamePanel, soundManager, textureManager, collisionHandler, x ,y ,width, height);
        this.baseSkin = textureManager.rockImage;
@@ -14,4 +14,5 @@ public class Rock extends ImmovableObject{
        this.maxHealth = 500;
        this.health = maxHealth;
     }
+
 }

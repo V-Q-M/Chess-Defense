@@ -22,7 +22,7 @@ public class AllyBishop extends Ally{
     }
 
     @Override
-    void updateCooldowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;

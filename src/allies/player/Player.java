@@ -3,7 +3,7 @@ package allies.player;
 import enemies.Enemy;
 import projectiles.Projectile;
 import main.*;
-import mapObjects.ImmovableObject;
+import mapObjects.MapObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,12 +99,9 @@ public class Player extends Entity {
         this.speed = BASE_MOVE_SPEED;
     }
 
-    public void playerUpdate(){
-        movement();
-        checkCollision();
-        checkProjectileCollision();
-        coolDowns();
-        checkAlive();
+    @Override
+    public void update(){
+        super.update();
         prepareForcedSwap();
     }
 
@@ -229,7 +226,8 @@ public class Player extends Entity {
         return collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
     }
 
-    private void movement() {
+    @Override
+    public void move() {
         if (!isMoving) {
             if (gamePanel.selectedPieceType == PieceType.BISHOP){ // Is extra because he can only move diagonally
                 analyzeInputBishop();
@@ -351,7 +349,7 @@ public class Player extends Entity {
         }
     }
 
-    private void coolDowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;
@@ -385,8 +383,7 @@ public class Player extends Entity {
     }
 
     private boolean slowed = false;
-    private void checkCollision(){
-
+    public void checkCollision(){
         if (!isInvulnerable) {
             for (Enemy enemy : gamePanel.enemies) {
                 if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
@@ -401,7 +398,7 @@ public class Player extends Entity {
         }
 
         boolean isSlowed = false;
-        for (ImmovableObject mapObject : gamePanel.mapObjects) {
+        for (MapObject mapObject : gamePanel.mapObjects) {
             if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
                 isSlowed = true;
                 break;
@@ -416,6 +413,7 @@ public class Player extends Entity {
                 speed = BASE_MOVE_SPEED;
             }
         }
+        checkProjectileCollision();
     }
 
     private void checkProjectileCollision(){
@@ -441,7 +439,7 @@ public class Player extends Entity {
         }
     }
 
-    private void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             //soundManager.playClip(soundManager.deathClip);

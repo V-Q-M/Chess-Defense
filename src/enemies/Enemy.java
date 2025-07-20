@@ -3,7 +3,7 @@ package enemies;
 import allies.Ally;
 import projectiles.Projectile;
 import main.*;
-import mapObjects.ImmovableObject;
+import mapObjects.MapObject;
 
 public abstract class Enemy extends Entity {
     public int maxHealth = 100; // need to pass it in constructor soon
@@ -15,19 +15,10 @@ public abstract class Enemy extends Entity {
         this.recoveryTime = 41;
     }
 
-    public void update(){
-        checkAlive();
-        move();
-        checkCollision();
-        checkPawnWallCollision();
-        updateCooldowns();
-    }
-
-    protected void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
         }
     }
@@ -49,7 +40,7 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    protected void updateCooldowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;
@@ -59,8 +50,6 @@ public abstract class Enemy extends Entity {
             }
             invulnerableCounter++;
         }
-
-
         if (hasAttacked && attackCoolDownCounter < attackCoolDown){
             attackCoolDownCounter++;
         } else {
@@ -69,26 +58,11 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    protected void checkCollision(){
-        if (!isInvulnerable) {
-            for (Projectile projectile : gamePanel.projectiles) {
-                if (collisionHandler.projectileCollision(this, projectile)) {
-                    isInvulnerable = true;
-                    this.skin = hurtSkin;
-                    //soundManager.playClip(soundManager.hitClip);
-                    soundManager.playClip("hit");
-                    health -= projectile.damage;
-
-                    if (projectile.diesOnHit) {
-                            gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
-                            projectile.isDead = true;
-                    }
-                }
-            }
-        }
+    public void checkCollision(){
+        checkProjectileCollision();
 
         boolean isSlowed = false;
-        for (ImmovableObject mapObject : gamePanel.mapObjects) {
+        for (MapObject mapObject : gamePanel.mapObjects) {
             if (collisionHandler.mapObjectMovementCollision(mapObject, this)) {
                 isSlowed = true;
                 break;
@@ -103,8 +77,29 @@ public abstract class Enemy extends Entity {
                 speed = baseSpeed;
             }
         }
+        checkAllyCollision();
     }
-     protected void checkPawnWallCollision(){
+
+    protected void checkProjectileCollision(){
+        if (!isInvulnerable) {
+            for (Projectile projectile : gamePanel.projectiles) {
+                if (collisionHandler.projectileCollision(this, projectile)) {
+                    isInvulnerable = true;
+                    this.skin = hurtSkin;
+                    //soundManager.playClip(soundManager.hitClip);
+                    soundManager.playClip("hit");
+                    health -= projectile.damage;
+
+                    if (projectile.diesOnHit) {
+                        gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
+                        projectile.isDead = true;
+                    }
+                }
+            }
+        }
+    }
+
+     protected void checkAllyCollision(){
         for (Ally pawn : gamePanel.allies){
             if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
                 health -= 100;

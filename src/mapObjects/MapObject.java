@@ -1,20 +1,11 @@
 package mapObjects;
 
+import main.*;
 import projectiles.Projectile;
-import main.CollisionHandler;
-import main.GamePanel;
-import main.SoundManager;
-import main.TextureManager;
 
 import java.awt.image.BufferedImage;
 
-public abstract class ImmovableObject {
-    public GamePanel gamePanel;
-    public SoundManager soundManager;
-    public TextureManager textureManager;
-    public CollisionHandler collisionHandler;
-
-    public int x, y, width, height;
+public abstract class MapObject extends Entity {
     public boolean isDead, isInvulnerable, hasAttacked = false;
     public int invulnerableCounter, attackCoolDownCounter = 0;
     public int attackCoolDown;
@@ -31,31 +22,33 @@ public abstract class ImmovableObject {
     public int health = maxHealth;
 
 
-    public ImmovableObject(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
-        this.gamePanel = gamePanel;
-        this.soundManager = soundManager;
-        this.textureManager = textureManager;
-        this.collisionHandler = collisionHandler;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public MapObject(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+        super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
         this.recoveryTime = 41;
     }
 
+    @Override
     public void update(){
         checkAlive();
-        checkProjectileCollision();
+        checkCollision();
         updateCooldowns();
     }
 
-    void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
         }
     }
+
+    public void move(){
+
+    };
+
+    public void checkCollision(){
+        checkProjectileCollision();
+    };
 
     void checkProjectileCollision(){
         if (!isInvulnerable) {
@@ -89,7 +82,7 @@ public abstract class ImmovableObject {
         }
     }
 
-    void updateCooldowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;

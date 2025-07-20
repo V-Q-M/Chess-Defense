@@ -12,24 +12,15 @@ public abstract class Ally extends Entity {
         super(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
     }
 
-    public void update(){
-        checkAlive();
-        move();
-        updateCooldowns();
-        checkCollision();
-        checkProjectileCollision();
-    }
-
-    void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
-            //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
         }
     }
 
-    void checkCollision(){
-
+    public void checkCollision(){
+        checkProjectileCollision();
     }
 
     void checkProjectileCollision(){
@@ -46,7 +37,6 @@ public abstract class Ally extends Entity {
         }
     }
 
-
     public void move(){
         if (canMove){
             if (x > Main.WIDTH){
@@ -57,7 +47,7 @@ public abstract class Ally extends Entity {
         }
     }
 
-    void updateCooldowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;

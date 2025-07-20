@@ -5,7 +5,7 @@ import main.GamePanel;
 import main.SoundManager;
 import main.TextureManager;
 
-public class Ice extends ImmovableObject{
+public class Ice extends MapObject {
     public Ice(GamePanel gamePanel, SoundManager soundManager, TextureManager textureManager, CollisionHandler collisionHandler, int x, int y, int width, int height){
         super(gamePanel, soundManager, textureManager, collisionHandler, x ,y ,width, height);
         this.baseSkin = textureManager.iceImage;
@@ -16,7 +16,7 @@ public class Ice extends ImmovableObject{
     }
 
     @Override
-    public void checkProjectileCollision(){
+    public void checkCollision(){
 
     }
 }

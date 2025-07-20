@@ -40,16 +40,7 @@ public class ZombieRook extends Enemy {
     }
 
     @Override
-    public void update(){
-        checkAlive();
-        move();
-        checkCollision();
-        checkPawnWallCollision();
-        updateCooldowns();
-    }
-
-    @Override
-    protected void updateCooldowns(){
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;
@@ -74,14 +65,13 @@ public class ZombieRook extends Enemy {
     }
 
     @Override
-    protected void checkAlive(){
+    public void checkAlive(){
         if (health <= 0 && !hasTransformed) {
             hasTransformed = true;
             transformIntoZombie();
         } else if (health <= 0) {
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
         }
     }

@@ -75,7 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
   public final List<Ally> wall = new ArrayList<>();
   public final List<Ally> turrets = new ArrayList<>();
   // carries other objects
-  public final List<ImmovableObject> mapObjects = new ArrayList<>();
+  public final List<MapObject> mapObjects = new ArrayList<>();
 
   // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
@@ -455,10 +455,10 @@ public class GamePanel extends JPanel implements Runnable{
       simpleAnimation();
 
       if (!player.isDead) {
-        player.playerUpdate();
+        player.update();
       }
 
-      for (ImmovableObject mapObject : mapObjects){
+      for (MapObject mapObject : mapObjects){
         mapObject.update();
       }
       mapObjects.removeIf(mapObject -> mapObject.isDead);
@@ -647,7 +647,7 @@ public class GamePanel extends JPanel implements Runnable{
   }
   private void drawBackground(Graphics2D g2d){
     g2d.drawImage(textureManager.mapImage,0,0,this);
-    for (ImmovableObject mapObject : mapObjects){
+    for (MapObject mapObject : mapObjects){
       g2d.drawImage(mapObject.skin, mapObject.x, mapObject.y,this);
     }
   }
@@ -788,7 +788,7 @@ public class GamePanel extends JPanel implements Runnable{
       }
     }
 
-    for (ImmovableObject mapObject : mapObjects) {
+    for (MapObject mapObject : mapObjects) {
       if (mapObject.health != mapObject.maxHealth){
         createHealthBar(g2d, mapObject.x, mapObject.y, mapObject.width, 18, mapObject.health, mapObject.maxHealth, LIME);
       }

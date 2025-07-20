@@ -40,17 +40,7 @@ public class EnemyBishop extends Enemy {
     }
 
     @Override
-    public void update(){
-        checkAlive();
-        move();
-        checkCollision();
-        checkPawnWallCollision();
-        updateCooldowns();
-    }
-
-    @Override
-    protected void updateCooldowns(){
-
+    public void updateCooldowns(){
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
                 isInvulnerable = false;

@@ -24,20 +24,18 @@ public class ZombiePawn extends Enemy {
     private boolean hasTransformed = false;
 
     @Override
-    protected void checkAlive(){
+    public void checkAlive(){
         if (health <= 0 && !hasTransformed) {
             hasTransformed = true;
             transformIntoZombie();
         } else if (health <= 0) {
             this.isDead = true;
             gamePanel.score+=maxHealth;
-            //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
         }
     }
 
     private void transformIntoZombie(){
-        //soundManager.playClip(soundManager.zombieSpawnClip);
         soundManager.playClip("zombieSpawn");
         this.damage = 10;
         this.baseSpeed = 1;

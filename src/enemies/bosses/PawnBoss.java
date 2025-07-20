@@ -25,16 +25,14 @@ public class PawnBoss extends Enemy {
     }
     private boolean diedToWall = false;
     @Override
-    protected void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;
             if (!diedToWall){
                 gamePanel.pawnBossSlain = true;
             }
-            //soundManager.playClip(soundManager.deathClip);
             soundManager.playClip("death");
-
         }
     }
 

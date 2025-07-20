@@ -38,16 +38,7 @@ public class RookBoss extends Enemy {
     }
 
     @Override
-    public void update(){
-        checkAlive();
-        move();
-        checkCollision();
-        checkPawnWallCollision();
-        updateCooldowns();
-    }
-
-    @Override
-    protected void updateCooldowns(){
+    public void updateCooldowns(){
 
         if (isInvulnerable){
             if (invulnerableCounter >= recoveryTime){
@@ -73,7 +64,7 @@ public class RookBoss extends Enemy {
     }
 
     @Override
-    protected void checkAlive(){
+    public void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             gamePanel.score+=maxHealth;

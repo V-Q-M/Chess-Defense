@@ -31,4 +31,20 @@ public abstract class Entity {
        this.width = width;
        this.height = height;
     }
+
+    public void update(){
+        checkAlive();
+        move();
+        checkCollision();
+        updateCooldowns();
+    }
+
+    public abstract void checkAlive();
+
+    public abstract void move();
+
+    public abstract void checkCollision();
+
+    public abstract  void updateCooldowns();
+
 }
