@@ -31,7 +31,7 @@ public class Ice extends MapObject {
         }
         for (Enemy enemy : gamePanel.enemies){
             if(enemy.isBoss){
-                if (collisionHandler.entityHitsMapObject(enemy, this) && !hasCracked){
+                if ((enemy.x <= x && enemy.y == y) && !hasCracked){
                    hasCracked = true;
                    breakIce();
                 }
@@ -61,13 +61,15 @@ public class Ice extends MapObject {
            gamePanel.player.targetX -= 256;
            gamePanel.player.x = gamePanel.player.targetX;
         }
-        // In the Ice class or wherever you're handling the logic:
-        Lake lake = new Lake(gamePanel, soundManager, textureManager, collisionHandler, x, y, width, height);
+        transformIntoLake();
+    }
 
-        // Replace Ice with Lake in the mapObjects list:
-        int index = gamePanel.mapObjects.indexOf(this);
-        if (index != -1) {
-            gamePanel.mapObjects.set(index, lake);
-        }
+    private void transformIntoLake(){
+        this.baseSkin = textureManager.lakeImage;
+        this.hurtSkin = textureManager.lakeImage;
+        this.skin = baseSkin;
+        this.maxHealth = 500;
+        this.health = maxHealth;
+        
     }
 }
